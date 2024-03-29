@@ -27,7 +27,7 @@ class ReviewAPI:
         """
         headers = self.headers
         url = f"{self.url}/{product_id}/reviews"
-        response = requests.post(headers=headers, url=url)
+        response = requests.get(headers=headers, url=url)
         assert_status_code(response, expected_status_code=expected_status_code)
         log_request(response)
 

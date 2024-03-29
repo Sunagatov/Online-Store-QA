@@ -59,3 +59,18 @@ def assert_message_in_response(response: Response, expected_message: str) -> Non
         contains_string(expected_message),
         reason=f"Expected response contains '{expected_message}', found: '{actual_message}'",
     )
+
+
+def assert_review_text(response: Response, expected_review: str) -> None:
+    """Asserts that the message in the response body matches the expected message.
+
+    Args:
+        response: The response object from the API call.
+        expected_review: The expected review string.
+    """
+    actual_review_text = response.json().get("text", "")
+    assert_that(
+        actual_review_text,
+        is_(expected_review),
+        reason=f"Expected text review '{expected_review}', found: '{actual_review_text}'",
+    )
