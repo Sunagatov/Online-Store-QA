@@ -6,14 +6,16 @@ from .configs import link, email, password, new_first_name
 
 
 from time import sleep
-from allure import step, title, severity, story, severity_level
+from allure import step, title, severity, story
+import pytest
 
 
 @title("Test Change First Name")
 @story("Personal Account")
 # @allure.description("")
 # @allure.tag("")
-@severity(severity_level.CRITICAL)
+@severity(severity_level="MAJOR")
+@pytest.mark.xfail(reason="The name change has not been implemented in accordance with the requirements")
 def test_user_can_change_first_name(browser):
     with step('Open main page'):
         page = BasePage(browser, link)
@@ -34,6 +36,10 @@ def test_user_can_change_first_name(browser):
         page.change_first_name(new_first_name)
     with step('Click "Save Changes" button'):
         page.save_change()
+    with step('Assert Success massage is present'):
+        assert page.is_success_message_present('Your First Name was changed'), 'Success message is not present'
+    with step('Assert New First Name is present in profile'):
+        assert page.is_new_first_name_present(new_first_name), 'New First Name is not present in profile'
 
 
 sleep(5)
