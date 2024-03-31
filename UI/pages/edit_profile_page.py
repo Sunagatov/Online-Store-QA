@@ -18,10 +18,3 @@ class EditProfilePage(BasePage):
             return True
         else:
             return False
-
-    def is_new_first_name_present(self, new_first_name):
-        first_name_field = self.browser.find_element(*EditProfilePageLocators.FIRST_NAME_FIELD)
-        if first_name_field.text == new_first_name:
-            return True
-        else:
-            return False
