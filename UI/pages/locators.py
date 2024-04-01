@@ -23,7 +23,7 @@ class RegistrationPageLocators:
 
 class ProfilePageLocators:
     EDIT_BUTTON = (By.XPATH, '/html/body/main/div/div/div[3]/div/button')
-    FIRST_NAME_FIELD = (By.XPATH, '/html/body/main/div/div/div[3]/ul/li[1]/text()')
+    FIRST_NAME_FIELD = (By.XPATH, '(//ul/li[1])[1]')
 
 
 class EditProfilePageLocators:

@@ -12,9 +12,10 @@ class EditProfilePage(BasePage):
         save_change_button = self.browser.find_element(*EditProfilePageLocators.SAVE_CHANGE_BUTTON)
         save_change_button.click()
 
-    def is_success_message_present(self, success_message):
+'''    def is_success_message_present(self, success_message):
         message_element = self.browser.find_element(*EditProfilePageLocators.SUCCESS_MESSAGE)
         if message_element.text == success_message:
             return True
         else:
             return False
+'''
