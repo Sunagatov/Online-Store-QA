@@ -19,9 +19,13 @@ class Email:
         Returns:
             MailBox: The connected mailbox object.
         """
-        return MailBox(self.imap_server).login(self.email_address, self.password, initial_folder=email_box)
+        return MailBox(self.imap_server).login(
+            self.email_address, self.password, initial_folder=email_box
+        )
 
-    def extract_confirmation_code_from_email(self, email_box: str, key: str, value: str) -> Union[str, None]:
+    def extract_confirmation_code_from_email(
+        self, email_box: str, key: str, value: str
+    ) -> Union[str, None]:
         """Method for extraction confirmation code for registration from user's email.
 
         Args:
@@ -36,12 +40,14 @@ class Email:
             current_time = time.time()
 
             with self.connect_mailbox(email_box) as mailbox:
-                messages = mailbox.fetch(criteria=A(**{key.lower(): value}), mark_seen=False, bulk=True)
+                messages = mailbox.fetch(
+                    criteria=A(**{key.lower(): value}), mark_seen=False, bulk=True
+                )
                 for msg in messages:
                     email_time = msg.date.timestamp()
                     if current_time - email_time <= 13.5:
                         text = msg.text or ""
-                        pattern = "\d{3}-\d{3}-\d{3}"
+                        pattern = r"\d{3}-\d{3}-\d{3}"
                         match = re.search(pattern, text)
                         if match:
                             return match.group()
