@@ -8,6 +8,11 @@ class EditProfilePage(BasePage):
         first_name_field.clear()
         first_name_field.send_keys(new_first_name)
 
+    def change_last_name(self, new_last_name):
+        last_name_field = self.browser.find_element(*EditProfilePageLocators.LAST_NAME_FIELD)
+        last_name_field.clear()
+        last_name_field.send_keys(new_last_name)
+
     def save_change(self):
         save_change_button = self.browser.find_element(*EditProfilePageLocators.SAVE_CHANGE_BUTTON)
         save_change_button.click()

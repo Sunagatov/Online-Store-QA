@@ -24,9 +24,11 @@ class RegistrationPageLocators:
 class ProfilePageLocators:
     EDIT_BUTTON = (By.XPATH, '/html/body/main/div/div/div[3]/div/button')
     FIRST_NAME_FIELD = (By.XPATH, '(//ul/li[1])[1]')
+    LAST_NAME_FIELD = (By.XPATH, '(//ul/li[2])[1]')
 
 
 class EditProfilePageLocators:
     FIRST_NAME_FIELD = (By.ID, 'firstName')
+    LAST_NAME_FIELD = (By.ID, 'lastName')
     SAVE_CHANGE_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
-    SUCCESS_MESSAGE = (By.ID, 'success')
+    #  SUCCESS_MESSAGE = (By.ID, 'success')

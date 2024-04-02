@@ -13,3 +13,10 @@ class ProfilePage(BasePage):
             return True
         else:
             return False
+
+    def is_new_last_name_present(self, new_last_name):
+        last_name_field = self.browser.find_element(*ProfilePageLocators.LAST_NAME_FIELD)
+        if last_name_field.text == f'Last name:\n{new_last_name}':
+            return True
+        else:
+            return False
