@@ -56,6 +56,10 @@ For running pre-commit hooks should be installed pre-commit -> https://pre-commi
 ```bash
 pre-commit install
 ```
+To run pre-commit hooks, execute next command before commit:
+```bash
+pre-commit run --all-files
+```
 
 ## Database Navigator
 
