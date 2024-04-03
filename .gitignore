@@ -72,3 +72,4 @@ allure_report
 
 tests/__pycache__/
 data/data_for_auth.py
+my_data.py
