@@ -47,7 +47,7 @@ class Email:
                     email_time = msg.date.timestamp()
                     if current_time - email_time <= 13.5:
                         text = msg.text or ""
-                        pattern = "\d{3}-\d{3}-\d{3}"
+                        pattern = r"\d{3}-\d{3}-\d{3}"
                         match = re.search(pattern, text)
                         if match:
                             return match.group()
