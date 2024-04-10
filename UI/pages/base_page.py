@@ -1,4 +1,5 @@
 from .locators import BasePageLocators
+
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -31,4 +32,5 @@ class BasePage:
 
     def go_to_profile_page(self):
         link = self.browser.find_element(*BasePageLocators.PROFILE_LINK)
-        link.click()
+        link.click()    
+    
