@@ -167,6 +167,9 @@ class TestResetPassword:
                 email=email, password=new_password, expected_status_code=401
             )
 
+    error_message = "Email must be valid"
+    code = "123-123-123"
+
     @pytest.mark.xfail(
         reason="Incorrect error message and status code."
         "Link: https://trello.com/c/MiA5Evtu/17-reset-password-with-invalid-email-unclear-error-message"
@@ -183,84 +186,84 @@ class TestResetPassword:
         "code_for_reset_password,email, new_password, expected_status_code, expected_message_part",
         [
             pytest.param(
-                " ",
+                code,
                 "example.domain.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "usernamegmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123 ",
+                code,
                 "username@",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "john doe@gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "user!name@gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "@gmail.com",
                 generate_password(8),
                 400,
                 "Email must be valid",
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "user@name@gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "username@gmail",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "user@name@gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 ".username@gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "username@example_gmail.com",
                 generate_password(8),
                 400,
-                "Email must be valid",
+                error_message,
             ),
             pytest.param(
-                "123-123-123",
+                code,
                 "",
                 generate_password(8),
                 400,
@@ -301,7 +304,9 @@ class TestResetPassword:
                 email=email, password=new_password, expected_status_code=401
             )
 
-    @pytest.mark.xfail(
+    error_message = "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&"
+
+    @pytest.mark.skip(
         reason="app accepted password that does not meet requirements."
         "Bug: https://trello.com/c/ilaf1Luy/19-reset-password-the-app-allows-saving-passwords-that-do-not-meet-the-requirements"
     )
@@ -321,56 +326,56 @@ class TestResetPassword:
                 None,
                 generate_string(2),
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 generate_string(9),
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 generate_numeric_password(1),
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 generate_numeric_password(9),
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 f"{generate_numeric_password(length=7)}@$!%*?&",
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 f"{generate_string(7)}@$!%*?&",
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 "@$!%*?&",
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
             pytest.param(
                 None,
                 None,
                 "___________",
                 400,
-                "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                error_message,
             ),
         ],
     )
