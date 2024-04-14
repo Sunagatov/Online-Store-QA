@@ -19,6 +19,7 @@ from configs import (
     EMAIL_DOMAIN,
     EMAIL_DOMAIN2,
     EMAIL_LOCAL_PART2,
+    email_address_to_connect2,
 )
 from data.data_for_cart import data_for_adding_product_to_cart
 from framework.asserts.registration_asserts import check_mapping_api_to_db
@@ -363,7 +364,7 @@ def register_user_and_reset_password(request):
         value = request.param["email_iced_late"]
         code_reset_from_email = Email(
             imap_server=imap_server,
-            email_address=email_address_to_connect,
+            email_address=email_address_to_connect2,
             mail_password=gmail_password,
         ).extract_confirmation_code_from_email(
             email_box=email_box, key=key, value=value
@@ -381,3 +382,33 @@ def register_user_and_reset_password(request):
         UsersAPI().delete_user(
             token=response_after_confirmation_registration.json().get("token")
         )
+
+
+def generate_and_insert_user_with_custom_gmail(postgres, user):
+    """Generating and inserting a user into the database
+
+    Args:
+        postgres: connection to Postgres DataBase
+        user: A dictionary representing the user to insert
+    """
+
+    key_mapping = {
+        "firstName": "first_name",
+        "lastName": "last_name",
+        "birthDate": "birth_date",
+        "phoneNumber": "phone_number",
+        "stripeCustomerToken": "stripe_customer_token",
+    }
+    user_to_insert = {key_mapping.get(k, k): v for k, v in user.items()}
+
+    postgres.create_user(user_to_insert)
+
+    return user
+
+
+@pytest.fixture
+def delete(token):
+    with step("Deleting user"):
+        UsersAPI().delete_user(token=token)
+
+        return delete
