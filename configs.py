@@ -34,6 +34,4 @@ email_address_to_connect2 = "icedlate2.test@gmail.com"
 
 # iced-late mail
 email_iced_late = "youricedlatteshop@gmail.com"
-
 DEFAULT_PASSWORD = "pass1234"
-JWT_SECRET = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"

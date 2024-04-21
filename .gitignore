@@ -69,6 +69,7 @@ venv.bak/
 # Allure
 allure_report
 # Config
+
 tests/__pycache__/
 data/data_for_auth.py
 my_data.py
