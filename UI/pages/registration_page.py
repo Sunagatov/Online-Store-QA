@@ -1,8 +1,12 @@
 from .base_page import BasePage
-from .locators import RegistrationPageLocators
+from .locators import BasePageLocators, RegistrationPageLocators
 
 
 class RegistrationPage(BasePage):
+    # check that sort drop-down is not present on the page
+    def is_dropdown_present(self):
+        self.is_element_present(*BasePageLocators.SORT_DROPDOWN)
+    
     def register_new_user(self, first_name, last_name, email, password):
         first_name_field = self.browser.find_element(*RegistrationPageLocators.FIRST_NAME_FIELD)
         first_name_field.send_keys(first_name)
@@ -13,4 +17,4 @@ class RegistrationPage(BasePage):
         password_field = self.browser.find_element(*RegistrationPageLocators.PASSWORD_FIELD)
         password_field.send_keys(password)
         register_button = self.browser.find_element(*RegistrationPageLocators.REGISTER_BUTTON)
-        register_button.click()
+        register_button.click()    
