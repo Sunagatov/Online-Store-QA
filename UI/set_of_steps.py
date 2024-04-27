@@ -5,8 +5,7 @@ from .configs import email, password
 
 from allure import step
 
-
-def go_to_edit_profile_page(browser, link):
+def login_user(browser, link):
     with step('Open main page'):
         page = BasePage(browser, link)
         page.open()
@@ -15,6 +14,10 @@ def go_to_edit_profile_page(browser, link):
     with step('Login existing user'):
         login_page = LoginPage(browser, browser.current_url)
         login_page.login_existing_user(email, password)
+
+def go_to_edit_profile_page(browser, link):    
+    with step('Login existing user'):
+        login_user(browser, link)
     with step('Go to profile page'):
         page = BasePage(browser, browser.current_url)
         page.go_to_profile_page()

@@ -2,32 +2,29 @@ from selenium.webdriver.common.by import By
 
 
 class BasePageLocators:
+    ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
+    ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+    CART_LINK = (By.CSS_SELECTOR, '[href="/cart"]')
+    CART_ICON = (By.XPATH, '//header/div/a[3]/button/div[2]/span') # same on every pages
     LOGIN_LINK = (By.CSS_SELECTOR, '[href="/auth/login"]')
+    PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
+    PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
+    PRODUCT_2_PRICE = (By.XPATH, '//li[3]/div/div[2]/p')
     PROFILE_LINK = (By.CSS_SELECTOR, '[href="/profile"]')
     SORT_DROPDOWN = (By.XPATH, "//*[contains(text(), 'Sort by:')]")
 
 
-class LoginPageLocators:
-    # REGISTER_BUTTON = (By.CSS_SELECTOR, '[href="/auth/registration"]')
-    REGISTER_BUTTON = (By.XPATH, '/html/body/main/div/div[2]/div[2]/a[2]/button')
-    EMAIL_FIELD = (By.ID, 'email')
-    PASSWORD_FIELD = (By.ID, 'password')
-    LOGIN_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
-
-
-class RegistrationPageLocators:
-    FIRST_NAME_FIELD = (By.ID, 'firstName')
-    LAST_NAME_FIELD = (By.ID, 'lastName')
-    EMAIL_FIELD = (By.ID, 'email')
-    PASSWORD_FIELD = (By.ID, 'password')
-    REGISTER_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
-
-
-class ProfilePageLocators:
-    EDIT_BUTTON = (By.XPATH, '/html/body/main/div/div/div[3]/div/button')
-    EMAIL_FIELD = (By.XPATH, '(//ul/li[4])[1]')
-    FIRST_NAME_FIELD = (By.XPATH, '(//ul/li[1])[1]')
-    LAST_NAME_FIELD = (By.XPATH, '(//ul/li[2])[1]')
+class CartPageLocators:
+    AMOUNT = (By.XPATH, '/html/body/main/div/div[1]/div[1]/div[2]/div/div[1]/span')
+    BUSKET_BUTTON = (By.XPATH, '//div/div[1]/div/div[2]/div/button')
+    CONTINUE_SHOPPING_BUTTON = (By.CSS_SELECTOR, 'button[type="button"]')
+    EMPTY_CART_MESSAGE = (By.XPATH, "//*[contains(text(), 'Your cart is empty')]")    
+    PLUS_BUTTON = (By.CSS_SELECTOR, '[alt="plus"]')
+    # PLUS_2_BUTTON = 
+    PRODUCT_NAME = (By.XPATH, '//div/div[1]/div/div[2]/p[1]')
+    PRODUCT_COST = (By.XPATH, '//div/div[1]/div[1]/div[2]/p[3]')
+    PRODUCT_2_COST = (By.XPATH, '//div/div[1]/div[2]/div[2]/p[3]')
+    SUBTOTAL = (By.XPATH, '/html/body/main/div/div[2]/p[2]')
 
 
 class EditProfilePageLocators:
@@ -45,3 +42,26 @@ class EditProfilePageLocators:
     #  SERVER_ERROR_MESSAGE = (By.XPATH, '/html/body/main/div/div/div[3]/form/div[9]/div')    
     #  EMPTY_NONLATIN_MESSAGE = (By.CSS_SELECTOR, '.mt-2.font-medium.text-negative')
     #  SERVER_ERROR_MESSAGE = (By.CSS_SELECTOR, '.mt-4.text-negative')    
+
+
+class LoginPageLocators:    
+    REGISTER_BUTTON = (By.XPATH, '/html/body/main/div/div[2]/div[2]/a[2]/button')
+    # REGISTER_BUTTON = (By.XPATH, '//button[@type="button" and text()="Register"]')
+    EMAIL_FIELD = (By.ID, 'email')
+    PASSWORD_FIELD = (By.ID, 'password')
+    LOGIN_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
+
+
+class ProfilePageLocators:
+    EDIT_BUTTON = (By.XPATH, '//button[@type="button"]/span[contains(text(), "Edit")]')    
+    EMAIL_FIELD = (By.XPATH, '(//ul/li[4])[1]')
+    FIRST_NAME_FIELD = (By.XPATH, '(//ul/li[1])[1]')
+    LAST_NAME_FIELD = (By.XPATH, '(//ul/li[2])[1]')
+
+
+class RegistrationPageLocators:
+    FIRST_NAME_FIELD = (By.ID, 'firstName')
+    LAST_NAME_FIELD = (By.ID, 'lastName')
+    EMAIL_FIELD = (By.ID, 'email')
+    PASSWORD_FIELD = (By.ID, 'password')
+    REGISTER_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
