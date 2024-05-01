@@ -116,9 +116,9 @@ class TestUpdateUser:
                 updating_user_response.json(), user_data_to_update
             )
 
-    @pytest.mark.skip(
-        reason="Fields First Name and Last Name are not updated with valid length. link to bug - https://trello.com/c/0bWwMrXS/9-first-name-and-last-name-do-not-accept-length-55"
-    )
+    # @pytest.mark.skip(
+    #     reason="Fields First Name and Last Name are not updated with valid length. link to bug - https://trello.com/c/0bWwMrXS/9-first-name-and-last-name-do-not-accept-length-55"
+    # )
     @pytest.mark.parametrize(
         "first_name_length, last_name_length",
         [

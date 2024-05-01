@@ -10,9 +10,9 @@ from assertpy import assert_that as assertpy_assert_that
 import pytest
 
 from configs import (
+    database_name,
+    HOST,
     DB_NAME,
-    HOST_DB,
-    PORT_DB,
     DB_USER,
     DB_PASS,
     EMAIL_LOCAL_PART,
@@ -20,12 +20,19 @@ from configs import (
     EMAIL_DOMAIN2,
     EMAIL_LOCAL_PART2,
     email_address_to_connect2,
+    ssh_username,
+    ssh_password,
+    local_server_ip,
+    remote_server_ip,
+    db_password,
+    db_username,
+    port_ssh,
 )
 from data.data_for_cart import data_for_adding_product_to_cart
 from framework.asserts.registration_asserts import check_mapping_api_to_db
 from framework.endpoints.cart_api import CartAPI
 from framework.endpoints.users_api import UsersAPI
-from framework.queries.postgres_db import PostgresDB
+from framework.queries.postgres_remote_bd import PostgresDB
 from framework.endpoints.authenticate_api import AuthenticateAPI
 from framework.tools.generators import (
     generate_user,
@@ -44,11 +51,14 @@ from framework.endpoints.favorite_api import FavoriteAPI
 from framework.asserts.assert_favorite import assert_added_product_in_favorites
 
 # Connection configuration
-PostgresDB.dbname = DB_NAME
-PostgresDB.host = HOST_DB
-PostgresDB.port = PORT_DB
-PostgresDB.user = DB_USER
-PostgresDB.password = DB_PASS
+PostgresDB.ssh_username = ssh_username
+PostgresDB.ssh_password = ssh_password
+PostgresDB.local_server_ip = local_server_ip
+PostgresDB.remote_server_ip = remote_server_ip
+PostgresDB.db_username = db_username
+PostgresDB.db_password = db_password
+PostgresDB.database_name = database_name
+PostgresDB.port_ssh = port_ssh
 
 
 @title("SetUp and TearDown connect to Postgres DataBase for testing")

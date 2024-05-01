@@ -79,7 +79,7 @@ class TestResetPassword:
         with step("Sent request to reset password"):
             new_password = generate_password(8)
             AuthenticateAPI().change_password_through_reset(
-                email=email,
+                email=email_to_reset_password,
                 code_for_reset_password=code_reset_from_email,
                 new_password=new_password,
             )
@@ -376,6 +376,20 @@ class TestResetPassword:
                 "___________",
                 400,
                 error_message,
+            ),
+            pytest.param(
+                None,
+                None,
+                generate_password(7),
+                400,
+                "Password should have a length between 8 and 128 characters",
+            ),
+            pytest.param(
+                None,
+                None,
+                "",
+                400,
+                "Password is the mandatory attribute",
             ),
         ],
     )

@@ -1,10 +1,21 @@
-HOST = "http://localhost:8083"
-HOST_DB = "localhost"
+# HOST = "http://localhost:8083"
+HOST = "https://iced-latte.uk/backend"
+# HOST_DB = "192.168.1.66"
+# HOST_DB = "172.20.10.3"
+# HOST_DB = "localhost"
 
-PORT_DB = "5432"
 DB_NAME = "testdb"
 DB_USER = "postgres"
 DB_PASS = "postgres"
+# ssh credentials
+ssh_username: str = "ssh_username"
+ssh_password: str = "ssh_password"
+local_server_ip: str = "localhost"
+remote_server_ip: str = "remote_server_ip"
+db_username: str = "db_username"
+db_password: str = "db_password"
+database_name: str = "database_name"
+port_ssh: int = 00000
 
 # data for creating user#1
 email = "icedlate.test@gmail.com"

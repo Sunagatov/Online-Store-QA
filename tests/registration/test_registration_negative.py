@@ -2,21 +2,33 @@ import pytest
 from allure import description, feature, link, step, title, severity
 from hamcrest import assert_that, has_length, is_not, empty, equal_to
 
-from configs import DB_NAME, HOST_DB, PORT_DB, DB_USER, DB_PASS
+from configs import (
+    ssh_username,
+    ssh_password,
+    local_server_ip,
+    remote_server_ip,
+    db_username,
+    db_password,
+    database_name,
+    port_ssh,
+)
 from framework.asserts.common import assert_status_code, assert_message_in_response
 from framework.asserts.registration_asserts import check_mapping_api_to_db
 from framework.clients.db_client import DBClient
 from framework.endpoints.authenticate_api import AuthenticateAPI
-from framework.queries.postgres_db import PostgresDB
+from framework.queries.postgres_remote_bd import PostgresDB
 from framework.steps.registration_steps import RegistrationSteps
 from framework.tools.generators import generate_string, generate_user_data
 
 # Connection configuration
-PostgresDB.dbname = DB_NAME
-PostgresDB.host = HOST_DB
-PostgresDB.port = PORT_DB
-PostgresDB.user = DB_USER
-PostgresDB.password = DB_PASS
+PostgresDB.ssh_username = ssh_username
+PostgresDB.ssh_password = ssh_password
+PostgresDB.local_server_ip = local_server_ip
+PostgresDB.remote_server_ip = remote_server_ip
+PostgresDB.db_username = db_username
+PostgresDB.db_password = db_password
+PostgresDB.database_name = database_name
+PostgresDB.port_ssh = port_ssh
 
 
 @feature("Registration of user")
