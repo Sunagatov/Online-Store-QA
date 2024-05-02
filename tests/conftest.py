@@ -1,3 +1,4 @@
+import logging
 import time
 
 from allure import title, step
@@ -63,15 +64,34 @@ PostgresDB.port_ssh = port_ssh
 
 @title("SetUp and TearDown connect to Postgres DataBase for testing")
 @fixture(scope="function")
-def postgres() -> connect:
+# def postgres() -> connect:
+#     """Connect to Postgres DataBase"""
+#     with step("SetUp. Connecting to Postgres database"):
+#         conn = PostgresDB()
+#
+#     yield conn
+#
+#     with step("TearDown. Closing connect to Postgres database"):
+#         conn.close()
+
+
+@fixture(scope="function")
+def postgres():
     """Connect to Postgres DataBase"""
-    with step("SetUp. Connecting to Postgres database"):
-        conn = PostgresDB()
-
-    yield conn
-
-    with step("TearDown. Closing connect to Postgres database"):
-        conn.close()
+    conn = None
+    try:
+        with step("SetUp. Connecting to Postgres database"):
+            conn = PostgresDB()
+        yield conn
+    except Exception as e:
+        logging.error(f"Error connecting to database: {e}")
+        if conn:
+            conn.close()
+        pytest.fail(f"Failed to set up database connection: {e}")
+    finally:
+        if conn:
+            with step("TearDown. Closing connect to Postgres database"):
+                conn.close()
 
 
 def generate_and_insert_user(postgres):
