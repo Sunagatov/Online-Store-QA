@@ -5,7 +5,7 @@ class BasePageLocators:
     ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
     ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
     CART_LINK = (By.CSS_SELECTOR, '[href="/cart"]')
-    CART_ICON = (By.XPATH, '//header/div/a[3]/button/div[2]/span')  # same on every pages
+    CART_ICON = (By.XPATH, '//header/div/a[2]/div/div[2]/span')  # same on every pages
     LOGIN_LINK = (By.CSS_SELECTOR, '[href="/auth/login"]')
     PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
