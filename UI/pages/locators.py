@@ -9,7 +9,7 @@ class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, '[href="/auth/login"]')
     PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
-    PRODUCT_WEIGHT = (By.XPATH, '//li[2]//div[1]//a[1]//div[2]//div[1]//span[2]')
+    PRODUCT_WEIGHT = (By.XPATH, '(//li[2]//div[1]//a[1]//div[2]//div[1]//span[2])[2]')
     PROFILE_LINK = (By.CSS_SELECTOR, '[href="/profile"]')
     SORT_DROPDOWN = (By.XPATH, "//*[contains(text(), 'Sort by:')]")
 
