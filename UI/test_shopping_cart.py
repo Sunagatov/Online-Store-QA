@@ -67,8 +67,7 @@ class TestCart:
             page.remove_products()            
             assert page.is_cart_empty, 'Cart is not empty'
     
-    @title("Test the Subtotal in the Shopping Cart. User is not logged in")
-    @pytest.mark.xfail(reason='Bug not counting subtotal is not fixed')
+    @title("Test the Subtotal in the Shopping Cart. User is not logged in")    
     def test_guest_verify_cart_subtotal(self, browser):
         with step('Open Main Page'):
             page = BasePage(browser, link)
@@ -160,8 +159,7 @@ class TestCart:
             page.remove_products()            
             assert page.is_cart_empty, 'Cart is not empty'
     
-    @title("Test the Subtotal in the Shopping Cart. User is logged in")
-    @pytest.mark.xfail(reason='The total price per line function is not implemented')
+    @title("Test the Subtotal in the Shopping Cart. User is logged in")    
     def test_user_verify_cart_subtotal(self, browser):
         with step('Login User'):
             login_user(browser, link)
