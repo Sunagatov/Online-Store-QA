@@ -31,6 +31,7 @@ from configs import (
 )
 from data.data_for_cart import data_for_adding_product_to_cart
 from framework.asserts.registration_asserts import check_mapping_api_to_db
+from framework.clients.switch_to_BD import connect_to_database
 from framework.endpoints.cart_api import CartAPI
 from framework.endpoints.users_api import UsersAPI
 from framework.queries.postgres_remote_bd import PostgresDB
@@ -62,8 +63,44 @@ PostgresDB.database_name = database_name
 PostgresDB.port_ssh = port_ssh
 
 
-@title("SetUp and TearDown connect to Postgres DataBase for testing")
-@fixture(scope="function")
+@pytest.fixture(scope="session")
+def db_connection(request):
+    local_connection = connect_to_database(local=True)
+    request.addfinalizer(local_connection.close)
+    return local_connection
+
+
+@pytest.fixture(scope="session")
+def remote_db_connection(request):
+    remote_connection = connect_to_database(local=False)
+    request.addfinalizer(remote_connection.close)
+    return remote_connection
+
+
+@pytest.fixture(scope="session")
+def postgres(request, local=True):
+    """Fixture to connect to Postgres DataBase"""
+    if local:
+        conn = connect_to_database(local=True)
+    else:
+        conn = connect_to_database(local=False)
+
+    request.addfinalizer(conn.close)
+
+    yield conn
+
+    with step("TearDown. Closing connect to Postgres database"):
+        conn.close()
+
+
+def pytest_exception_interact(node, call, report):
+    conn = node.funcargs.get("postgres", None)
+    if conn is not None and not conn.closed:
+        conn.close()
+
+
+# @title("SetUp and TearDown connect to Postgres DataBase for testing")
+# @fixture(scope="function")
 # def postgres() -> connect:
 #     """Connect to Postgres DataBase"""
 #     with step("SetUp. Connecting to Postgres database"):
@@ -75,23 +112,23 @@ PostgresDB.port_ssh = port_ssh
 #         conn.close()
 
 
-@fixture(scope="function")
-def postgres():
-    """Connect to Postgres DataBase"""
-    conn = None
-    try:
-        with step("SetUp. Connecting to Postgres database"):
-            conn = PostgresDB()
-        yield conn
-    except Exception as e:
-        logging.error(f"Error connecting to database: {e}")
-        if conn:
-            conn.close()
-        pytest.fail(f"Failed to set up database connection: {e}")
-    finally:
-        if conn:
-            with step("TearDown. Closing connect to Postgres database"):
-                conn.close()
+# @fixture(scope="function")
+# def postgres():
+#     """Connect to Postgres DataBase"""
+#     conn = None
+#     try:
+#         with step("SetUp. Connecting to Postgres database"):
+#             conn = PostgresDB()
+#         yield conn
+#     except Exception as e:
+#         logging.error(f"Error connecting to database: {e}")
+#         if conn:
+#             conn.close()
+#         pytest.fail(f"Failed to set up database connection: {e}")
+#     finally:
+#         if conn:
+#             with step("TearDown. Closing connect to Postgres database"):
+#                 conn.close()
 
 
 def generate_and_insert_user(postgres):
