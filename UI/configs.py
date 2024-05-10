@@ -20,9 +20,9 @@ new_first_name_positive = ["Il", "ily", "Ann-Mary Kate",
 new_last_name_127sym = "qwertvqkeukeukidxtyxWSqzhdpstrahexbgtmypsmmtqv-ebupnzrslccysaduwtgncthlraykruyqcaqchoelsfiktzvdaewbwymapkfmwxfgbrqqwrsdhoamiyto"
 new_last_name_128sym = "qwertvqkeukeukidxtyxWSqzhdpstrahexbgtmypsmmtqvs ebupnzrslccysaduwtgncthlraykruyqcaqchoelsfiktzvdaewbwymapkfmwxfgbrqqwrsdhoamiyto"
 new_last_name_positive = ["Si", "sin",
-                          pytest.param("Sinyak-Yak Ov", marks=pytest.mark.xfail(reason='FE bug "-" & "space" is not fixed')),
-                          pytest.param(new_last_name_127sym, marks=pytest.mark.xfail(reason='Bugs: BE (>55 symbols) & FE (- & space) is not fixed')),
-                          pytest.param(new_last_name_128sym, marks=pytest.mark.xfail(reason='Bugs: BE (>55 symbols) & FE (- & space) is not fixed')),
+                          "Sinyak-Yak Ov",
+                          new_last_name_127sym,
+                          new_last_name_128sym
                           ]
 
 '''Positive values of email: regular email, local-part with hyphen, local-part with equals, 
