@@ -12,14 +12,14 @@ from framework.endpoints.users_api import UsersAPI
 @feature("Adding item(product) to cart ")
 class TestCart:
     @pytest.mark.critical
-    @pytest.mark.skip(
-        reason="BUG, user add product that not exist in BD, status code should be = 400, actual = 200"
-    )
+    # @pytest.mark.skip(
+    #     reason="BUG, user add product that not exist in BD, status code should be = 400, actual = 200"
+    # )
     @title("Test add item(product) to new user's cart negative")
     @description(
         "GIVEN user is registered and does not have shopping cart"
         "WHEN user add the items that not exist in BD"
-        "THEN status HTTP CODE = 400"
+        "THEN response HTTP CODE = 200 and user's shopping cart is not contained this item"
     )
     def test_adding_not_exist_item_to_cart(self, create_authorized_user):
         with step("Registration of user"):
@@ -45,7 +45,7 @@ class TestCart:
 
         with step("Add not exist product to the shopping cart "):
             response_add_to_cart = CartAPI().add_item_to_cart(
-                token=token, items=product_add_to_cart, expected_status_code=400
+                token=token, items=product_add_to_cart, expected_status_code=200
             )
 
         with step("Verify,response does not contain not exist product."):

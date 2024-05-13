@@ -79,7 +79,7 @@ def verify_user_review_in_all_reviews(
         review
         for review in data.get("reviewsWithRatings", [])
         if review.get("userName") == user_info.get("firstName")
-        and review.get("userLastName") == user_info.get("lastName")
+        and review.get("userLastname") == user_info.get("lastName")
     ]
 
     if not user_reviews:
@@ -90,7 +90,7 @@ def verify_user_review_in_all_reviews(
 
     for review in user_reviews:
         text_matches = review.get("text") == text_review
-        rating_matches = review.get("rating") == rating
+        rating_matches = review.get("productRating") == rating
 
         if text_matches and rating_matches:
             return True, "Review matches the given user and criteria."
@@ -102,7 +102,7 @@ def verify_user_review_in_all_reviews(
             )
         if not rating_matches:
             mismatches.append(
-                f"Rating mismatch: expected {rating}, found {review.get('rating')}"
+                f"Rating mismatch: expected {rating}, found {review.get('productRating')}"
             )
 
         return False, " | ".join(mismatches)
@@ -141,9 +141,9 @@ def verify_user_review(
     except json.JSONDecodeError as e:
         raise ValueError("The response body is not valid JSON.") from e
 
-    actual_product_rating = data["rating"]
+    actual_product_rating = data["productRating"]
     actual_first_name = data["userName"]
-    actual_last_name = data["userLastName"]
+    actual_last_name = data["userLastname"]
     actual_text_review = data["text"]
     expected_user_first_name, expected_user_last_name = (
         user_info["firstName"],
