@@ -17,7 +17,6 @@ else
   tag=$be_hash
 fi
 
-# TODO: replace development with master when BE team ensures that master is error-prone
 export DOCKER_IMAGE_TAG=${tag}
 # remove all QA containers and all volumes
 docker-compose -f docker-compose.local.yml down -v
