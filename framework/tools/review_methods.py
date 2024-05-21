@@ -1,9 +1,11 @@
 import json
-
+import random
+from typing import Dict
 
 from faker import Faker
 from hamcrest import assert_that, is_
 from requests import Response
+from typing_extensions import Any
 
 fake = Faker()
 
@@ -79,7 +81,7 @@ def verify_user_review_in_all_reviews(
         review
         for review in data.get("reviewsWithRatings", [])
         if review.get("userName") == user_info.get("firstName")
-        and review.get("userLastName") == user_info.get("lastName")
+        and review.get("userLastname") == user_info.get("lastName")
     ]
 
     if not user_reviews:
@@ -90,7 +92,7 @@ def verify_user_review_in_all_reviews(
 
     for review in user_reviews:
         text_matches = review.get("text") == text_review
-        rating_matches = review.get("rating") == rating
+        rating_matches = review.get("productRating") == rating
 
         if text_matches and rating_matches:
             return True, "Review matches the given user and criteria."
@@ -102,7 +104,7 @@ def verify_user_review_in_all_reviews(
             )
         if not rating_matches:
             mismatches.append(
-                f"Rating mismatch: expected {rating}, found {review.get('rating')}"
+                f"Rating mismatch: expected {rating}, found {review.get('productRating')}"
             )
 
         return False, " | ".join(mismatches)
@@ -141,9 +143,9 @@ def verify_user_review(
     except json.JSONDecodeError as e:
         raise ValueError("The response body is not valid JSON.") from e
 
-    actual_product_rating = data["rating"]
+    actual_product_rating = data["productRating"]
     actual_first_name = data["userName"]
-    actual_last_name = data["userLastName"]
+    actual_last_name = data["userLastname"]
     actual_text_review = data["text"]
     expected_user_first_name, expected_user_last_name = (
         user_info["firstName"],
@@ -175,3 +177,34 @@ def verify_user_review(
     value = data[key]
     assert_that(value is not None, f"Value for key '{key}' is None.")
     assert_that(value != "", f"Value for key '{key}' is empty.")
+
+
+def extract_data_from_random_review(response: Response) -> Any:
+    """Extracts item review ID, likes count and dislike count of a randomly selected item from the JSON response.
+
+    Args:
+        response: The JSON response containing item details.
+
+    """
+    try:
+        json_response = response.json()
+    except ValueError:
+        return {"error": "Invalid JSON response"}
+
+    items = json_response.get("reviewsWithRatings", [])
+
+    if not items:
+        return None
+    else:
+        random_item = random.choice(items)
+        if random_item:
+            review_id = random_item.get("productReviewId", "")
+            likes_count = random_item.get("likesCount", 0)
+            dislikes_count = random_item.get("dislikesCount", 0)
+            return {
+                "productReviewId": review_id,
+                "likesCount": likes_count,
+                "dislikesCount": dislikes_count,
+            }
+        else:
+            return None

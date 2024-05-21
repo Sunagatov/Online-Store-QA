@@ -115,7 +115,7 @@ def assert_user_name_in_response(
     )
 
 
-def assert_key_and_value_in_response(response: Response, key: str) -> None:
+def assert_key_and_value_in_response(response: Response, *key: str) -> None:
     """Asserts that the id review in the response body
 
     Args:

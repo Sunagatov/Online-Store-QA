@@ -102,6 +102,7 @@ class TestReviewWithRating:
             response_get_all_review = ReviewAPI().get_all_product_reviews(
                 product_id=product_id
             )
+
             result, message = verify_user_review_in_all_reviews(
                 response_get_all_review, user, text_review=text_review, rating=rating
             )

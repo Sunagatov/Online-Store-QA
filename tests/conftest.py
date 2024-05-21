@@ -24,6 +24,7 @@ from configs import (
 from data.data_for_cart import data_for_adding_product_to_cart
 from framework.asserts.registration_asserts import check_mapping_api_to_db
 from framework.endpoints.cart_api import CartAPI
+from framework.endpoints.review_api import ReviewAPI
 from framework.endpoints.users_api import UsersAPI
 from framework.queries.postgres_db import PostgresDB
 from framework.endpoints.authenticate_api import AuthenticateAPI
