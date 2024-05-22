@@ -5,7 +5,7 @@ from framework.endpoints.authenticate_api import AuthenticateAPI
 from framework.tools.matcher import is_timestamp_valid
 
 LIMIT_ATTEMPTS = 5
-DURATION_BLOCKING_MINUTES = 30
+DURATION_BLOCKING_MINUTES = 60
 TIMESTAMP_PATTERN = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
 
 

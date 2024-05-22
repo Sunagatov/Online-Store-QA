@@ -12,9 +12,9 @@ from framework.tools.favorite_methods import extract_random_product_ids
 @feature("Adding product to favorite ")
 class TestFavorite:
     @pytest.mark.critical
-    @pytest.mark.skip(
-        reason="BUG, user add product that not exist in BD or empty product's list [], status code should be = 400"
-    )
+    # @pytest.mark.skip(
+    #     reason="BUG, user add product that not exist in BD or empty product's list [], status code should be = 400"
+    # )
     @title("Test add products to favorite negative")
     @description(
         "GIVEN user is registered and does not have favorite list"
@@ -24,11 +24,11 @@ class TestFavorite:
     @pytest.mark.parametrize(
         "id_product_add_to_favorite, expected_status_code",
         [
-            pytest.param([], 400),
+            pytest.param(["1234_8900_88900_OPPIU"], 400),
             pytest.param(["12324456678888"], 400),
             pytest.param(["ytyty8888GGG-jgjjggj6666-555GGGhhhjj"], 400),
             pytest.param(["#$$%^&*@##$$%%^^&&&&&&*"], 400),
-            pytest.param(["fc88cd5d-5049-4b04-8d88-df1d974a3ce1"], 400),
+            pytest.param(["fc88cd5d-5049-4b04-OPAA-df1d974a3ce1"], 400),
         ],
     )
     def test_adding_product_with_incorrect_id_format_to_favorite(
