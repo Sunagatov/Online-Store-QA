@@ -30,8 +30,8 @@ class TestCart:
             sleep(2)  # waiting is mandatory (do not remove)
             assert browser.current_url == link, 'Continue Shopping Button do not work'
     
-    @title("Test Full Shopping Cart. User is not logged in")        
-    def test_guest_full_cart(self, browser):        
+    @title("Test Functionality of the Shopping Cart. User is not logged in")    
+    def test_guest_cart_functionality(self, browser):        
         with step('Open Main Page'):
             page = BasePage(browser, link)
             page.open()
@@ -67,8 +67,8 @@ class TestCart:
             page.remove_products()            
             assert page.is_cart_empty, 'Cart is not empty'
     
-    @title("Test the Cost in the Shopping Cart. User is not logged in")        
-    def test_guest_cart_cost(self, browser):
+    @title("Test the Subtotal in the Shopping Cart. User is not logged in")    
+    def test_guest_verify_cart_subtotal(self, browser):
         with step('Open Main Page'):
             page = BasePage(browser, link)
             page.open()
@@ -124,8 +124,8 @@ class TestCart:
             sleep(2)  # waiting is mandatory (do not remove)
             assert browser.current_url == link, 'Continue Shopping Button do not work'
     
-    @title("Test Full Shopping Cart. User is logged in")    
-    def test_user_full_cart(self, browser):
+    @title("Test Functionality of the Shopping Cart. User is logged in")    
+    def test_user_cart_functionality(self, browser):
         with step('Login User'):
             login_user(browser, link)
         with step('Get Product Name from Main Page'):
@@ -162,8 +162,8 @@ class TestCart:
             page.remove_products()            
             assert page.is_cart_empty, 'Cart is not empty'
     
-    @title("Test the Cost in the Shopping Cart. User is logged in")    
-    def test_user_cart_cost(self, browser):
+    @title("Test the Subtotal in the Shopping Cart. User is logged in")    
+    def test_user_verify_cart_subtotal(self, browser):
         with step('Login User'):
             login_user(browser, link)
         with step('Add Product 1 to Cart'):
