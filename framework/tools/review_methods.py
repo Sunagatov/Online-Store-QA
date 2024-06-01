@@ -208,3 +208,59 @@ def extract_data_from_random_review(response: Response) -> Any:
             }
         else:
             return None
+
+
+def extract_random_product_info(response: Response, product_quantity: int) -> list:
+    """Extract random product info from list of products.
+
+    Selects a random sample of products from the response based on the given quantity.
+    Returns a list of the values for those randomly selected products.
+
+    Args:
+        response: Response data from API request containing products
+        product_quantity: Number of random products to select
+
+    Raises:
+        ValueError: If requested quantity exceeds products available
+    """
+    products = response.json()["products"]
+    if product_quantity > len(products):
+        raise ValueError("Requested amount exceeds the number of available products")
+
+    selected_products = random.sample(products, product_quantity)
+    return [
+        {
+            "id": product.get("id"),
+            "averageRating": product.get("averageRating"),
+            "reviewsCount": product.get("reviewsCount"),
+        }
+        for product in selected_products
+    ]
+
+
+def extract_product_info_from_list_of_products(
+    response: Response, product_id: str
+) -> list:
+    """Extract random product info from the API response.
+
+    Extracts product info from the response based on the given product ID.
+    Returns a list of the values for that product.
+
+    Args:
+        response: Response data from API request containing products
+        product_id: product id
+
+    Raises:
+        ValueError: If requested quantity exceeds products available
+    """
+    products = response.json()["products"]
+
+    return [
+        {
+            "id": product.get("id"),
+            "averageRating": product.get("averageRating"),
+            "reviewsCount": product.get("reviewsCount"),
+        }
+        for product in products
+        if product.get("id") == product_id
+    ]

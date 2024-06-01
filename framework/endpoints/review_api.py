@@ -129,3 +129,15 @@ class ReviewAPI:
         log_request(response)
 
         return response
+
+    def get_product_review_statistics(self, product_id: str) -> Response:
+        """Getting product review statistics
+
+        Args:
+            product_id: ID of product
+        """
+        url = f"{self.url}/{product_id}/reviews/statistics"
+        response = requests.get(url=url)
+        log_request(response)
+
+        return response

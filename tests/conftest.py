@@ -1,7 +1,7 @@
 import time
 
 from allure import title, step
-from hamcrest import assert_that, is_, is_not, empty, not_
+from hamcrest import assert_that, is_, is_not, empty, not_, equal_to
 from psycopg2 import connect
 from pytest import fixture
 
@@ -43,6 +43,12 @@ from framework.endpoints.product_api import ProductAPI
 from framework.tools.favorite_methods import extract_random_product_ids
 from framework.endpoints.favorite_api import FavoriteAPI
 from framework.asserts.assert_favorite import assert_added_product_in_favorites
+from framework.tools.review_methods import (
+    verify_user_review_by_user_name_in_all_product_reviews,
+    verify_user_review_in_all_reviews,
+    verify_user_review,
+    extract_random_product_info,
+)
 
 # Connection configuration
 PostgresDB.dbname = DB_NAME
@@ -413,3 +419,65 @@ def delete(token):
         UsersAPI().delete_user(token=token)
 
         return delete
+
+
+@pytest.fixture
+def add_review_to_product(create_authorized_user, request):
+    with step("Registration of user"):
+        user, token = (
+            create_authorized_user["user"],
+            create_authorized_user["token"],
+        )
+
+    with step("Getting all products via API and randomly select one"):
+        response_get_product = ProductAPI().get_all()
+        random_product = extract_random_product_info(response_get_product, 1)
+        product_id = random_product[0]["id"]
+
+    with step("Extract review count and average rating for product"):
+        product_review_count = random_product[0]["reviewsCount"]
+        product_average_rating = random_product[0]["averageRating"]
+
+    with step("Verify that user does not have review for product"):
+        response_get_review = ReviewAPI().get_all_product_reviews(product_id=product_id)
+        assert_that(
+            verify_user_review_by_user_name_in_all_product_reviews(
+                response_get_review, user
+            ),
+            is_(False),
+            "user has review",
+        )
+
+    with step("Add review to randomly selected product"):
+        response_after_adding_review = ReviewAPI().add_product_review(
+            token=token,
+            product_id=product_id,
+            text_review=request.param["text_review"],
+            rating=request.param["rating"],
+        )
+
+    with step("Extract product review Id from response"):
+        product_review_id = response_after_adding_review.json().get("productReviewId")
+
+    with step(
+        "Verify that the user's review is successfully added to the product by retrieving all product reviews"
+    ):
+        response_get_all_review = ReviewAPI().get_all_product_reviews(
+            product_id=product_id
+        )
+        result, message = verify_user_review_in_all_reviews(
+            response_get_all_review,
+            user,
+            text_review=request.param["text_review"],
+            rating=request.param["rating"],
+        )
+        assert_that(result, is_(equal_to(True)), reason=message)
+
+    yield {
+        "random_product_id": product_id,
+        "user": user,
+        "token": token,
+        "product_review_id": product_review_id,
+        "product_review_count": product_review_count,
+        "product_average_rating": product_average_rating,
+    }
