@@ -2,6 +2,13 @@ import pytest
 from allure import feature, description, step, title
 from hamcrest import assert_that, is_
 
+from data.error_message_token import (
+    token_is_blacklisted,
+    token_is_absent,
+    token_is_expired,
+    token_containing_not_correct_user_email,
+    token_not_containing_email,
+)
 from framework.asserts.common import (
     assert_status_code,
     assert_content_type,
@@ -79,7 +86,7 @@ class TestGetUser:
             assert_status_code(getting_user_response, 401)
 
         with step("Checking the response body"):
-            expected_error_message = f"Jwt token is expired"
+            expected_error_message = token_is_expired
             assert_response_message(getting_user_response, expected_error_message)
 
     @title("Getting User Info with Empty Token")
@@ -96,7 +103,7 @@ class TestGetUser:
             assert_status_code(getting_user_response, 400)
 
         with step("Checking the response body"):
-            expected_error_message = "Bearer authentication header is absent"
+            expected_error_message = token_is_absent
             assert_response_message(getting_user_response, expected_error_message)
 
     @title("Getting User Info with Blacklisted Token")
@@ -125,7 +132,7 @@ class TestGetUser:
             assert_status_code(getting_user_response, 400)
 
         with step("Checking the response body"):
-            expected_error_message = "JWT Token is blacklisted"
+            expected_error_message = token_is_blacklisted
             assert_response_message(getting_user_response, expected_error_message)
 
     @title("Getting User Info with Missing Email in Token")
@@ -145,7 +152,7 @@ class TestGetUser:
             assert_status_code(getting_user_response, 400)
 
         with step("Checking the response body"):
-            expected_error_message = "User email not found in jwtToken"
+            expected_error_message = token_not_containing_email
             assert_response_message(getting_user_response, expected_error_message)
 
     @title("Getting User Info with Token of Non-Existing User")
@@ -166,5 +173,5 @@ class TestGetUser:
             assert_status_code(getting_user_response, 404)
 
         with step("Checking the response body"):
-            expected_error_message = "User with the provided email does not exist"
+            expected_error_message = token_containing_not_correct_user_email
             assert_response_message(getting_user_response, expected_error_message)
