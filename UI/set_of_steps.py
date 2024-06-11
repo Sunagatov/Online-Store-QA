@@ -6,8 +6,19 @@ from .pages.cart_page import CartPage
 from .pages.favorites_page import FavoritesPage
 from .pages.login_page import LoginPage
 from .pages.profile_page import ProfilePage
+from .pages.product_page import ProductPage
 
 from .configs import email, password
+
+
+def delete_old_review(browser, link):
+    with step('Go to product page'):
+        main_page = BasePage(browser, link)
+        main_page.sort_by('price', 'high')
+        main_page.go_to_product_page()
+    with step('Delete old review'):
+        product_page = ProductPage(browser, browser.current_url)
+        product_page.delete_review()
 
 
 def login_user(browser, link):
