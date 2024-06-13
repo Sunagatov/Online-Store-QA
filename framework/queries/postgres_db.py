@@ -36,15 +36,7 @@ class PostgresDB:
             field: field of table;
             value: field value.
         """
-        response = self.db.fetch_all(
-            f"""
-                SELECT *
-                FROM {table}
-                WHERE {field} = '{value}';
-            """
-        )
-
-        return response
+        return self.db.fetch_all(f"SELECT * FROM {table} WHERE {field} = '{value}';")
 
     def get_random_products(self, quantity: int = 1) -> Optional[List[dict]]:
         """Getting a random product
@@ -52,16 +44,13 @@ class PostgresDB:
         Args:
             quantity: number of random products
         """
-        response = self.db.fetch_all(
-            f"""
-                SELECT *
-                FROM product
-                WHERE active = true
-                ORDER BY RANDOM()
-                LIMIT {quantity};
-            """
+        return self.db.fetch_all(
+            "SELECT *"
+            "FROM product"
+            "WHERE active = true"
+            "ORDER BY RANDOM()"
+            f"LIMIT {quantity};"
         )
-        return response
 
     def get_product_by_filter(
         self, field: str, ascend: bool = False, size: int = -1, page: int = -1
@@ -74,11 +63,13 @@ class PostgresDB:
             size:   the amount of data per page;
             page:   page number.
         """
-        response = f"""
-            SELECT *
-            FROM product
-            ORDER BY {field} {'ASC' if ascend else 'DESC'}
-        """
+
+        response = (
+            "SELECT * "
+            "FROM product "
+            f"ORDER BY {field} {'ASC' if ascend else 'DESC'}"
+        )
+
         if size > 0:
             response += f" LIMIT {size}"
         if page >= 0:
@@ -91,15 +82,9 @@ class PostgresDB:
         Args:
             quantity: number of random users
         """
-        response = self.db.fetch_all(
-            f"""
-                SELECT *
-                FROM user_details
-                ORDER BY RANDOM()
-                LIMIT {quantity};
-            """
+        return self.db.fetch_all(
+            f"SELECT * FROM user_details ORDER BY RANDOM() LIMIT {quantity};"
         )
-        return response
 
     def create_user(self, user: dict) -> None:
         """Inserting user into database
