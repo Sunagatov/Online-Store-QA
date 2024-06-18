@@ -25,4 +25,4 @@ def test_review_negative(browser):
         product_page.click_add_review()
         product_page.set_rating()
         product_page.fill_review(parameterize_text_review_negative[0][0])
-        assert product_page.is_submit_button_not_active, "Submit review button is active"
+        assert product_page.is_submit_button_not_active(), "Submit review button is active"
