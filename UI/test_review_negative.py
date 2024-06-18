@@ -35,21 +35,33 @@ class TestReviewNegative:
                 login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
-        with step('Add non latin letters review'):
+        with step('Add not allowed symbols review'):
             product_page = ProductPage(browser, browser.current_url)
             product_page.click_add_review()
             product_page.set_rating()
             product_page.fill_review(parameterize_text_review_negative[1][0])
             assert product_page.is_submit_button_not_active(), "Submit review button is active"
 
-    def test_emppty_review(self, browser):
+    def test_empty_review(self, browser):
         with step('Login user'):
                 login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
-        with step('Add non latin letters review'):
+        with step('Add empty review'):
             product_page = ProductPage(browser, browser.current_url)
             product_page.click_add_review()
             product_page.set_rating()
             product_page.fill_review(parameterize_text_review_negative[2][0])
+            assert product_page.is_submit_button_not_active(), "Submit review button is active"
+
+    def test_1501_char_review(self, browser):
+        with step('Login user'):
+                login_user(browser, link)
+        with step('Delete old review'):
+            delete_old_review(browser, link)
+        with step('Add 1501 char review'):
+            product_page = ProductPage(browser, browser.current_url)
+            product_page.click_add_review()
+            product_page.set_rating()
+            product_page.fill_review(parameterize_text_review_negative[3][0])
             assert product_page.is_submit_button_not_active(), "Submit review button is active"
