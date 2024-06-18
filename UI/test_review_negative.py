@@ -16,7 +16,7 @@ from data.text_review import parameterize_text_review_negative
 # @allure.tag("")
 @severity(severity_level.NORMAL)
 class TestReviewNegative:
-    @pytest.mark.xfail("Requirements is not approved")
+    @pytest.mark.xfail(reason="Requirements is not approved")
     def test_non_latin_review(browser):
         with step('Login user'):
                 login_user(browser, link)
