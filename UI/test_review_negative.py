@@ -64,4 +64,5 @@ class TestReviewNegative:
             product_page.click_add_review()
             product_page.set_rating()
             product_page.fill_review(parameterize_text_review_negative[3][0])
-            assert product_page.is_submit_button_not_active(), "Submit review button is active"
+            counter = product_page.get_review_symbols_counter()
+            assert counter == 1500, "User can add 1501 symbols review"
