@@ -15,14 +15,14 @@ from data.text_review import parameterize_text_review_negative
 # @allure.description("")
 # @allure.tag("")
 @severity(severity_level.NORMAL)
-@pytest.mark.parametrize('review_text', parameterize_text_review_negative)
-def test_review_negative(review_text, browser):
+def test_review_negative(browser):
     with step('Login user'):
             login_user(browser, link)
     with step('Delete old review'):
         delete_old_review(browser, link)
-    with step('Add review and rating'):
+    with step('Add non latin letters review'):
         product_page = ProductPage(browser, browser.current_url)
         product_page.click_add_review()
         product_page.set_rating()
-        product_page.fill_review(review_text[0])
+        product_page.fill_review(parameterize_text_review_negative[0][0])
+        assert product_page.is_submit_button_not_active, "Submit review button is active"

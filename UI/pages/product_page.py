@@ -227,6 +227,13 @@ class ProductPage(BasePage):
     
     def is_profile_page_link_clickable(self):
         return self.is_element_clickable(*HeaderLocators.PROFILE_LINK)
+    
+    def is_submit_button_not_active(self):
+        submit_review_button = self.browser.find_element(*ProductPageLocators.SUBMIT_REVIEW_BUTTON)
+        if submit_review_button.get_attribute('disabled') is None:
+            return True
+        else: 
+            return False
 
     def like_own_review(self):
         like_counter_before = self.browser.find_element(*ProductPageLocators.LIKE_OWN_COUNTER).text
