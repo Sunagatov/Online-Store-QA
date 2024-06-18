@@ -1,4 +1,5 @@
 import re
+from typing import Literal
 
 from selenium.common.exceptions import NoSuchElementException, \
                                        ElementClickInterceptedException, \
@@ -12,7 +13,8 @@ class BasePage:
     def __init__(self, browser, url, timeout=4):
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)  # turn on implicitly wait   
+        self.browser.implicitly_wait(timeout)  # turn on implicitly wait  
+        self.browser.maximize_window()
     
     def add_product_to_cart(self):
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON)
@@ -104,21 +106,31 @@ class BasePage:
         return True
 
     def is_favorites_page_icon_has_not_counter(self):
-        return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)
-    
-    # # check that black heart image is present on the header
-    # def is_header_heart_black(self):
-    #     heart_image = self.browser.find_element(*HeaderLocators.HEART_IMAGE)        
-    #     if heart_image.get_attribute('src') == 'https://iced-latte.uk/_next/static/media/heart_icon.61cd645e.svg':
-    #         return True
-    #     else:
-    #         return False        
+        return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)    
     
     # open page
     def open(self):
-        self.browser.get(self.url)    
+        self.browser.get(self.url)        
 
     # check that login link is present on the page
     def should_be_login_link(self):
         assert self.is_element_present(*HeaderLocators.LOGIN_LINK), "Login link is not presented"    
     
+    def sort_by(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']):
+        sort_dropdown = self.browser.find_element(*BasePageLocators.SORT_DROPDOWN)
+        sort_dropdown.click()
+
+        if criterion == 'price' and direction == 'high':
+            sort_button = self.browser.find_element(*BasePageLocators.SORT_PRICE_HIGH)
+        elif criterion == 'price' and direction == 'low':
+            sort_button = self.browser.find_element(*BasePageLocators.SORT_PRICE_LOW)            
+        elif criterion == 'rating' and direction == 'high':
+            sort_button = self.browser.find_element(*BasePageLocators.SORT_RATING_HIGH)
+        elif criterion == 'rating' and direction == 'low':
+            sort_button = self.browser.find_element(*BasePageLocators.SORT_RATING_LOW)
+        else:
+            raise ValueError('Sort criterion must be "price" or "rating" \
+                            and sort direction must be "high" or "low"')
+        
+        sort_button.click()
+        

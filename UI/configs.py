@@ -2,7 +2,7 @@ import pytest
 
 
 link = "https://iced-latte.uk/"
-first_name = "Test"
+first_name = "Sarah"
 last_name = "Testtest"
 email = "sarah@example.com"
 password = "P@ssw0rd"

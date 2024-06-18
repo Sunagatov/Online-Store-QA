@@ -31,3 +31,7 @@ class ProfilePage(BasePage):
             return True
         else:
             return False    
+
+    def log_out(self):
+        log_out_button = self.browser.find_element(*ProfilePageLocators.LOG_OUT_BUTTON)
+        log_out_button.click()
