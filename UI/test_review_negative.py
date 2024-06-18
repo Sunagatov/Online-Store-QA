@@ -16,8 +16,8 @@ from data.text_review import parameterize_text_review_negative
 # @allure.tag("")
 @severity(severity_level.NORMAL)
 class TestReviewNegative:
-    @pytest.mark.xfail(reason="Requirements is not approved")
-    def test_non_latin_review(browser):
+    @pytest.mark.xfail(reason="Requirements is not approved", run=True)
+    def test_non_latin_review(self, browser):
         with step('Login user'):
                 login_user(browser, link)
         with step('Delete old review'):
@@ -28,7 +28,7 @@ class TestReviewNegative:
             product_page.set_rating()
             product_page.fill_review(parameterize_text_review_negative[0][0])
             assert product_page.is_submit_button_not_active(), "Submit review button is active"
-    def test_not_allowed_symbols_review(browser):
+    def test_not_allowed_symbols_review(self, browser):
         with step('Login user'):
                 login_user(browser, link)
         with step('Delete old review'):
