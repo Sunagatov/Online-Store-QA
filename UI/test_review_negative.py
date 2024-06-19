@@ -1,13 +1,9 @@
 from allure import step, title, severity, story, severity_level
-from time import sleep
 import pytest
 
-from .pages.base_page import BasePage
 from .pages.product_page import ProductPage
-from .pages.login_page import LoginPage
-from .pages.profile_page import ProfilePage
 from .set_of_steps import login_user, delete_old_review
-from .configs import link, first_name
+from .configs import link
 from data.text_review import parameterize_text_review_negative
 
 
@@ -19,7 +15,7 @@ class TestReviewNegative:
     @pytest.mark.xfail(reason="Requirements is not approved", run=True)
     def test_non_latin_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add non latin letters review'):
@@ -32,7 +28,7 @@ class TestReviewNegative:
     @pytest.mark.xfail(reason="Requirements is not approved", run=True)
     def test_not_allowed_symbols_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add not allowed symbols review'):
@@ -44,7 +40,7 @@ class TestReviewNegative:
 
     def test_empty_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add empty review'):
@@ -56,7 +52,7 @@ class TestReviewNegative:
 
     def test_1501_char_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add 1501 char review'):
@@ -69,7 +65,7 @@ class TestReviewNegative:
 
     def test_1857_char_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add 1857 char review'):
@@ -82,7 +78,7 @@ class TestReviewNegative:
 
     def test_whitespaces_review(self, browser):
         with step('Login user'):
-                login_user(browser, link)
+            login_user(browser, link)
         with step('Delete old review'):
             delete_old_review(browser, link)
         with step('Add whitespaces review'):
