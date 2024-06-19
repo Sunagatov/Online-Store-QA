@@ -230,11 +230,11 @@ class ProductPage(BasePage):
     
     def is_submit_button_not_active(self):
         submit_review_button = self.browser.find_element(*ProductPageLocators.SUBMIT_REVIEW_BUTTON)
-        print(submit_review_button.get_attribute('disabled'))
-        if submit_review_button.get_attribute('disabled') is not None:
-            return True
-        else: 
-            return False
+        return False if submit_review_button.is_enabled() else True
+        # if submit_review_button.get_attribute('disabled') is not None:
+        #     return True
+        # else: 
+        #     return False
 
     def like_own_review(self):
         like_counter_before = self.browser.find_element(*ProductPageLocators.LIKE_OWN_COUNTER).text
