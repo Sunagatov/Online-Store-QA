@@ -8,6 +8,7 @@ from data.text_review import parameterize_text_review_negative
 
 
 @story("Review, Rating")
+@title("Negative test for review")
 # @allure.description("")
 # @allure.tag("")
 @severity(severity_level.NORMAL)
