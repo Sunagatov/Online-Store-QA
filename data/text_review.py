@@ -44,6 +44,14 @@ text_review_1501_char = (
     "Brewing the espresso was a delightful experience. I used my home espresso machine, and the results were outstanding. The shot pulled beautifully, with a thick, golden crema on top. I am so so happy!!!))"
 )
 
+text_review_1857_char = (
+    "I recently decided to purchase espresso online, and I must say, the experience has been exceptional. I ordered a bag of freshly roasted espresso beans from [Brand Name], and from start to finish, everything exceeded my expectations."
+    "First, the website was easy to navigate, making the ordering process a breeze. I appreciated the detailed descriptions of each blend, which helped me make an informed decision. The customer reviews and ratings were also very helpful in guiding my choice. I ended up selecting their signature espresso blend, which promised rich, bold flavors and a smooth finish."
+    "Shipping was incredibly fast. I received my order within two days, which is impressive considering the usual delays with online orders. The packaging was top-notch, too. The beans came in a resealable bag with a one-way valve to ensure freshness. There was even a personal note from the roaster, which added a nice touch and made the purchase feel special."
+    "Now, let’s talk about the espresso itself. The moment I opened the bag, I was greeted with an amazing aroma that instantly filled my kitchen. The beans were roasted to perfection, with a deep, rich color and a slight sheen from the natural oils. Grinding the beans was effortless, and the aroma only intensified, promising a fantastic cup of coffee."
+    "Brewing the espresso was a delightful experience. I used my home espresso machine, and the results were outstanding. The shot pulled beautifully, with a thick, golden crema on top. I am so so happy!!!))"
+    "Shipping was incredibly fast. I received my order within two days, which is impressive considering the usual delays with online orders. The packaging was top-notch, too. The beans came in a resealable bag with a one-way valve to ensure freshness. There was even a personal note from the roaster, which added a nice touch and made the purchase feel special."
+)
 
 text_review_non_latin_letters = (
     "Купил эспрессо онлайн, и был в восторге от качества. Аромат свежесмолотых зерен наполнил кухню, а вкус готового напитка был богатым и сбалансированным, с нотками шоколада и фруктов."
@@ -68,6 +76,13 @@ parameterize_text_review_negative = [
     (
         text_review_1501_char,
         1501,
+        4,
+        400,
+        "ErrorMessage: size must be between 1 and 1500",
+    ),
+    (
+        text_review_1857_char,
+        1857,
         4,
         400,
         "ErrorMessage: size must be between 1 and 1500",
