@@ -114,13 +114,22 @@ class BasePage:
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
             show_more_button.click()
 
-        products_rating_elements = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
         # create product rating list
+        products_rating_elements = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
         products_rating_list = []
 
         for product_rating_element in products_rating_elements:
             products_rating_list.append(float(product_rating_element.text))
         print('\n', products_rating_list)
+
+        # create product price list
+        products_price_elements = self.browser.find_elements(*BasePageLocators.PRODUCT_PRICE_LIST)
+        products_price_list = []
+
+        for product_price_element in products_price_elements:
+            products_price_list.append(float(product_price_element.text[1:]))
+        print('\n', products_price_list)
+
         if criterion == 'rating' and direction == 'high':
             for i in range(len(products_rating_list)-1):
                 if products_rating_list[i] < products_rating_list[i+1]:
@@ -129,6 +138,18 @@ class BasePage:
             for i in range(len(products_rating_list) - 1):
                 if products_rating_list[i] > products_rating_list[i + 1]:
                     return False
+        elif criterion == 'price' and direction == 'high':
+            for i in range(len(products_rating_list) - 1):
+                if products_price_list[i] < products_price_list[i + 1]:
+                    return False
+        elif criterion == 'price' and direction == 'low':
+            for i in range(len(products_rating_list) - 1):
+                if products_price_list[i] > products_price_list[i + 1]:
+                    return False
+        else:
+            raise ValueError('Sort criterion must be "price" or "rating" \
+                            and sort direction must be "high" or "low"')
+
         return True
 
     @step('Open page')

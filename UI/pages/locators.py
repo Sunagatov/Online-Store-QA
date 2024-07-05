@@ -7,6 +7,7 @@ class BasePageLocators:
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
     PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(3) [href]')
     # PRODUCTS_LIST = (By.TAG_NAME, 'li')
+    PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
     PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
@@ -16,7 +17,7 @@ class BasePageLocators:
     SHOW_MORE_BUTTON = (By.XPATH, '//button[contains(text(), "Show more")]')
     SORT_DROPDOWN = (By.XPATH, '//*[contains(text(), "Sort by:")]')
     SORT_PRICE_HIGH = (By.XPATH, '//span[contains(text(),"Price: High to Low")]')
-    SORT_PRICE_LOW = (By.XPATH, '//span[contains(text(),"Price: Low to High")]]')
+    SORT_PRICE_LOW = (By.XPATH, '//span[contains(text(),"Price: Low to High")]')
     SORT_RATING_HIGH = (By.XPATH, '//span[contains(text(),"High rating first")]')
     SORT_RATING_LOW = (By.XPATH, '//span[contains(text(),"Low rating first")]')
 
