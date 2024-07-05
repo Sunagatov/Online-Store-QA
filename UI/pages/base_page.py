@@ -120,12 +120,16 @@ class BasePage:
 
         for product_rating_element in products_rating_elements:
             products_rating_list.append(float(product_rating_element.text))
-
+        print('\n', products_rating_list)
         if criterion == 'rating' and direction == 'high':
             for i in range(len(products_rating_list)-1):
                 if products_rating_list[i] < products_rating_list[i+1]:
                     return False
-            return True
+        elif criterion == 'rating' and direction == 'low':
+            for i in range(len(products_rating_list) - 1):
+                if products_rating_list[i] > products_rating_list[i + 1]:
+                    return False
+        return True
 
     @step('Open page')
     def open(self):
