@@ -1,4 +1,5 @@
 import re
+from allure import step
 from typing import Literal
 
 from selenium.common.exceptions import NoSuchElementException, \
@@ -107,16 +108,35 @@ class BasePage:
 
     def is_favorites_page_icon_has_not_counter(self):
         return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)    
-    
-    # open page
+
+    def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
+        products_rating_elements = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
+        # create product rating list
+        products_rating_list = []
+
+        for product_rating_element in products_rating_elements:
+            products_rating_list.append(float(product_rating_element.text))
+
+        if criterion == 'rating' and direction == 'high':
+            for i in range(len(products_rating_list)-1):
+                if products_rating_list[i] < products_rating_list[i+1]:
+                    return False
+            return True
+
+    @step('Open page')
     def open(self):
         self.browser.get(self.url)        
 
     # check that login link is present on the page
     def should_be_login_link(self):
         assert self.is_element_present(*HeaderLocators.LOGIN_LINK), "Login link is not presented"    
-    
-    def sort_by(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']):
+
+    @step('Sort product catalog')
+    def sort_by(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> None:
         sort_dropdown = self.browser.find_element(*BasePageLocators.SORT_DROPDOWN)
         sort_dropdown.click()
 
