@@ -2,6 +2,7 @@ import re
 from allure import step
 from typing import Literal
 
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException, \
                                        ElementClickInterceptedException, \
                                        ElementNotInteractableException
@@ -11,7 +12,7 @@ from .locators import BasePageLocators, HeaderLocators
 
 class BasePage:
 
-    def __init__(self, browser, url, timeout=4):
+    def __init__(self, browser: WebDriver, url: str, timeout: int = 4):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)  # turn on implicitly wait  
@@ -25,16 +26,42 @@ class BasePage:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON_2)
         button.click()
 
+    @step('Filter products in catalog by price')
+    def filter_products_by_price(self, price_from: str, price_to: str) -> None:
+        price_from_field = self.browser.find_element(*BasePageLocators.PRICE_FROM_FIELD)
+        price_from_field.send_keys(price_from)
+
+        price_to_field = self.browser.find_element(*BasePageLocators.PRICE_TO_FIELD)
+        price_to_field.send_keys(price_to)
+
     def get_product_name(self):
         return self.browser.find_element(*BasePageLocators.PRODUCT_NAME).text
     
     def get_product_price(self):
         product_price_element = self.browser.find_element(*BasePageLocators.PRODUCT_PRICE).text
         return float(product_price_element[1:])
-    
+
+    def get_products_price_list(self) -> list:
+        products_price_elements = self.browser.find_elements(*BasePageLocators.PRODUCT_PRICE_LIST)
+        products_price_list = []
+
+        for product_price_element in products_price_elements:
+            products_price_list.append(float(product_price_element.text[1:]))
+
+        return products_price_list
+
     def get_product_rating(self):
         product_rating = self.browser.find_element(*BasePageLocators.PRODUCT_RATING).text
         return product_rating
+
+    def get_products_rating_list(self) -> list:
+        products_rating_elements = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
+        products_rating_list = []
+
+        for product_rating_element in products_rating_elements:
+            products_rating_list.append(float(product_rating_element.text))
+
+        return products_rating_list
     
     def get_product_reviews(self):
         product_reviews_element = self.browser.find_element(*BasePageLocators.PRODUCT_REVIEWS).text
@@ -109,25 +136,26 @@ class BasePage:
     def is_favorites_page_icon_has_not_counter(self):
         return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)    
 
+    def is_filtering_by_price_correct(self, price_from: str, price_to: str) -> bool:
+        # create filtered products price list
+        products_price_list = self.get_products_price_list()
+        print('\n', products_price_list)
+        for product_price in products_price_list:
+            if float(product_price) <= float(price_from) or float(product_price) >= float(price_to):
+                return False
+        return True
+
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
             show_more_button.click()
 
-        # create product rating list
-        products_rating_elements = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
-        products_rating_list = []
-
-        for product_rating_element in products_rating_elements:
-            products_rating_list.append(float(product_rating_element.text))
+        # create products rating list
+        products_rating_list = self.get_products_rating_list()
         print('\n', products_rating_list)
 
-        # create product price list
-        products_price_elements = self.browser.find_elements(*BasePageLocators.PRODUCT_PRICE_LIST)
-        products_price_list = []
-
-        for product_price_element in products_price_elements:
-            products_price_list.append(float(product_price_element.text[1:]))
+        # create products price list
+        products_price_list = self.get_products_price_list()
         print('\n', products_price_list)
 
         if criterion == 'rating' and direction == 'high':
