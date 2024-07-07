@@ -1,7 +1,7 @@
 import re
 from allure import step
 from typing import Literal
-from time import sleep
+# from time import sleep
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException, \
@@ -36,6 +36,17 @@ class BasePage:
         price_to_field.send_keys(price_to)
 
     @step('Filter products in catalog by rating')
+    def filter_products_by_rating(self, rating: Literal['4', '3', '2', '1', 'any']) -> None:
+        base_page_locators = BasePageLocators()
+        rating_checkbox_locator = base_page_locators.rating_checkbox(rating)
+        rating_checkbox = self.browser.find_element(*rating_checkbox_locator)
+        rating_checkbox.click()
+
+    @step('Get brand list length')
+    def get_brand_list_length(self) -> int:
+        brand_list = self.browser.find_elements(*BasePageLocators.BRAND_LIST)
+        return len(brand_list)
+
     def get_product_name(self):
         return self.browser.find_element(*BasePageLocators.PRODUCT_NAME).text
     
@@ -151,6 +162,28 @@ class BasePage:
                 return False
         return True
 
+    def is_filtering_by_rating_correct(self, rating: Literal['4', '3', '2', '1', 'any']) -> bool:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
+        if rating in ['4', '3', '2', '1']:
+            # create products rating list
+            products_rating_list = self.get_products_rating_list()
+            print('\n', products_rating_list)
+
+            for product_rating in products_rating_list:
+                if product_rating < float(rating):
+                    return False
+        else:
+            products_with_rating_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_RATING_LIST)
+            products_no_rating_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_NO_RATING_LIST)
+            products_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_LIST)
+            if len(products_list) != len(products_with_rating_list) + len(products_no_rating_list):
+                return False
+
+        return True
+
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
@@ -193,6 +226,11 @@ class BasePage:
     # check that login link is present on the page
     def should_be_login_link(self):
         assert self.is_element_present(*HeaderLocators.LOGIN_LINK), "Login link is not presented"    
+
+    @step('Click show more/less brand button')
+    def show_more_less_brand(self):
+        show_more_less_brand_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_LESS_BRAND_BUTTON)
+        show_more_less_brand_button.click()
 
     @step('Sort product catalog')
     def sort_by(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> None:

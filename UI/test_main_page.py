@@ -59,3 +59,27 @@ class TestMainPage:
 
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct(price_from, price_to), 'The filtering is not correct'
+
+    @title("Check filter products by rating on main page")
+    def test_filter_products_by_rating(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        rating_list = ['4', '3', '2', '1', 'any']
+        for rating in rating_list:
+            main_page.filter_products_by_rating(rating)
+            with step('Check that filtering by rating is correct'):
+                assert main_page.is_filtering_by_rating_correct(rating), 'The filtering is not correct'
+
+    @title("Test show more/less button in brand filter")
+    def test_brand_show_more_less_button(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        brand_list_length_before = main_page.get_brand_list_length()
+        main_page.show_more_less_brand()
+        brand_list_length_after = main_page.get_brand_list_length()
+
+        with step('Check brand list after click show more button'):
+            assert brand_list_length_after > brand_list_length_before, 'The show more brand button does not work'
+

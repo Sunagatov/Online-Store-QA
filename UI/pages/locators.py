@@ -5,18 +5,21 @@ from selenium.webdriver.common.by import By
 class BasePageLocators:
     ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
     ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+    BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
     PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(3) [href]')
-    # PRODUCTS_LIST = (By.TAG_NAME, 'li')
+    PRODUCTS_LIST = (By.TAG_NAME, 'li')
     PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
+    PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
     PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
     PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
+    SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
 
     def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
         checkbox_locator = (By.ID, f'checkbox-{rating}')
