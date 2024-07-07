@@ -1,3 +1,4 @@
+from typing import Literal
 from selenium.webdriver.common.by import By
 
 
@@ -16,6 +17,11 @@ class BasePageLocators:
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
     PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
+
+    def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
+        checkbox_locator = (By.ID, f'checkbox-{rating}')
+        return checkbox_locator
+
     SHOW_MORE_BUTTON = (By.XPATH, '//button[contains(text(), "Show more")]')
     SORT_DROPDOWN = (By.XPATH, '//*[contains(text(), "Sort by:")]')
     SORT_PRICE_HIGH = (By.XPATH, '//span[contains(text(),"Price: High to Low")]')
@@ -90,9 +96,9 @@ class ProductPageLocators:
     ADD_TO_CART_BUTTON = (By.ID, 'add-btn')
     ADD_TO_FAVORITES_BUTTON = (By.XPATH, '//*[@alt="heart unliked"]/ancestor::button')
 
-    def checkbox(self, rating):        
-        checkbox = (By.ID, f'checkbox-{rating}')
-        return checkbox
+    def checkbox(self, rating):
+        checkbox_locator = (By.ID, f'checkbox-{rating}')
+        return checkbox_locator
 
     DELETE_REVIEW_BUTTON = (By.ID, 'delete-review-btn')
     LIKE_OWN_BUTTON = (By.CSS_SELECTOR, '#delete-review-btn + div [id^="like-btn"]')

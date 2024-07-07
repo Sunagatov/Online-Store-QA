@@ -1,6 +1,7 @@
 import re
 from allure import step
 from typing import Literal
+from time import sleep
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException, \
@@ -34,6 +35,7 @@ class BasePage:
         price_to_field = self.browser.find_element(*BasePageLocators.PRICE_TO_FIELD)
         price_to_field.send_keys(price_to)
 
+    @step('Filter products in catalog by rating')
     def get_product_name(self):
         return self.browser.find_element(*BasePageLocators.PRODUCT_NAME).text
     
@@ -137,6 +139,10 @@ class BasePage:
         return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)    
 
     def is_filtering_by_price_correct(self, price_from: str, price_to: str) -> bool:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
         # create filtered products price list
         products_price_list = self.get_products_price_list()
         print('\n', products_price_list)

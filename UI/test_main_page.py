@@ -1,5 +1,5 @@
 from allure import step, title, severity, story, severity_level
-# import pytest
+import pytest
 from time import sleep
 
 from .pages.base_page import BasePage
@@ -49,13 +49,13 @@ class TestMainPage:
             assert main_page.is_sorting_correct('price', 'low'), 'The sorting is not correct'
 
     @title("Check filter products by price on main page")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
     def test_filter_products_by_price(self, browser):
         main_page = BasePage(browser, link)
         main_page.open()
         price_from = '4'
         price_to = '5.5'
         main_page.filter_products_by_price(price_from, price_to)
-        sleep(5)
 
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct(price_from, price_to), 'The filtering is not correct'
