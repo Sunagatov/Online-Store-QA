@@ -1,10 +1,12 @@
-HOST = "http://localhost:8083"
-HOST_DB = "localhost"
+HOST = "http://52.53.181.23:8083"
+HOST_DB = "3.8.117.106"
+
 
 PORT_DB = "5432"
 DB_NAME = "testdb"
 DB_USER = "postgres"
-DB_PASS = "postgres"
+DB_PASS = "db_pass"
+
 
 # data for creating user#1
 email = "icedlate.test@gmail.com"
