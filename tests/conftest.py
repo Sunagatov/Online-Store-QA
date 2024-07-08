@@ -1,14 +1,11 @@
-import json
-from pathlib import Path
-
+import pytest
 from allure import title, step
-from hamcrest import assert_that, is_, is_not, empty, not_, equal_to
-from psycopg2 import connect
-from pytest import fixture
 
 # from assertpy import assert_that
 from assertpy import assert_that as assertpy_assert_that
-import pytest
+from hamcrest import assert_that, is_, is_not, empty, not_
+from psycopg2 import connect
+from pytest import fixture
 
 from configs import (
     DB_NAME,
@@ -23,12 +20,15 @@ from configs import (
     email_address_to_connect2,
 )
 from data.data_for_cart import data_for_adding_product_to_cart
+from framework.asserts.assert_favorite import assert_added_product_in_favorites
+from framework.endpoints.authenticate_api import AuthenticateAPI
 from framework.endpoints.cart_api import CartAPI
-from framework.endpoints.review_api import ReviewAPI
+from framework.endpoints.favorite_api import FavoriteAPI
+from framework.endpoints.product_api import ProductAPI
 from framework.endpoints.users_api import UsersAPI
 from framework.queries.postgres_db import PostgresDB
-from framework.endpoints.authenticate_api import AuthenticateAPI
-
+from framework.tools.class_email import Email
+from framework.tools.favorite_methods import extract_random_product_ids
 from framework.tools.generators import (
     generate_user,
     generate_user_data,
@@ -37,16 +37,6 @@ from framework.tools.generators import (
 from framework.tools.methods_to_cart import (
     assert_product_to_add_matches_response,
     get_product_info,
-)
-from framework.tools.class_email import Email
-from framework.endpoints.product_api import ProductAPI
-from framework.tools.favorite_methods import extract_random_product_ids
-from framework.endpoints.favorite_api import FavoriteAPI
-from framework.asserts.assert_favorite import assert_added_product_in_favorites
-from framework.tools.review_methods import (
-    verify_user_review_by_user_name_in_all_product_reviews,
-    verify_user_review_in_all_reviews,
-    extract_random_product_info,
 )
 
 # Connection configuration

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 from allure import description, step, title, feature
 from hamcrest import assert_that, is_, equal_to
@@ -7,9 +5,7 @@ from hamcrest import assert_that, is_, equal_to
 from framework.asserts.common import assert_content_type
 from framework.endpoints.review_api import ReviewAPI
 from framework.tools.review_methods import (
-    assert_page_number_in_reviews_body,
     assert_reviews_sorted_by_createdAt_in_descending_order,
-    assert_size_reviews_per_page,
     assert_total_elements_reviews,
 )
 

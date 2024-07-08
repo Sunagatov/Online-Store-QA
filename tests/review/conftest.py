@@ -1,8 +1,9 @@
 import random
 
+import pytest
 from allure_commons._allure import step
+from hamcrest import assert_that, is_
 
-from data.text_review import parameterize_text_review_positive
 from data.text_reviews_for_product import reviews
 from framework.endpoints.authenticate_api import AuthenticateAPI
 from framework.endpoints.product_api import ProductAPI
@@ -13,9 +14,6 @@ from framework.tools.generators import generate_user
 from framework.tools.review_methods import (
     verify_user_review_by_user_name_in_all_product_reviews,
 )
-
-import pytest
-from hamcrest import assert_that, is_
 
 
 def generate_and_insert_user(postgres):
@@ -103,7 +101,7 @@ def create_certain_number_of_reviews(postgres, request):
                 )
 
             with step("Add review to randomly selected product by user"):
-                response_post_review = ReviewAPI().add_product_review(
+                ReviewAPI().add_product_review(
                     token=token,
                     product_id=product_id,
                     text_review=review["text_review"],
