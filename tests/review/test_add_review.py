@@ -9,8 +9,8 @@ from data.error_message_token import (
 )
 from data.text_review import (
     parameterize_text_review_positive,
-    parameterize_text_review_negative,
-    parameterize_text_review_with_empty_text_and_rating,
+    parameterize_text_review_invalid_text,
+    parameterize_text_review_with_invalid_rating_and_empty_text,
     text_review_750_char,
     text_review_with_emojy,
 )
@@ -140,7 +140,7 @@ class TestReviewWithRating:
     @pytest.mark.xfail(reason="Bug: https://github.com/Sunagatov/Iced-Latte/issues/309")
     @pytest.mark.parametrize(
         "text_review,rating, expected_status_code, expected_error_message",
-        parameterize_text_review_with_empty_text_and_rating,
+        parameterize_text_review_with_invalid_rating_and_empty_text,
     )
     @title("Test add review  with empty rating or text review")
     @description(
@@ -148,7 +148,7 @@ class TestReviewWithRating:
         "WHEN user post review with empty rating or text review or both empty fields"
         "THEN status HTTP CODE = 400 and response body contains error message"
     )
-    def test_add_review_with_empty_rating_or_text_review(
+    def test_add_review_with_invalid_rating_and_text_review(
         self,
         create_authorized_user,
         text_review,
@@ -194,7 +194,7 @@ class TestReviewWithRating:
             )
 
         with step("Verify error message"):
-            assert_response_message(response_post_review, expected_error_message)
+            assert_message_in_response(response_post_review, expected_error_message)
 
         with step(
             "Verify that the user's review is not successfully added to the product by retrieving all product reviews"
@@ -267,7 +267,7 @@ class TestReviewWithRating:
     )
     @pytest.mark.parametrize(
         "text_review, expected_length,rating, expected_status_code, expected_error_message",
-        parameterize_text_review_negative,
+        parameterize_text_review_invalid_text,
     )
     @title("Test add review with text that do not match the requirement")
     @description(
@@ -275,7 +275,7 @@ class TestReviewWithRating:
         "WHEN user post review with text that do not match the requirement"
         "THEN status HTTP CODE = 400 and response body contains error message"
     )
-    def test_add_review_negative(
+    def test_add_review_with_invalid_text(
         self,
         create_authorized_user,
         text_review,

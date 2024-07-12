@@ -1,9 +1,16 @@
 import json
 import random
+from datetime import datetime
 from typing import Dict
 
 from faker import Faker
-from hamcrest import assert_that, is_
+from hamcrest import (
+    assert_that,
+    is_,
+    equal_to,
+    greater_than_or_equal_to,
+    less_than_or_equal_to,
+)
 from requests import Response
 from typing_extensions import Any
 
@@ -264,3 +271,169 @@ def extract_product_info_from_list_of_products(
         for product in products
         if product.get("id") == product_id
     ]
+
+
+def assert_page_number_in_reviews_body(response, page_number):
+    """Verify if the page number in the response body is equal to the expected page number.
+
+    Args:
+         response: The response object from the API call.
+         page_number: The expected page number.
+
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+
+    assert_that(
+        response_data.get("page", 0),
+        is_(equal_to(page_number)),
+        reason=f"Expected page number is '{page_number}', found: '{response.json().get('page', 0)}'",
+    )
+
+
+def assert_size_reviews_per_page(response, reviews_size_per_page):
+    """Verify if the page number in the response body is equal to the expected page number.
+
+    Args:
+         response: The response object from the API call.
+         reviews_size_per_page: The expected size of reviews per page.
+
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+
+    actual_size = len(response_data.get("reviewsWithRatings", []))
+
+    assert_that(
+        actual_size,
+        is_(equal_to(reviews_size_per_page)),
+        reason=f"Expected number of reviews per page is '{reviews_size_per_page}', found: '{actual_size}'",
+    )
+
+
+def assert_total_elements_reviews(response, total_elements):
+    """Verify if the page number in the response body is equal to the expected page number.
+
+    Args:
+         total_elements: The expected total number of reviews.
+         response: The response object from the API call.
+
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+    # total_elements = response_data.get("totalElements", 0)
+
+    actual_size = len(response_data.get("reviewsWithRatings", []))
+
+    assert_that(
+        actual_size,
+        is_(equal_to(total_elements)),
+        reason=f"Expected number of reviews per page is '{total_elements}', found: '{actual_size}'",
+    )
+
+
+def assert_reviews_sorted_by_createdAt_in_descending_order(response):
+    """Verify if the reviews are sorted by createdAt in descending order.
+
+    Args:
+         response: The response object from the API call.
+
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+
+    reviews = response_data.get("reviewsWithRatings", [])
+
+    sorted_reviews = sorted(
+        reviews,
+        key=lambda x: datetime.strptime(x["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+        reverse=True,
+    )
+    assert_that(
+        reviews,
+        equal_to(sorted_reviews),
+        "Reviews are not sorted by createdAt in descending order",
+    )
+
+
+def assert_reviews_sorted_by_createdAt_in_ascending_order(response):
+    """Verify if the reviews are sorted by createdAt in ascending order.
+
+    Args:
+         response: The response object from the API call.
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+    reviews = response_data.get("reviewsWithRatings", [])
+
+    sorted_reviews = sorted(
+        reviews,
+        key=lambda x: datetime.strptime(x["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+    )
+    assert_that(
+        reviews,
+        equal_to(sorted_reviews),
+        "Reviews are not sorted by createdAt in ascending order",
+    )
+
+
+def assert_reviews_sorted_asc(response):
+    """Verify if the reviews are sorted by createdAt in ascending order.
+
+    Args:
+         response: The response object from the API call.
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+    reviews = response_data.get("reviewsWithRatings", [])
+
+    for i in range(len(reviews) - 1):
+        current_date = datetime.strptime(
+            reviews[i]["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        next_date = datetime.strptime(
+            reviews[i + 1]["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        assert_that(
+            current_date,
+            less_than_or_equal_to(next_date),
+            "Reviews are not sorted by createdAt in ascending order",
+        )
+
+
+def assert_reviews_sorted_desc(response):
+    """Verify if the reviews are sorted by createdAt in descending order.
+
+    Args:
+         response: The response object from the API call.
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+    reviews = response_data.get("reviewsWithRatings", [])
+
+    for i in range(len(reviews) - 1):
+        current_date = datetime.strptime(
+            reviews[i]["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        next_date = datetime.strptime(
+            reviews[i + 1]["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        assert_that(
+            current_date,
+            greater_than_or_equal_to(next_date),
+            "Reviews are not sorted by createdAt in descending order",
+        )

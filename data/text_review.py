@@ -63,7 +63,7 @@ text_review_with_empty_text = ""
 text_review_with_whitespaces = "          "
 
 # PARAMETERS FOR TEST REVIEW - TEXT, EXPECTED LENGTH, RATING OF PRODUCT, EXPECTED HTTP CODE, EXPECTED MESSAGE
-parameterize_text_review_negative = [
+parameterize_text_review_invalid_text = [
     (text_review_non_latin_letters, None, 1, 400, "Invalid data"),
     (text_review_with_not_allowed_symbols, None, 2, 400, "Invalid data"),
     (
@@ -91,8 +91,10 @@ parameterize_text_review_negative = [
 ]
 
 # PARAMETERS FOR TEST REVIEW WITH EMPTY TEXT AND RATING - TEXT, RATING, EXPECTED HTTP CODE, EXPECTED MESSAGE
-parameterize_text_review_with_empty_text_and_rating = [
+parameterize_text_review_with_invalid_rating_and_empty_text = [
     (text_review_750_char, "", 400, "Rating or review should be filled in"),
     ("", 1, 400, "Rating or review should be filled in"),
     ("", "", 400, "Rating or review should be filled in"),
+    (text_review_750_char, -1, 400, "must be greater than or equal to 1"),
+    (text_review_750_char, 6, 400, "must be less than or equal to 5"),
 ]
