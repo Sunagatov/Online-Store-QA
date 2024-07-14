@@ -5,11 +5,17 @@ from selenium.webdriver.common.by import By
 class BasePageLocators:
     ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
     ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+
+    def brand_checkbox(self, brand: str) -> tuple[str, str]:
+        brand_checkbox_locator = (By.ID, brand)
+        return brand_checkbox_locator
+
     BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
     PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(3) [href]')
+    PRODUCTS_BRANDS_LIST = (By.XPATH, '//*[contains(text(), "by ")]')
     PRODUCTS_LIST = (By.TAG_NAME, 'li')
     PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
     PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
@@ -24,8 +30,8 @@ class BasePageLocators:
     SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')
 
     def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
-        checkbox_locator = (By.ID, f'checkbox-{rating}')
-        return checkbox_locator
+        rating_checkbox_locator = (By.ID, f'checkbox-{rating}')
+        return rating_checkbox_locator
 
     SHOW_MORE_BUTTON = (By.XPATH, '//button[contains(text(), "Show more")]')
     SORT_DROPDOWN = (By.XPATH, '//*[contains(text(), "Sort by:")]')

@@ -107,3 +107,22 @@ class TestMainPage:
         with step('Check seller list after click show less button'):
             assert seller_list_length_after == seller_list_length_before, 'The show less seller button does not work'
 
+    @title("Check filter products by brand on main page")
+    def test_filter_products_by_brand(self, browser):
+        brand = 'Illy'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_brand(brand)
+
+        with step('Check that filtering by brand is correct'):
+            assert main_page.is_filtering_by_brand_correct(brand), 'The filtering is not correct'
+
+        # uncheck brand checkbox
+        main_page.filter_products_by_brand(brand)
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'

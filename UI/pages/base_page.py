@@ -27,6 +27,13 @@ class BasePage:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON_2)
         button.click()
 
+    @step('Filter products in catalog by brand')
+    def filter_products_by_brand(self, brand: str) -> None:
+        base_page_locators = BasePageLocators()
+        brand_checkbox_locator = base_page_locators.brand_checkbox(brand)
+        brand_checkbox = self.browser.find_element(*brand_checkbox_locator)
+        brand_checkbox.click()
+
     @step('Filter products in catalog by price')
     def filter_products_by_price(self, price_from: str, price_to: str) -> None:
         price_from_field = self.browser.find_element(*BasePageLocators.PRICE_FROM_FIELD)
@@ -46,6 +53,15 @@ class BasePage:
     def get_brand_list_length(self) -> int:
         brand_list = self.browser.find_elements(*BasePageLocators.BRAND_LIST)
         return len(brand_list)
+
+    @step('Get products list length')
+    def get_products_list_length(self) -> int:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
+        products_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_LIST)
+        return len(products_list)
 
     def get_product_name(self):
         return self.browser.find_element(*BasePageLocators.PRODUCT_NAME).text
@@ -152,7 +168,19 @@ class BasePage:
         return True
 
     def is_favorites_page_icon_has_not_counter(self):
-        return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)    
+        return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)
+
+    def is_filtering_by_brand_correct(self, brand: str) -> bool:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
+        products_brands_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_BRANDS_LIST)
+        for product_brand in products_brands_list:
+            if product_brand.text != f'by {brand}':
+                return False
+            else:
+                return True
 
     def is_filtering_by_price_correct(self, price_from: str, price_to: str) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
