@@ -126,3 +126,23 @@ class TestMainPage:
 
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title("Check filter products by seller on main page")
+    def test_filter_products_by_seller(self, browser):
+        seller = 'FreshCup'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_seller(seller)
+
+        with step('Check that filtering by seller is correct'):
+            assert main_page.is_filtering_by_seller_correct(seller), 'The filtering is not correct'
+
+        # uncheck seller checkbox
+        main_page.filter_products_by_seller(seller)
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'

@@ -17,6 +17,7 @@ class BasePageLocators:
     PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(3) [href]')
     PRODUCTS_BRANDS_LIST = (By.XPATH, '//*[contains(text(), "by ")]')
     PRODUCTS_LIST = (By.TAG_NAME, 'li')
+    PRODUCTS_SELLERS_LIST = (By.XPATH, '//*[contains(text(), "by ")]/following-sibling::p')
     PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
     PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
@@ -32,6 +33,10 @@ class BasePageLocators:
     def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
         rating_checkbox_locator = (By.ID, f'checkbox-{rating}')
         return rating_checkbox_locator
+
+    def seller_checkbox(self, seller: str) -> tuple[str, str]:
+        seller_checkbox_locator = (By.ID, seller)
+        return seller_checkbox_locator
 
     SHOW_MORE_BUTTON = (By.XPATH, '//button[contains(text(), "Show more")]')
     SORT_DROPDOWN = (By.XPATH, '//*[contains(text(), "Sort by:")]')

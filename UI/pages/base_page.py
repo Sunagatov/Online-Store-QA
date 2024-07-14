@@ -49,6 +49,13 @@ class BasePage:
         rating_checkbox = self.browser.find_element(*rating_checkbox_locator)
         rating_checkbox.click()
 
+    @step('Filter products in catalog by seller')
+    def filter_products_by_seller(self, seller: str) -> None:
+        base_page_locators = BasePageLocators()
+        seller_checkbox_locator = base_page_locators.seller_checkbox(seller)
+        seller_checkbox = self.browser.find_element(*seller_checkbox_locator)
+        seller_checkbox.click()
+
     @step('Get brand list length')
     def get_brand_list_length(self) -> int:
         brand_list = self.browser.find_elements(*BasePageLocators.BRAND_LIST)
