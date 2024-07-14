@@ -83,3 +83,27 @@ class TestMainPage:
         with step('Check brand list after click show more button'):
             assert brand_list_length_after > brand_list_length_before, 'The show more brand button does not work'
 
+        main_page.show_more_less_brand()
+        brand_list_length_after = main_page.get_brand_list_length()
+
+        with step('Check brand list after click show less button'):
+            assert brand_list_length_after == brand_list_length_before, 'The show less brand button does not work'
+
+    @title("Test show more/less button in seller filter")
+    def test_seller_show_more_less_button(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        seller_list_length_before = main_page.get_seller_list_length()
+        main_page.show_more_less_seller()
+        seller_list_length_after = main_page.get_seller_list_length()
+
+        with step('Check seller list after click show more button'):
+            assert seller_list_length_after > seller_list_length_before, 'The show more seller button does not work'
+
+        main_page.show_more_less_seller()
+        seller_list_length_after = main_page.get_seller_list_length()
+
+        with step('Check seller list after click show less button'):
+            assert seller_list_length_after == seller_list_length_before, 'The show less seller button does not work'
+

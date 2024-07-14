@@ -88,6 +88,11 @@ class BasePage:
         product_weight = pattern.findall(product_weight_element)
         return product_weight[0]
 
+    @step('Get seller list length')
+    def get_seller_list_length(self) -> int:
+        seller_list = self.browser.find_elements(*BasePageLocators.SELLER_LIST)
+        return len(seller_list)
+
     def go_to_cart_page(self):
         link = self.browser.find_element(*HeaderLocators.CART_LINK)
         link.click()
@@ -231,6 +236,11 @@ class BasePage:
     def show_more_less_brand(self):
         show_more_less_brand_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_LESS_BRAND_BUTTON)
         show_more_less_brand_button.click()
+
+    @step('Click show more/less seller button')
+    def show_more_less_seller(self):
+        show_more_less_seller_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_LESS_SELLER_BUTTON)
+        show_more_less_seller_button.click()
 
     @step('Sort product catalog')
     def sort_by(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> None:

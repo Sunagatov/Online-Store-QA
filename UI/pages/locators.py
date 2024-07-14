@@ -19,7 +19,9 @@ class BasePageLocators:
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
     PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
+    SELLER_LIST = (By.XPATH, '//aside/div/div[4]/div/label')
     SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
+    SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')
 
     def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
         checkbox_locator = (By.ID, f'checkbox-{rating}')
