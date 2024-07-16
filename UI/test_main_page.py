@@ -1,6 +1,6 @@
 from allure import step, title, severity, story, severity_level
 import pytest
-from time import sleep
+# from time import sleep
 
 from .pages.base_page import BasePage
 from .configs import link

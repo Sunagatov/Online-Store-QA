@@ -186,8 +186,8 @@ class BasePage:
         for product_brand in products_brands_list:
             if product_brand.text != f'by {brand}':
                 return False
-            else:
-                return True
+
+        return True
 
     def is_filtering_by_price_correct(self, price_from: str, price_to: str) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
@@ -220,6 +220,18 @@ class BasePage:
             products_no_rating_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_NO_RATING_LIST)
             products_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_LIST)
             if len(products_list) != len(products_with_rating_list) + len(products_no_rating_list):
+                return False
+
+        return True
+
+    def is_filtering_by_seller_correct(self, seller: str) -> bool:
+        while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
+            show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+            show_more_button.click()
+
+        products_sellers_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_SELLERS_LIST)
+        for product_seller in products_sellers_list:
+            if product_seller.text != seller:
                 return False
 
         return True
