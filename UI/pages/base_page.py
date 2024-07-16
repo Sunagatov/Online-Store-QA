@@ -27,6 +27,11 @@ class BasePage:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON_2)
         button.click()
 
+    @step('Click "By default" button')
+    def by_default(self) -> None:
+        by_default_button = self.browser.find_element(*BasePageLocators.BY_DEFAULT_BUTTON)
+        by_default_button.click()
+
     @step('Filter products in catalog by brand')
     def filter_products_by_brand(self, brand: str) -> None:
         base_page_locators = BasePageLocators()
@@ -54,6 +59,8 @@ class BasePage:
         base_page_locators = BasePageLocators()
         seller_checkbox_locator = base_page_locators.seller_checkbox(seller)
         seller_checkbox = self.browser.find_element(*seller_checkbox_locator)
+        # scroll page down
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         seller_checkbox.click()
 
     @step('Get brand list length')
@@ -139,7 +146,11 @@ class BasePage:
     def go_to_profile_page(self):        
         link = self.browser.find_element(*HeaderLocators.PROFILE_LINK)
         link.click()
-    
+
+    def is_badge_present(self, product_filter: str) -> bool:
+        base_page_locators = BasePageLocators()
+        return self.is_element_present(*base_page_locators.remove_filter_badge(product_filter))
+
     # check that amount on cart icon changed after adding product to cart 
     # and click "Plus" or "Minus"
     def is_change_cart_counter(self, amount):
@@ -275,6 +286,13 @@ class BasePage:
     def open(self):
         self.browser.get(self.url)        
 
+    @step('Click cross on the badge to remove filter')
+    def remove_filter(self, products_filter: str):
+        base_page_locator = BasePageLocators()
+        remove_filter_badge_locator = base_page_locator.remove_filter_badge(products_filter)
+        remove_filter_badge = self.browser.find_element(*remove_filter_badge_locator)
+        remove_filter_badge.click()
+
     # check that login link is present on the page
     def should_be_login_link(self):
         assert self.is_element_present(*HeaderLocators.LOGIN_LINK), "Login link is not presented"    
@@ -282,11 +300,15 @@ class BasePage:
     @step('Click show more/less brand button')
     def show_more_less_brand(self):
         show_more_less_brand_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_LESS_BRAND_BUTTON)
+        # scroll page down
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         show_more_less_brand_button.click()
 
     @step('Click show more/less seller button')
     def show_more_less_seller(self):
         show_more_less_seller_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_LESS_SELLER_BUTTON)
+        # scroll page down
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         show_more_less_seller_button.click()
 
     @step('Sort product catalog')

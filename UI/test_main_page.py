@@ -146,3 +146,46 @@ class TestMainPage:
 
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title('Test filter badges on product catalog')
+    def test_badges(self, browser):
+        brand = 'Dunkin-Donuts'
+        seller = 'BrewedBliss'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_brand(brand)
+
+        with step('Check that brand filter badge is present'):
+            main_page.is_badge_present(brand), 'Badge filter by brand is not presented'
+
+        main_page.filter_products_by_seller(seller)
+
+        with step('Check that seller filter badge is present'):
+            main_page.is_badge_present(seller), 'Badge filter by seller is not presented'
+
+        main_page.remove_filter(seller)
+        main_page.remove_filter(brand)
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title('Test "By default" filter badge on product catalog')
+    def test_by_default_badge(self, browser):
+        brand = 'Dunkin-Donuts'
+        seller = 'BrewedBliss'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_brand(brand)
+        main_page.filter_products_by_seller(seller)
+        main_page.by_default()
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'

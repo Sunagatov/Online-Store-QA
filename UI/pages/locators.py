@@ -11,6 +11,7 @@ class BasePageLocators:
         return brand_checkbox_locator
 
     BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
+    BY_DEFAULT_BUTTON = (By.XPATH, '(//*[@id="default-filter-btn"])[2]')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
@@ -26,6 +27,11 @@ class BasePageLocators:
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
     PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
+
+    def remove_filter_badge(self, products_filter: str) -> tuple[str, str]:
+        remove_filter_badge_locator = (By.XPATH, f'(//*[@id="remove-filter-{products_filter}"])[2]')
+        return remove_filter_badge_locator
+
     SELLER_LIST = (By.XPATH, '//aside/div/div[4]/div/label')
     SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
     SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')
