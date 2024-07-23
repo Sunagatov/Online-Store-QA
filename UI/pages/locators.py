@@ -1,19 +1,53 @@
+from typing import Literal
 from selenium.webdriver.common.by import By
 
 
 class BasePageLocators:
     ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
-    ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')    
+    ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+
+    def brand_checkbox(self, brand: str) -> tuple[str, str]:
+        brand_checkbox_locator = (By.ID, brand)
+        return brand_checkbox_locator
+
+    BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
+    BY_DEFAULT_BUTTON = (By.XPATH, '(//*[@id="default-filter-btn"])[2]')
+    PRICE_FROM_FIELD = (By.ID, 'from-price-input')
+    PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
     PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(3) [href]')
+    PRODUCTS_BRANDS_LIST = (By.XPATH, '//*[contains(text(), "by ")]')
+    PRODUCTS_LIST = (By.TAG_NAME, 'li')
+    PRODUCTS_SELLERS_LIST = (By.XPATH, '//*[contains(text(), "by ")]/following-sibling::p')
+    PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
+    PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
+    PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
     PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
-    PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')    
+    PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
+
+    def remove_filter_badge(self, products_filter: str) -> tuple[str, str]:
+        remove_filter_badge_locator = (By.XPATH, f'(//*[@id="remove-filter-{products_filter}"])[2]')
+        return remove_filter_badge_locator
+
+    SELLER_LIST = (By.XPATH, '//aside/div/div[4]/div/label')
+    SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
+    SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')
+
+    def rating_checkbox(self, rating: Literal['4', '3', '2', '1', 'any']) -> tuple[str, str]:
+        rating_checkbox_locator = (By.ID, f'checkbox-{rating}')
+        return rating_checkbox_locator
+
+    def seller_checkbox(self, seller: str) -> tuple[str, str]:
+        seller_checkbox_locator = (By.ID, seller)
+        return seller_checkbox_locator
+
+    SHOW_MORE_BUTTON = (By.XPATH, '//button[contains(text(), "Show more")]')
     SORT_DROPDOWN = (By.XPATH, '//*[contains(text(), "Sort by:")]')
     SORT_PRICE_HIGH = (By.XPATH, '//span[contains(text(),"Price: High to Low")]')
-    SORT_PRICE_LOW = (By.XPATH, '//span[contains(text(),"Price: Low to High")]]')
+    SORT_PRICE_LOW = (By.XPATH, '//span[contains(text(),"Price: Low to High")]')
     SORT_RATING_HIGH = (By.XPATH, '//span[contains(text(),"High rating first")]')
     SORT_RATING_LOW = (By.XPATH, '//span[contains(text(),"Low rating first")]')
 
@@ -84,9 +118,9 @@ class ProductPageLocators:
     ADD_TO_CART_BUTTON = (By.ID, 'add-btn')
     ADD_TO_FAVORITES_BUTTON = (By.XPATH, '//*[@alt="heart unliked"]/ancestor::button')
 
-    def checkbox(self, rating):        
-        checkbox = (By.ID, f'checkbox-{rating}')
-        return checkbox
+    def checkbox(self, rating):
+        checkbox_locator = (By.ID, f'checkbox-{rating}')
+        return checkbox_locator
 
     DELETE_REVIEW_BUTTON = (By.ID, 'delete-review-btn')
     LIKE_OWN_BUTTON = (By.CSS_SELECTOR, '#delete-review-btn + div [id^="like-btn"]')
