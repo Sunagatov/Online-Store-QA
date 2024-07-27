@@ -4,7 +4,7 @@ from time import sleep
 
 from .pages.base_page import BasePage
 from .configs import link
-from set_of_steps import login_user, remove_products_from_cart_and_favorites
+from .set_of_steps import login_user, remove_products_from_cart_and_favorites
 
 
 @story("Favorites")

@@ -237,7 +237,7 @@ class TestProductPage:
             page = CartPage(browser, browser.current_url)
             assert page.is_product_in_cart(product_page_product_name), 'There is not product in the cart'
     
-    @title('Add product to favorires. User is logged-in')
+    @title('Add product to favorites. User is logged-in')
     # @pytest.mark.skip()
     def test_add_to_favorites_user(self, browser):
         with step('Login user'):            
