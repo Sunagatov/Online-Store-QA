@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 class BasePageLocators:
     ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
     ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+    ADD_TO_FAVORITES_BUTTON = (By.XPATH, '(//button/img[@alt="heart unliked"])[2]')
+    REMOVE_FROM_FAVORITES_BUTTON = (By.XPATH, '//button/img[@alt="heart liked"]')
 
     def brand_checkbox(self, brand: str) -> tuple[str, str]:
         brand_checkbox_locator = (By.ID, brand)
@@ -12,6 +14,8 @@ class BasePageLocators:
 
     BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
     BY_DEFAULT_BUTTON = (By.XPATH, '(//*[@id="default-filter-btn"])[2]')
+    HEART_LIKED_ICON = (By.XPATH, '//img[@alt="heart liked"]')
+    HEART_UNLIKED_ICON = (By.XPATH, '(//img[@alt="heart unliked"])[2]')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
@@ -22,7 +26,7 @@ class BasePageLocators:
     PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
     PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
-    PRODUCT_NAME = (By.XPATH, '//li[2]/div/a/div[2]/h2')
+    PRODUCT_NAME = (By.XPATH, '//li[2]/a/div[2]/div[2]/h2')
     PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
@@ -87,7 +91,8 @@ class EditProfilePageLocators:
 
 
 class FavoritesPageLocators:
-    PRODUCT_NAME = (By.XPATH, '(//*[starts-with(@href,"/product/")]/following-sibling::div/p)[1]')
+    EMPTY_FAVORITES_MESSAGE = (By.XPATH, '//span[contains(text(), "It is empty. ")]')
+    PRODUCT_NAME = (By.XPATH, '//main/div/div/div/div/p[1]')
     PRODUCT_LINK = (By.XPATH, '//*[starts-with(@href,"/product/")]')
     UNLIKE_BUTTONS = (By.XPATH, '//img[@alt="heart liked"]/parent::button')
 
