@@ -42,9 +42,9 @@ class TestFavorites:
         main_page.remove_product_from_favorites()
 
         with step('Check the heart on the product card is transparent'):
-            main_page.is_heart_on_product_transparent(), 'Heart on product card is not transparent'
+            assert main_page.is_heart_on_product_transparent(), 'Heart on product card is not transparent'
         with step('Check that favorites counter on header is not present'):
-            main_page.is_favorites_page_icon_has_not_counter(), 'Favorites counter is present'
+            assert main_page.is_favorites_page_icon_has_not_counter(), 'Favorites counter is present'
 
     @title("User. Check removing product from favorites on favorites page")
     def test_user_remove_product_on_favorites_page(self, browser):
@@ -102,9 +102,9 @@ class TestFavorites:
         main_page.remove_product_from_favorites()
 
         with step('Check the heart on the product card is transparent'):
-            main_page.is_heart_on_product_transparent(), 'Heart on product card is not transparent'
+            assert main_page.is_heart_on_product_transparent(), 'Heart on product card is not transparent'
         with step('Check that favorites counter on header is not present'):
-            main_page.is_favorites_page_icon_has_not_counter(), 'Favorites counter is present'
+            assert main_page.is_favorites_page_icon_has_not_counter(), 'Favorites counter is present'
 
     @title("Guest. Check removing product from favorites on favorites page")
     def test_guest_remove_product_on_favorites_page(self, browser):
