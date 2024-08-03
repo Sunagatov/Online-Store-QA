@@ -175,6 +175,14 @@ class BasePage:
         else: 
             return False
 
+    def is_correct_page_presented(self, url: str) -> bool:
+        now_url = self.browser.current_url
+
+        if now_url == url:
+            return True
+        else:
+            return False
+
     # check that the element is clickable
     def is_element_clickable(self, how, what):
         try:
