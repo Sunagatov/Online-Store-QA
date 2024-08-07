@@ -16,7 +16,7 @@ from framework.tools.review_methods import (
 
 @pytest.mark.critical
 @feature("Get all product reviews")
-class TestReviewWithRating:
+class TestGetProductReviews:
     parameter_sets = [4]
 
     @title("Test get all product reviews with default parameters")
@@ -172,7 +172,6 @@ class TestReviewWithRating:
                     sort_direction="asc",
                 )
             )
-            print(response_get_all_review_with_custom_parameter.json())
 
         with step("Verify content-type"):
             assert_content_type(
@@ -326,7 +325,7 @@ class TestReviewWithRating:
     @pytest.mark.parametrize(
         "create_certain_number_of_reviews", parameter_sets, indirect=True
     )
-    def test_get_all_product_reviews_with_custom_parameter_and_filter_product_ratings(
+    def test_get_all_product_reviews_with_custom_parameter_size_and_filter_product_ratings(
         self, create_certain_number_of_reviews
     ):
         with step("Getting all products via API with custom rating parameter"):

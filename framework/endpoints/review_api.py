@@ -1,5 +1,4 @@
 import json
-from typing import Dict, Any
 
 import requests
 from requests import Response
@@ -27,7 +26,6 @@ class ReviewAPI:
         headers = self.headers
         url = f"{self.url}/{product_id}/reviews"
         response = requests.get(url, headers=headers, params=filters)
-        print(url)
         assert_status_code(response, expected_status_code=expected_status_code)
         log_request(response)
 
