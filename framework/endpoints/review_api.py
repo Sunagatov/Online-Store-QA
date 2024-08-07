@@ -14,20 +14,30 @@ class ReviewAPI:
         self.headers = {"Content-Type": "application/json"}
 
     def get_all_product_reviews(
-        self, product_id: str, expected_status_code: int = 200, **filters
+        self, product_id: str, expected_status_code: int = 200, timeout=10, **filters
     ) -> Response:
         """Getting info about user via API
 
         Args:
+            timeout: timeout for request
             product_id: id of product
             expected_status_code: Expected HTTP code from Response
 
         """
         headers = self.headers
         url = f"{self.url}/{product_id}/reviews"
-        response = requests.get(url, headers=headers, params=filters)
-        assert_status_code(response, expected_status_code=expected_status_code)
-        log_request(response)
+        try:
+            response = requests.get(
+                url, headers=headers, params=filters, timeout=timeout
+            )
+            assert_status_code(response, expected_status_code=expected_status_code)
+            log_request(response)
+        except requests.exceptions.Timeout:
+            print("The request timed out")
+            raise
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+            raise
 
         return response
 

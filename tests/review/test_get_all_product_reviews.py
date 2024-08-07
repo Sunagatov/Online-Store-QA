@@ -16,7 +16,7 @@ from framework.tools.review_methods import (
 
 @pytest.mark.critical
 @feature("Get all product reviews")
-class TestGetProductReviews:
+class TestGetProductReviewsWithDefaultParameters:
     parameter_sets = [4]
 
     @title("Test get all product reviews with default parameters")
@@ -63,7 +63,7 @@ class TestGetProductReviews:
 
 @pytest.mark.critical
 @feature("Get all product reviews")
-class TestReviewWithRating:
+class TestGetProductReviewsWithCustomParameters:
     parameter_sets = [8]
 
     @title("Test get all product reviews with custom parameter size")
