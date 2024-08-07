@@ -1,4 +1,5 @@
 import json
+from typing import Dict, Any
 
 import requests
 from requests import Response
@@ -14,7 +15,7 @@ class ReviewAPI:
         self.headers = {"Content-Type": "application/json"}
 
     def get_all_product_reviews(
-        self, product_id: str, expected_status_code: int = 200
+        self, product_id: str, expected_status_code: int = 200, **filters
     ) -> Response:
         """Getting info about user via API
 
@@ -25,7 +26,8 @@ class ReviewAPI:
         """
         headers = self.headers
         url = f"{self.url}/{product_id}/reviews"
-        response = requests.get(headers=headers, url=url)
+        response = requests.get(url, headers=headers, params=filters)
+        print(url)
         assert_status_code(response, expected_status_code=expected_status_code)
         log_request(response)
 
