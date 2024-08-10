@@ -16,7 +16,7 @@ from framework.tools.review_methods import (
 
 @pytest.mark.critical
 @feature("Get all product reviews")
-class TestGetProductReviewsWithDefaultParameters:
+class TestGetProductReviews:
     parameter_sets = [4]
 
     @title("Test get all product reviews with default parameters")
@@ -60,10 +60,6 @@ class TestGetProductReviewsWithDefaultParameters:
                 response_get_all_review
             )
 
-
-@pytest.mark.critical
-@feature("Get all product reviews")
-class TestGetProductReviewsWithCustomParameters:
     parameter_sets = [8]
 
     @title("Test get all product reviews with custom parameter size")
@@ -139,10 +135,6 @@ class TestGetProductReviewsWithCustomParameters:
                 reason=f"Expected total pages is {expected_total_pages}, found: '{actual_total_pages}'",
             )
 
-
-@pytest.mark.critical
-@feature("Get all product reviews")
-class TestReviewWithRating:
     parameter_sets = [8]
 
     @title("Test get all product reviews with custom parameter size and sort direction")
@@ -220,13 +212,9 @@ class TestReviewWithRating:
                 reason=f"Expected total pages is {expected_total_pages}, found: '{actual_total_pages}'",
             )
 
-
-@pytest.mark.xfail(reason="Bug:")
-@pytest.mark.critical
-@feature("Get all product reviews")
-class TestReviewWithRating:
     parameter_sets = [8]
 
+    @pytest.mark.xfail(reason="Bug:")
     @title("Test get all product reviews with custom parameter size and page")
     @description(
         "WHEN user sent request get all product reviews with parameter size = 3 and page = 2"
@@ -256,7 +244,6 @@ class TestReviewWithRating:
                     page=page,
                 )
             )
-            print(response_get_all_review_with_custom_parameter.json())
 
         with step("Verify content-type"):
             assert_content_type(
@@ -307,10 +294,6 @@ class TestReviewWithRating:
                 reason=f"Expected total pages is {expected_total_pages}, found: '{actual_total_pages}'",
             )
 
-
-@pytest.mark.critical
-@feature("Get all product reviews")
-class TestReviewWithRating:
     parameter_sets = [8]
 
     @title(
