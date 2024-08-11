@@ -189,3 +189,30 @@ class TestMainPage:
 
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title('Test plus and minus buttons on product card')
+    def test_plus_minus_buttons(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.add_product_to_cart()
+        with step('Check that cart counter in the header has increased'):
+            assert main_page.is_change_cart_counter('1'), 'Cart counter is not change'
+
+        main_page.click_plus_button()
+        with step('Check that cart counter in the header has increased'):
+            assert main_page.is_change_cart_counter('2'), 'Cart counter is not change'
+        with step('Check that counter on the product card has increased'):
+            assert main_page.is_change_product_counter('2'), 'Product counter is not change'
+
+        main_page.click_minus_button()
+        with step('Check that cart counter in the header has decreased'):
+            assert main_page.is_change_cart_counter('1'), 'Cart counter is not change'
+        with step('Check that counter on the product card has decreased'):
+            assert main_page.is_change_product_counter('1'), 'Product counter is not change'
+
+        main_page.click_minus_button()
+        with step('Check that cart counter in the header is not present'):
+            assert not main_page.is_cart_counter_present(), 'Cart counter in the header is present'
+        with step('Check that add to cart button is present'):
+            assert main_page.is_add_to_cart_button_present(), 'Add to cart button is not present'

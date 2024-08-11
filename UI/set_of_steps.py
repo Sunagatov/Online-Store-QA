@@ -48,9 +48,8 @@ def go_to_edit_profile_page(browser: WebDriver, link: str) -> None:
 
 @step('Remove products from cart and favorites')
 def remove_products_from_cart_and_favorites(browser: WebDriver, link: str) -> None:
-    with step('Go to cart page'):
-        main_page = BasePage(browser, link)
-        main_page.go_to_cart_page()
+    main_page = BasePage(browser, link)
+    main_page.go_to_cart_page()
     with step('Remove all products from the cart'):
         cart_page = CartPage(browser, browser.current_url)
         cart_page.remove_products()

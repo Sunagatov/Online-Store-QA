@@ -17,17 +17,15 @@ class TestCart:
 
     @title("Test Empty Shopping Cart. User is not logged in")    
     def test_guest_empty_cart(self, browser):
-        with step('Open Main Page'):
-            page = BasePage(browser, link)
-            page.open()
-        with step('Go to Cart Page'):
-            page.go_to_cart_page()
-        with step('Assert Cart is Empty'):
-            page = CartPage(browser, browser.current_url)            
-            assert page.is_cart_empty, 'Cart is not empty'
-        with step('Click Continue Shopping Button on Empty Cart'):
-            page.click_continue_shopping_button()
-            sleep(2)  # waiting is mandatory (do not remove)
+        main_page = BasePage(browser, link)
+        main_page.open()
+        main_page.go_to_cart_page()
+        with step('Check that Cart is Empty'):
+            cart_page = CartPage(browser, browser.current_url)
+            assert cart_page.is_cart_empty, 'Cart is not empty'
+        cart_page.click_continue_shopping_button()
+        sleep(2)  # waiting is mandatory (do not remove)
+        with step('Check that main page is present'):
             assert browser.current_url == link, 'Continue Shopping Button do not work'
     
     @title("Test Functionality of the Shopping Cart. User is not logged in")    

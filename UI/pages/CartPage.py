@@ -1,3 +1,4 @@
+from allure import step
 from time import sleep
 
 from .BasePage import BasePage
@@ -5,7 +6,8 @@ from .locators import CartPageLocators
 
 
 class CartPage(BasePage):
-    def click_continue_shopping_button(self):
+    @step('Click Continue Shopping Button on Empty Cart')
+    def click_continue_shopping_button(self) -> None:
         button = self.browser.find_element(*CartPageLocators.CONTINUE_SHOPPING_BUTTON)
         button.click()
 

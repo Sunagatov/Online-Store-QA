@@ -1,7 +1,7 @@
 import re
 from allure import step
 from typing import Literal
-# from time import sleep
+from time import sleep
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException, \
@@ -19,7 +19,8 @@ class BasePage:
         self.browser.implicitly_wait(timeout)  # turn on implicitly wait  
         self.browser.maximize_window()
     
-    def add_product_to_cart(self):
+    @step('Add product to cart')
+    def add_product_to_cart(self) -> None:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON)
         button.click()
     
@@ -36,6 +37,18 @@ class BasePage:
     def by_default(self) -> None:
         by_default_button = self.browser.find_element(*BasePageLocators.BY_DEFAULT_BUTTON)
         by_default_button.click()
+
+    @step('Click minus button')
+    def click_minus_button(self) -> None:
+        minus_button = self.browser.find_element(*BasePageLocators.MINUS_BUTTON)
+        minus_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
+    
+    @step('Click plus button')
+    def click_plus_button(self) -> None:
+        plus_button = self.browser.find_element(*BasePageLocators.PLUS_BUTTON)
+        plus_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
 
     @step('Filter products in catalog by brand')
     def filter_products_by_brand(self, brand: str) -> None:
@@ -122,7 +135,8 @@ class BasePage:
         seller_list = self.browser.find_elements(*BasePageLocators.SELLER_LIST)
         return len(seller_list)
 
-    def go_to_cart_page(self):
+    @step('Go to Cart Page')
+    def go_to_cart_page(self) -> None:
         link = self.browser.find_element(*HeaderLocators.CART_LINK)
         link.click()
     
@@ -148,13 +162,19 @@ class BasePage:
         link = self.browser.find_element(*HeaderLocators.PROFILE_LINK)
         link.click()
 
+    def is_add_to_cart_button_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.ADD_TO_CART_BUTTON)
+
     def is_badge_present(self, product_filter: str) -> bool:
         base_page_locators = BasePageLocators()
         return self.is_element_present(*base_page_locators.remove_filter_badge(product_filter))
 
+    def is_cart_counter_present(self) -> bool:
+        return self.is_element_present(*HeaderLocators.CART_COUNTER)
+
     # check that amount on cart icon changed after adding product to cart 
     # and click "Plus" or "Minus"
-    def is_change_cart_counter(self, amount):
+    def is_change_cart_counter(self, amount: str) -> bool:
         cart_counter = self.browser.find_element(*HeaderLocators.CART_COUNTER)
         if cart_counter.text == amount:
             return True
@@ -165,6 +185,13 @@ class BasePage:
     def is_change_favorites_counter(self, amount: str) -> bool:
         favorites_counter = self.browser.find_element(*HeaderLocators.FAVORITES_COUNTER)        
         if favorites_counter.text == amount:
+            return True
+        else: 
+            return False
+
+    def is_change_product_counter(self, amount: str) -> bool:
+        product_counter = self.browser.find_element(*BasePageLocators.PRODUCT_COUNTER)
+        if product_counter.text == amount:
             return True
         else: 
             return False
@@ -298,7 +325,7 @@ class BasePage:
         return True
 
     @step('Open main page')
-    def open(self):
+    def open(self) -> None:
         self.browser.get(self.url)        
 
     @step('Click cross on the badge to remove filter')
