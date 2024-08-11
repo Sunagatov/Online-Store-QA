@@ -2,10 +2,10 @@ from allure import step, title, severity, story, severity_level
 from time import sleep
 import pytest
 
-from .pages.base_page import BasePage
-from .pages.product_page import ProductPage
-from .pages.login_page import LoginPage
-from .pages.profile_page import ProfilePage
+from .pages.BasePage import BasePage
+from .pages.ProductPage import ProductPage
+from .pages.LoginPage import LoginPage
+from .pages.ProfilePage import ProfilePage
 from .set_of_steps import login_user, delete_old_review
 from .configs import link, first_name
 from data.text_review import parameterize_text_review_positive

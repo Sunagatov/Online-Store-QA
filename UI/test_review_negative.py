@@ -1,7 +1,7 @@
 from allure import step, title, severity, story, severity_level
 import pytest
 
-from .pages.product_page import ProductPage
+from .pages.ProductPage import ProductPage
 from .set_of_steps import login_user, delete_old_review
 from .configs import link
 from data.text_review import parameterize_text_review_negative

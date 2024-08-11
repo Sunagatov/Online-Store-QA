@@ -1,8 +1,8 @@
 from allure import step, title, severity, story, severity_level
 from time import sleep
 
-from .pages.cart_page import CartPage
-from .pages.base_page import BasePage
+from .pages.CartPage import CartPage
+from .pages.BasePage import BasePage
 from .set_of_steps import login_user, remove_products_from_cart_and_favorites
 from .configs import link
 

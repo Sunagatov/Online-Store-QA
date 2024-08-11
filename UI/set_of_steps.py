@@ -2,12 +2,12 @@ from allure import step
 from time import sleep
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from .pages.base_page import BasePage
-from .pages.cart_page import CartPage
-from .pages.favorites_page import FavoritesPage
-from .pages.login_page import LoginPage
-from .pages.profile_page import ProfilePage
-from .pages.product_page import ProductPage
+from .pages.BasePage import BasePage
+from .pages.CartPage import CartPage
+from .pages.FavoritesPage import FavoritesPage
+from .pages.LoginPage import LoginPage
+from .pages.ProductPage import ProductPage
+from .pages.ProfilePage import ProfilePage
 
 from .configs import email, password
 

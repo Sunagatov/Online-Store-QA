@@ -1,6 +1,6 @@
-from .pages.base_page import BasePage
-from .pages.profile_page import ProfilePage
-from .pages.edit_profile_page import EditProfilePage
+from .pages.BasePage import BasePage
+from .pages.ProfilePage import ProfilePage
+from .pages.EditProfilePage import EditProfilePage
 from .set_of_steps import go_to_edit_profile_page
 from .configs import link, new_first_name_negative
 
