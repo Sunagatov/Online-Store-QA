@@ -27,6 +27,11 @@ class BasePage:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON_2)
         button.click()
 
+    @step('Add product to favorites')
+    def add_product_to_favorites(self) -> None:
+        add_to_favorites_button = self.browser.find_element(*BasePageLocators.ADD_TO_FAVORITES_BUTTON)
+        add_to_favorites_button.click()
+
     @step('Click "By default" button')
     def by_default(self) -> None:
         by_default_button = self.browser.find_element(*BasePageLocators.BY_DEFAULT_BUTTON)
@@ -77,7 +82,7 @@ class BasePage:
         products_list = self.browser.find_elements(*BasePageLocators.PRODUCTS_LIST)
         return len(products_list)
 
-    def get_product_name(self):
+    def get_product_name(self) -> str:
         return self.browser.find_element(*BasePageLocators.PRODUCT_NAME).text
     
     def get_product_price(self):
@@ -127,6 +132,7 @@ class BasePage:
         link = self.browser.find_element(*HeaderLocators.CART_LINK)
         link.click()
     
+    @step('Go to favorites page')
     def go_to_favorites_page(self):
         link = self.browser.find_element(*HeaderLocators.FAVORITES_PAGE_LINK)
         link.click()
@@ -135,7 +141,8 @@ class BasePage:
         link = self.browser.find_element(*HeaderLocators.LOGIN_LINK)
         link.click()
 
-    def go_to_main_page(self):        
+    @step('Go to main page')
+    def go_to_main_page(self):
         main_page_link = self.browser.find_element(*HeaderLocators.MAIN_PAGE_LINK)
         main_page_link.click()
 
@@ -161,12 +168,20 @@ class BasePage:
             return False
 
     # check that amount on favorites page icon changed
-    def is_change_favorites_counter(self, amount):
+    def is_change_favorites_counter(self, amount: str) -> bool:
         favorites_counter = self.browser.find_element(*HeaderLocators.FAVORITES_COUNTER)        
         if favorites_counter.text == amount:
             return True
         else: 
-            return False    
+            return False
+
+    def is_correct_page_presented(self, url: str) -> bool:
+        now_url = self.browser.current_url
+
+        if now_url == url:
+            return True
+        else:
+            return False
 
     # check that the element is clickable
     def is_element_clickable(self, how, what):
@@ -178,7 +193,7 @@ class BasePage:
         return True    
 
     # check that the element is present on the page
-    def is_element_present(self, how, what):
+    def is_element_present(self, how, what) -> bool:
         try:
             self.browser.find_element(how, what)
         except NoSuchElementException:
@@ -247,6 +262,12 @@ class BasePage:
 
         return True
 
+    def is_heart_on_product_red(self) -> bool:
+        return self.is_element_present(*BasePageLocators.HEART_LIKED_ICON)
+
+    def is_heart_on_product_transparent(self) -> bool:
+        return self.is_element_present(*BasePageLocators.HEART_UNLIKED_ICON)
+
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
@@ -282,7 +303,7 @@ class BasePage:
 
         return True
 
-    @step('Open page')
+    @step('Open main page')
     def open(self):
         self.browser.get(self.url)        
 
@@ -292,6 +313,11 @@ class BasePage:
         remove_filter_badge_locator = base_page_locator.remove_filter_badge(products_filter)
         remove_filter_badge = self.browser.find_element(*remove_filter_badge_locator)
         remove_filter_badge.click()
+
+    @step('Remove product from favorites')
+    def remove_product_from_favorites(self) -> None:
+        remove_from_favorites_button = self.browser.find_element(*BasePageLocators.REMOVE_FROM_FAVORITES_BUTTON)
+        remove_from_favorites_button.click()
 
     # check that login link is present on the page
     def should_be_login_link(self):

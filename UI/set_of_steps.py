@@ -1,5 +1,6 @@
 from allure import step
 from time import sleep
+from selenium.webdriver.remote.webdriver import WebDriver
 
 from .pages.base_page import BasePage
 from .pages.cart_page import CartPage
@@ -11,7 +12,7 @@ from .pages.product_page import ProductPage
 from .configs import email, password
 
 
-def delete_old_review(browser, link):
+def delete_old_review(browser: WebDriver, link: str) -> None:
     with step('Go to product page'):
         main_page = BasePage(browser, link)
         main_page.sort_by('price', 'high')
@@ -21,7 +22,8 @@ def delete_old_review(browser, link):
         product_page.delete_review()
 
 
-def login_user(browser, link):
+@step('Login User')
+def login_user(browser: WebDriver, link: str) -> None:
     with step('Open main page'):
         page = BasePage(browser, link)
         page.open()
@@ -33,7 +35,7 @@ def login_user(browser, link):
         sleep(2)
 
 
-def go_to_edit_profile_page(browser, link):    
+def go_to_edit_profile_page(browser: WebDriver, link: str) -> None:
     with step('Login existing user'):
         login_user(browser, link)
     with step('Go to profile page'):
@@ -44,17 +46,18 @@ def go_to_edit_profile_page(browser, link):
         page.go_to_edit_page()
 
 
-def remove_products_from_cart_and_favorites(browser, link):
+@step('Remove products from cart and favorites')
+def remove_products_from_cart_and_favorites(browser: WebDriver, link: str) -> None:
     with step('Go to cart page'):
-        page = BasePage(browser, link)
-        page.go_to_cart_page()        
+        main_page = BasePage(browser, link)
+        main_page.go_to_cart_page()
     with step('Remove all products from the cart'):
-        page = CartPage(browser, browser.current_url)
-        page.remove_products()        
+        cart_page = CartPage(browser, browser.current_url)
+        cart_page.remove_products()
     with step('Go to favorites page'):
-        page.go_to_favorites_page()        
-        page = FavoritesPage(browser, browser.current_url)        
+        cart_page.go_to_favorites_page()
+        favorites_page = FavoritesPage(browser, browser.current_url)
     with step('Remove all products from the favorites'):
-        page.remove_favorites_products()
-        page.go_to_main_page()    
+        favorites_page.remove_favorites_products()
+        favorites_page.go_to_main_page()
     

@@ -2,6 +2,7 @@ import pytest
 
 
 link = "https://iced-latte.uk/"
+login_page_link = f"{link}auth/login"
 first_name = "Sarah"
 last_name = "Testtest"
 email = "sarah@example.com"
