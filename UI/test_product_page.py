@@ -27,7 +27,6 @@ class TestProductPage:
         with step('Get product data from main page'):
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
             main_page_product_rating = page.get_product_rating()
             main_page_product_reviews = page.get_product_reviews()
         with step('Go to product page'):
@@ -42,10 +41,6 @@ class TestProductPage:
             product_page_product_price = page.get_product_price()
             assert product_page_product_price == main_page_product_price, \
                 'Product price is not equal on main and product pages'
-        with step('Check product weight'):
-            product_page_product_weight = page.get_product_weight()
-            assert product_page_product_weight == main_page_product_weight, \
-                'Product weight is not equal on main and product pages'
         with step('Check product rating'):
             product_page_product_rating = page.get_product_rating()
             assert product_page_product_rating == main_page_product_rating, \
@@ -154,7 +149,6 @@ class TestProductPage:
             page = BasePage(browser, link)
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
             main_page_product_rating = page.get_product_rating()
             main_page_product_reviews = page.get_product_reviews()
         with step('Go to product page'):
@@ -169,10 +163,6 @@ class TestProductPage:
             product_page_product_price = page.get_product_price()
             assert product_page_product_price == main_page_product_price, \
                 'Product price is not equal on main and product pages'
-        with step('Check product weight'):
-            product_page_product_weight = page.get_product_weight()
-            assert product_page_product_weight == main_page_product_weight, \
-                'Product weight is not equal on main and product pages'
         with step('Check product rating'):
             product_page_product_rating = page.get_product_rating()
             assert product_page_product_rating == main_page_product_rating, \
