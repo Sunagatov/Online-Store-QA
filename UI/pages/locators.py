@@ -3,8 +3,8 @@ from selenium.webdriver.common.by import By
 
 
 class BasePageLocators:
-    ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
-    ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+    ADD_TO_CART_BUTTON = (By.XPATH, '(//img[@alt="add to cart"]/parent::button)[2]')
+    ADD_TO_CART_BUTTON_2 = (By.XPATH, '(//img[@alt="add to cart"]/parent::button)[3]')
     ADD_TO_FAVORITES_BUTTON = (By.XPATH, '(//button/img[@alt="heart unliked"])[2]')
     HEADING_ELEMENT = (By.XPATH, '//h1[contains(text(), "All Coffee")]')
     REMOVE_FROM_FAVORITES_BUTTON = (By.XPATH, '//button/img[@alt="heart liked"]')
