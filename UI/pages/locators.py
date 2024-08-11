@@ -28,10 +28,9 @@ class BasePageLocators:
     PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
     PRODUCT_NAME = (By.XPATH, '//li[2]/a/div[2]/div[2]/h2')
-    PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
+    PRODUCT_PRICE = (By.XPATH, '(//a[starts-with(@href,"/product")]/following-sibling::div/p)[2]')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
-    PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
 
     def remove_filter_badge(self, products_filter: str) -> tuple[str, str]:
         remove_filter_badge_locator = (By.XPATH, f'(//*[@id="remove-filter-{products_filter}"])[2]')

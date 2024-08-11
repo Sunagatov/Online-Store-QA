@@ -1,4 +1,3 @@
-import re
 from time import sleep
 
 from .base_page import BasePage
@@ -32,12 +31,6 @@ class CartPage(BasePage):
     def get_product_2_cost(self):
         return self.browser.find_element(*CartPageLocators.PRODUCT_2_COST).text
 
-    def get_product_weight(self):
-        product_weight_element = self.browser.find_element(*CartPageLocators.PRODUCT_WEIGHT).text
-        pattern = re.compile(r'\b\d+\b')
-        product_weight = pattern.findall(product_weight_element)
-        return product_weight[0]
-    
     def get_subtotal(self):
         return self.browser.find_element(*CartPageLocators.SUBTOTAL).text        
 

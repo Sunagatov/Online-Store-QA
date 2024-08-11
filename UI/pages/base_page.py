@@ -117,12 +117,6 @@ class BasePage:
         product_reviews = pattern.findall(product_reviews_element)
         return product_reviews[0]
 
-    def get_product_weight(self):
-        product_weight_element = self.browser.find_element(*BasePageLocators.PRODUCT_WEIGHT).text
-        pattern = re.compile(r'\b\d+\b')
-        product_weight = pattern.findall(product_weight_element)
-        return product_weight[0]
-
     @step('Get seller list length')
     def get_seller_list_length(self) -> int:
         seller_list = self.browser.find_elements(*BasePageLocators.SELLER_LIST)

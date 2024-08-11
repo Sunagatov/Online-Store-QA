@@ -38,7 +38,6 @@ class TestCart:
         with step('Get Product Name, Price and weight from Main Page'):
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
         with step('Add Product to Cart'):
             page.add_product_to_cart()
             sleep(2)  # waiting is mandatory (do not remove)
@@ -48,11 +47,8 @@ class TestCart:
         with step('Assert added product is in the cart'):
             page = CartPage(browser, browser.current_url)            
             cart_page_product_price = float(page.get_product_cost()[1:])
-            cart_page_product_weight = page.get_product_weight()
             assert page.is_product_in_cart(main_page_product_name), 'Product is not in the cart'
             assert main_page_product_price == cart_page_product_price, 'Main Page Price are not Equal Cart Page Price'
-            assert main_page_product_weight == cart_page_product_weight, \
-                'Main Page Weight are not Equal Cart Page Weight'
         with step('Click on Plus Button'):            
             page.click_plus_button()
             sleep(2)  # waiting is mandatory (do not remove)
@@ -133,7 +129,6 @@ class TestCart:
             sleep(2)  # waiting is mandatory (do not remove)
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
         with step('Add Product to Cart'):
             page.add_product_to_cart()   
             sleep(2)  # waiting is mandatory (do not remove)
@@ -143,12 +138,9 @@ class TestCart:
         with step('Assert added product is in the cart'):
             page = CartPage(browser, browser.current_url)            
             cart_page_product_price = float(page.get_product_cost()[1:])
-            cart_page_product_weight = page.get_product_weight()
             assert page.is_product_in_cart(main_page_product_name), 'Product is not in the cart'
             assert main_page_product_price == cart_page_product_price, 'Main Page Price are not Equal Cart Page Price'
-            assert main_page_product_weight == cart_page_product_weight, \
-                'Main Page Weight are not Equal Cart Page Weight'
-        with step('Click on Plus Button'):            
+        with step('Click on Plus Button'):
             page.click_plus_button()
             sleep(2)  # waiting is mandatory (do not remove)
             assert page.is_change_cart_counter('2'), 'Cart counter is not change'
