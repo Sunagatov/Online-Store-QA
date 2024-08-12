@@ -1,4 +1,6 @@
 # Iced Latte QA
+[![Total Lines of Code](https://tokei.rs/b1/github/Sunagatov/Iced-Latte-QA?category=lines)](https://github.com/Sunagatov/Iced-Latte-QA)
+
 Automated tests in Python for project Iced Latte -> https://github.com/Sunagatov/Iced-Latte/
 
 ## Instruction

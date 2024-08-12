@@ -101,3 +101,43 @@ class ReviewAPI:
         log_request(response)
 
         return response
+
+    def like_dislike_product_review(
+        self,
+        product_id: str,
+        token: str,
+        product_review_id: str,
+        expected_status_code: int = 200,
+        is_like: bool = True,
+    ) -> Response:
+        """Getting info about user via API
+
+        Args:
+            is_like: like or dislike(True or False)
+            product_review_id: ID of product review
+            token: JWT token for authorization of request
+            product_id: ID of product
+            expected_status_code: Expected HTTP code from Response
+
+        """
+        headers = self.headers
+        data = {"isLike": is_like}
+        headers["Authorization"] = f"Bearer {token}"
+        url = f"{self.url}/{product_id}/reviews/{product_review_id}/rate"
+        response = requests.post(headers=headers, data=json.dumps(data), url=url)
+        assert_status_code(response, expected_status_code=expected_status_code)
+        log_request(response)
+
+        return response
+
+    def get_product_review_statistics(self, product_id: str) -> Response:
+        """Getting product review statistics
+
+        Args:
+            product_id: ID of product
+        """
+        url = f"{self.url}/{product_id}/reviews/statistics"
+        response = requests.get(url=url)
+        log_request(response)
+
+        return response

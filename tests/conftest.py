@@ -1,19 +1,16 @@
-import logging
-import time
-
+import pytest
 from allure import title, step
-from hamcrest import assert_that, is_, is_not, empty, not_
-from psycopg2 import connect
-from pytest import fixture
 
 # from assertpy import assert_that
 from assertpy import assert_that as assertpy_assert_that
-import pytest
+from hamcrest import assert_that, is_, is_not, empty, not_, equal_to
+from psycopg2 import connect
+from pytest import fixture
 
 from configs import (
-    database_name,
-    HOST,
     DB_NAME,
+    HOST_DB,
+    PORT_DB,
     DB_USER,
     DB_PASS,
     EMAIL_LOCAL_PART,
@@ -21,114 +18,52 @@ from configs import (
     EMAIL_DOMAIN2,
     EMAIL_LOCAL_PART2,
     email_address_to_connect2,
-    ssh_username,
-    ssh_password,
-    local_server_ip,
-    remote_server_ip,
-    db_password,
-    db_username,
-    port_ssh,
 )
 from data.data_for_cart import data_for_adding_product_to_cart
-from framework.asserts.registration_asserts import check_mapping_api_to_db
-from framework.clients.switch_to_BD import connect_to_database
-from framework.endpoints.cart_api import CartAPI
-from framework.endpoints.users_api import UsersAPI
-from framework.queries.postgres_remote_bd import PostgresDB
+from framework.asserts.assert_favorite import assert_added_product_in_favorites
 from framework.endpoints.authenticate_api import AuthenticateAPI
+from framework.endpoints.cart_api import CartAPI
+from framework.endpoints.favorite_api import FavoriteAPI
+from framework.endpoints.product_api import ProductAPI
+from framework.endpoints.review_api import ReviewAPI
+from framework.endpoints.users_api import UsersAPI
+from framework.queries.postgres_db import PostgresDB
+from framework.tools.class_email import Email
+from framework.tools.favorite_methods import extract_random_product_ids
 from framework.tools.generators import (
     generate_user,
     generate_user_data,
     append_random_to_local_part_email,
 )
-from framework.asserts.common import assert_content_type
 from framework.tools.methods_to_cart import (
     assert_product_to_add_matches_response,
     get_product_info,
 )
-from framework.tools.class_email import Email
-from framework.endpoints.product_api import ProductAPI
-from framework.tools.favorite_methods import extract_random_product_ids
-from framework.endpoints.favorite_api import FavoriteAPI
-from framework.asserts.assert_favorite import assert_added_product_in_favorites
+from framework.tools.review_methods import (
+    verify_user_review_in_all_reviews,
+    verify_user_review_by_user_name_in_all_product_reviews,
+    extract_random_product_info,
+)
 
 # Connection configuration
-PostgresDB.ssh_username = ssh_username
-PostgresDB.ssh_password = ssh_password
-PostgresDB.local_server_ip = local_server_ip
-PostgresDB.remote_server_ip = remote_server_ip
-PostgresDB.db_username = db_username
-PostgresDB.db_password = db_password
-PostgresDB.database_name = database_name
-PostgresDB.port_ssh = port_ssh
+PostgresDB.dbname = DB_NAME
+PostgresDB.host = HOST_DB
+PostgresDB.port = PORT_DB
+PostgresDB.user = DB_USER
+PostgresDB.password = DB_PASS
 
 
-@pytest.fixture(scope="session")
-def db_connection(request):
-    local_connection = connect_to_database(local=True)
-    request.addfinalizer(local_connection.close)
-    return local_connection
-
-
-@pytest.fixture(scope="session")
-def remote_db_connection(request):
-    remote_connection = connect_to_database(local=False)
-    request.addfinalizer(remote_connection.close)
-    return remote_connection
-
-
-@pytest.fixture(scope="session")
-def postgres(request, local=True):
-    """Fixture to connect to Postgres DataBase"""
-    if local:
-        conn = connect_to_database(local=True)
-    else:
-        conn = connect_to_database(local=False)
-
-    request.addfinalizer(conn.close)
+@title("SetUp and TearDown connect to Postgres DataBase for testing")
+@fixture(scope="function")
+def postgres() -> connect:
+    """Connect to Postgres DataBase"""
+    with step("SetUp. Connecting to Postgres database"):
+        conn = PostgresDB()
 
     yield conn
 
     with step("TearDown. Closing connect to Postgres database"):
         conn.close()
-
-
-def pytest_exception_interact(node, call, report):
-    conn = node.funcargs.get("postgres", None)
-    if conn is not None and not conn.closed:
-        conn.close()
-
-
-# @title("SetUp and TearDown connect to Postgres DataBase for testing")
-# @fixture(scope="function")
-# def postgres() -> connect:
-#     """Connect to Postgres DataBase"""
-#     with step("SetUp. Connecting to Postgres database"):
-#         conn = PostgresDB()
-#
-#     yield conn
-#
-#     with step("TearDown. Closing connect to Postgres database"):
-#         conn.close()
-
-
-# @fixture(scope="function")
-# def postgres():
-#     """Connect to Postgres DataBase"""
-#     conn = None
-#     try:
-#         with step("SetUp. Connecting to Postgres database"):
-#             conn = PostgresDB()
-#         yield conn
-#     except Exception as e:
-#         logging.error(f"Error connecting to database: {e}")
-#         if conn:
-#             conn.close()
-#         pytest.fail(f"Failed to set up database connection: {e}")
-#     finally:
-#         if conn:
-#             with step("TearDown. Closing connect to Postgres database"):
-#                 conn.close()
 
 
 def generate_and_insert_user(postgres):
@@ -479,3 +414,65 @@ def delete(token):
         UsersAPI().delete_user(token=token)
 
         return delete
+
+
+@pytest.fixture
+def add_review_to_product(create_authorized_user, request):
+    with step("Registration of user"):
+        user, token = (
+            create_authorized_user["user"],
+            create_authorized_user["token"],
+        )
+
+    with step("Getting all products via API and randomly select one"):
+        response_get_product = ProductAPI().get_all()
+        random_product = extract_random_product_info(response_get_product, 1)
+        product_id = random_product[0]["id"]
+
+    with step("Extract review count and average rating for product"):
+        product_review_count = random_product[0]["reviewsCount"]
+        product_average_rating = random_product[0]["averageRating"]
+
+    with step("Verify that user does not have review for product"):
+        response_get_review = ReviewAPI().get_all_product_reviews(product_id=product_id)
+        assert_that(
+            verify_user_review_by_user_name_in_all_product_reviews(
+                response_get_review, user
+            ),
+            is_(False),
+            "user has review",
+        )
+
+    with step("Add review to randomly selected product"):
+        response_after_adding_review = ReviewAPI().add_product_review(
+            token=token,
+            product_id=product_id,
+            text_review=request.param["text_review"],
+            rating=request.param["rating"],
+        )
+
+    with step("Extract product review Id from response"):
+        product_review_id = response_after_adding_review.json().get("productReviewId")
+
+    with step(
+        "Verify that the user's review is successfully added to the product by retrieving all product reviews"
+    ):
+        response_get_all_review = ReviewAPI().get_all_product_reviews(
+            product_id=product_id
+        )
+        result, message = verify_user_review_in_all_reviews(
+            response_get_all_review,
+            user,
+            text_review=request.param["text_review"],
+            rating=request.param["rating"],
+        )
+        assert_that(result, is_(equal_to(True)), reason=message)
+
+    yield {
+        "random_product_id": product_id,
+        "user": user,
+        "token": token,
+        "product_review_id": product_review_id,
+        "product_review_count": product_review_count,
+        "product_average_rating": product_average_rating,
+    }

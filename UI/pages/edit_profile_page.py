@@ -20,7 +20,48 @@ class EditProfilePage(BasePage):
 
     def save_change(self):
         save_change_button = self.browser.find_element(*EditProfilePageLocators.SAVE_CHANGE_BUTTON)
-        save_change_button.click()
+        save_change_button.click()    
+    
+    def is_error_message_first_name_present(self, error_message):
+        try:
+            message_empty = self.browser.find_element(*EditProfilePageLocators.EMPTY_FIRST_NAME_MESSAGE).text
+        except:
+            message_empty = ''
+        try:
+            message_nonlatin = self.browser.find_element(*EditProfilePageLocators.NONLATIN_FIRST_NAME_MESSAGE).text
+        except:
+            message_nonlatin = ''
+        try:
+            message_server_error = self.browser.find_element(*EditProfilePageLocators.SERVER_ERROR_MESSAGE).text
+        except:
+            message_server_error = ''        
+        if (message_empty in error_message) or \
+           (message_nonlatin in error_message) or \
+           (message_server_error in error_message):
+            return True
+        else:
+            return False
+    
+    def is_error_message_last_name_present(self, error_message):
+        try:
+            message_empty = self.browser.find_element(*EditProfilePageLocators.EMPTY_LAST_NAME_MESSAGE).text
+        except:
+            message_empty = ''
+        try:
+            message_nonlatin = self.browser.find_element(*EditProfilePageLocators.NONLATIN_LAST_NAME_MESSAGE).text
+        except:
+            message_nonlatin = ''
+        try:
+            message_server_error = self.browser.find_element(*EditProfilePageLocators.SERVER_ERROR_MESSAGE).text
+        except:
+            message_server_error = ''        
+        if (message_empty in error_message) or \
+           (message_nonlatin in error_message) or \
+           (message_server_error in error_message):
+            return True
+        else:
+            return False
+
 
 '''    def is_success_message_present(self, success_message):
         message_element = self.browser.find_element(*EditProfilePageLocators.SUCCESS_MESSAGE)

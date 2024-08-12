@@ -24,24 +24,23 @@ services:
       DATASOURCE_USERNAME: postgres
       DATASOURCE_PASSWORD: postgres
       DATASOURCE_HOST: iced-latte-postgresdb-qa
-      REDIS_HOST: iced-latte-redis
+      REDIS_HOST: iced-latte-redis-qa
       REDIS_PORT: 6380
-      MINIO_HOST: http://iced-latte-minio-qa
-      MINIO_PORT: 9000
-      MINIO_DEFAULT_PRODUCT_IMAGES_PATH: ./products
       AWS_DEFAULT_PRODUCT_IMAGES_PATH: ./products
       AWS_ACCESS_KEY: vbfgngfdndgndgndgndgndgndgndg
       AWS_SECRET_KEY: vbfgngfdndgndgndgndgndgndgndg
       AWS_REGION: eu-west-1
       AWS_PRODUCT_BUCKET: products
       AWS_USER_BUCKET: users
+      GOOGLE_AUTH_CLIENT_ID: vbfgngfdndgndgndgndgndgndgndg
+      GOOGLE_AUTH_CLIENT_SECRET: vbfgngfdndgndgndgndgndgndgndg
+      GOOGLE_AUTH_REDIRECT_URI: vbfgngfdndgndgndgndgndgndgndg
     ports:
       - '8083:8083'
       - '5005:5005'
     networks:
       - iced-latte-network-qa
     depends_on:
-      - iced-latte-minio-qa
       - iced-latte-postgresdb-qa
     volumes:
       - backend_logs:/usr/app/logs
@@ -68,18 +67,13 @@ services:
       retries: 5
     restart: on-failure
 
-  iced-latte-minio-qa:
-    image: minio/minio
-    container_name: iced-latte-minio-qa
-    volumes:
-      - minio_data:/data
-    environment:
-      MINIO_ROOT_USER: minio123
-      MINIO_ROOT_PASSWORD: minio123
-    ports:
-      - '9000:9000'
-      - '9001:9001'
+  iced-latte-redis:
+    image: redis/redis-stack:latest
+    container_name: iced-latte-redis-qa
     networks:
       - iced-latte-network-qa
-    command: server /data --console-address ":9001"
-    restart: on-failure
+    environment:
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6380
+    ports:
+      - "6380:6380"

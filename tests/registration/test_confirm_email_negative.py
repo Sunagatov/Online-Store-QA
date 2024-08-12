@@ -10,6 +10,7 @@ from configs import (
     lastName,
     password,
 )
+from data.data_format_token import incorrect_format_token
 from framework.asserts.common import assert_message_in_response, assert_response_message
 from framework.endpoints.authenticate_api import AuthenticateAPI
 
@@ -24,22 +25,7 @@ class TestConfirmationEmail:
         "THEN status HTTP CODE = 400 and error message"
     )
     @pytest.mark.parametrize(
-        "code, expected_status_code, expected_message_part",
-        [
-            pytest.param(" ", 400, "ErrorMessage: Token cannot be empty"),
-            pytest.param(
-                "testtest",
-                400,
-                "Incorrect token format, token must be ###-###-###",
-            ),
-            pytest.param("123-123-123 ", 400, "Incorrect token"),
-            pytest.param(
-                "12345678910 ", 400, "Incorrect token format, token must be ###-###-###"
-            ),
-            pytest.param(
-                "$*@!_+_*&%", 400, "Incorrect token format, token must be ###-###-###"
-            ),
-        ],
+        "code, expected_status_code, expected_message_part", incorrect_format_token
     )
     def test_confirmation_email_for_registration_with_empty_and_invalid_format_code(
         self, code, expected_status_code, expected_message_part
