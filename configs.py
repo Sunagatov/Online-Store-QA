@@ -1,6 +1,6 @@
 from data.data_for_auth import DB_PASS
 
-HOST = "http://52.53.181.23:8083"
+HOST = "http://204.236.146.6:8083"
 HOST_DB = "3.8.117.106"
 
 
