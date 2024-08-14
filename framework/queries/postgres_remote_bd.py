@@ -5,17 +5,27 @@ from framework.tools.generators import generate_user
 
 
 class PostgresDB:
-    ssh_username: str = None
-    ssh_password: str = None
-    local_server_ip: str = None
-    remote_server_ip: str = None
-    db_username: str = None
-    db_password: str = None
-    database_name: str = None
-    port_ssh: int = None
-
-    def __init__(self):
+    def __init__(
+        self,
+        ssh_username: str,
+        ssh_password: str,
+        local_server_ip: str,
+        remote_server_ip: str,
+        db_username: str,
+        db_password: str,
+        database_name: str,
+        port_ssh: int,
+    ):
         """Initialize the database connection"""
+        self.ssh_username = ssh_username
+        self.ssh_password = ssh_password
+        self.local_server_ip = local_server_ip
+        self.remote_server_ip = remote_server_ip
+        self.db_username = db_username
+        self.db_password = db_password
+        self.database_name = database_name
+        self.port_ssh = port_ssh
+
         self.db = DBClient(
             ssh_username=self.ssh_username,
             ssh_password=self.ssh_password,

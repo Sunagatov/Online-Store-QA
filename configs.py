@@ -1,14 +1,6 @@
-from data.data_for_auth import DB_PASS
+from data.data_for_auth import JWT_SECRET
 
-HOST = "http://204.236.146.6:8083"
-HOST_DB = "3.8.117.106"
-
-
-PORT_DB = "5432"
-DB_NAME = "testdb"
-DB_USER = "postgres"
-DB_PASS = DB_PASS
-
+HOST = "https://iced-latte.uk/backend"
 
 # data for creating user#1
 email = "icedlate.test@gmail.com"
@@ -39,3 +31,5 @@ email_address_to_connect2 = "icedlate2.test@gmail.com"
 # iced-late mail
 email_iced_late = "youricedlatteshop@gmail.com"
 DEFAULT_PASSWORD = "pass1234"
+
+JWT_SECRET = JWT_SECRET
