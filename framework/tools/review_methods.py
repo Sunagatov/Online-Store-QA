@@ -1,4 +1,5 @@
 import json
+import math
 import random
 from datetime import datetime
 from typing import Dict
@@ -294,7 +295,7 @@ def assert_page_number_in_reviews_body(response, page_number):
 
 
 def assert_size_reviews_per_page(response, reviews_size_per_page):
-    """Verify if the page number in the response body is equal to the expected page number.
+    """Verify size of reviews per page.
 
     Args:
          response: The response object from the API call.
@@ -315,11 +316,11 @@ def assert_size_reviews_per_page(response, reviews_size_per_page):
     )
 
 
-def assert_total_elements_reviews(response, total_elements):
-    """Verify if the page number in the response body is equal to the expected page number.
+def assert_total_elements_reviews(response, expected_total_elements):
+    """Verify total number of reviews.
 
     Args:
-         total_elements: The expected total number of reviews.
+         expected_total_elements: The expected total number of reviews.
          response: The response object from the API call.
 
     """
@@ -327,14 +328,12 @@ def assert_total_elements_reviews(response, total_elements):
         response_data = response.json()
     except ValueError as e:
         raise AssertionError(f"Response is not in valid JSON format: {e}") from e
-    # total_elements = response_data.get("totalElements", 0)
-
-    actual_size = len(response_data.get("reviewsWithRatings", []))
+    actual_size = response_data.get("totalElements", 0)
 
     assert_that(
         actual_size,
-        is_(equal_to(total_elements)),
-        reason=f"Expected number of reviews per page is '{total_elements}', found: '{actual_size}'",
+        is_(equal_to(expected_total_elements)),
+        reason=f"Expected total number of reviews  is '{expected_total_elements}', found: '{actual_size}'",
     )
 
 
@@ -437,3 +436,34 @@ def assert_reviews_sorted_desc(response):
             greater_than_or_equal_to(next_date),
             "Reviews are not sorted by createdAt in descending order",
         )
+
+
+def calculate_total_pages(total_items: int, items_per_page: int) -> int:
+    """Calculate the total number of pages needed
+
+    Args:
+        total_items: Total number of items
+        items_per_page: Number of items per page
+
+    Returns:
+        Total pages required, rounded up to the nearest whole number
+    """
+    return math.ceil(total_items / items_per_page)
+
+
+def get_amount_of_reviews_with_particular_rating(response, rating):
+    """Verify the amount of reviews with particular rating.
+
+    Args:
+         response: The response object from the API call.
+         rating: The rating of the review.
+
+    """
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+
+    all_reviews = response_data.get("reviewsWithRatings", [])
+
+    return sum(review["productRating"] == rating for review in all_reviews)
