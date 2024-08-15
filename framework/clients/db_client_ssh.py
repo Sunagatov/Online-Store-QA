@@ -71,13 +71,22 @@ class DBClient:
             self.server.stop()
             logging.info("SSH tunnel closed")
 
-    def execute(self, query: str) -> None:
-        """Execute a query to the Postgres database without returning data"""
-        logging.debug(f"Executing query: {query}")
-        self.cur.execute(query)
+    # def execute(self, query: str) -> None:
+    #     """Execute a query to the Postgres database without returning data"""
+    #     logging.debug(f"Executing query: {query}")
+    #     self.cur.execute(query)
+    #
+    # def fetch_all(self, query: str) -> Optional[List[dict]]:
+    #     """Execute a query to the Postgres database and return data as a list of dictionaries"""
+    #     self.execute(query)
+    #     records = self.cur.fetchall()
+    #     return [dict(rec) for rec in records] if records else []
+    def fetch_all(self, query: str, params: tuple = ()) -> List[tuple]:
+        with self.conn.cursor() as cursor:
+            cursor.execute(query, params)
+            return cursor.fetchall()
 
-    def fetch_all(self, query: str) -> Optional[List[dict]]:
-        """Execute a query to the Postgres database and return data as a list of dictionaries"""
-        self.execute(query)
-        records = self.cur.fetchall()
-        return [dict(rec) for rec in records] if records else []
+    def execute(self, query: str, params: tuple = ()) -> None:
+        with self.conn.cursor() as cursor:
+            cursor.execute(query, params)
+            self.conn.commit()

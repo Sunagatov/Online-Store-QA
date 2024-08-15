@@ -1,4 +1,4 @@
-from data.data_for_auth import JWT_SECRET
+from data.data_for_auth import JWT_SECRET, DEFAULT_PASSWORD
 
 
 HOST = "https://iced-latte.uk/backend"
@@ -36,7 +36,7 @@ email_address_to_connect2 = "icedlate2.test@gmail.com"
 
 # iced-late mail
 email_iced_late = "youricedlatteshop@gmail.com"
-DEFAULT_PASSWORD = "pass1234"
+DEFAULT_PASSWORD = DEFAULT_PASSWORD
 
 
 JWT_SECRET = JWT_SECRET
