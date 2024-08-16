@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from framework.clients.db_client_ssh import DBClient
 from framework.tools.generators import generate_user

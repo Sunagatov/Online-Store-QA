@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, List
+from typing import List
 
 from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
