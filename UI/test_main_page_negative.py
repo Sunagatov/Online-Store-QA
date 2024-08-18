@@ -15,7 +15,7 @@ from .configs import link
 class TestMainPageNegative:
     @title("Check filter products by 'price from' (digits with other symbols) on main page")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
-    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 '))
+    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4'))
     def test_filter_products_by_price_from_numbers(self, browser, price):
         main_page = BasePage(browser, link)
         main_page.open()
@@ -33,7 +33,7 @@ class TestMainPageNegative:
 
     @title("Check filter products by 'price to' (digits with other symbols) on main page")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
-    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 '))
+    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4'))
     def test_filter_products_by_price_to_numbers(self, browser, price):
         main_page = BasePage(browser, link)
         main_page.open()
