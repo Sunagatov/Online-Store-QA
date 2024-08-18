@@ -76,3 +76,39 @@ class TestMainPageNegative:
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct(price_from, ''), \
                 'The filtering is not correct'
+
+    @title("Check copy-paste value (digits with other symbols) in 'price from'")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    @pytest.mark.parametrize("price", ('1 1', '1    1', 'ad44re'))
+    def test_copy_paste_price_from(self, browser, price):
+        main_page = BasePage(browser, link)
+        main_page.open()
+        price_from = price
+        price_to = '1000'
+
+        main_page.filter_products_by_price_copy_paste(price_from, price_to)
+
+        # remove all non-digit symbols from price
+        price_from_after_processing = re.sub(r'\D', '', price_from)
+
+        with step('Check that filtering by price is correct'):
+            assert main_page.is_filtering_by_price_correct(price_from_after_processing, price_to), \
+                'The filtering is not correct'
+
+    @title("Check copy-paste value (digits with other symbols) in 'price to'")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    @pytest.mark.parametrize("price", ('1 1', '1    1', 'ad4re'))
+    def test_copy_paste_price_to(self, browser, price):
+        main_page = BasePage(browser, link)
+        main_page.open()
+        price_from = '0'
+        price_to = price
+
+        main_page.filter_products_by_price_copy_paste(price_from, price_to)
+
+        # remove all non-digit symbols from price
+        price_to_after_processing = re.sub(r'\D', '', price_to)
+
+        with step('Check that filtering by price is correct'):
+            assert main_page.is_filtering_by_price_correct(price_from, price_to_after_processing), \
+                'The filtering is not correct'
