@@ -241,9 +241,13 @@ class BasePage:
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
             show_more_button.click()
 
+        if price_from == '':
+            price_from = '0'
+        if price_to == '':
+            price_to = '1000'
+
         # create filtered products price list
         products_price_list = self.get_products_price_list()
-        print('\n', products_price_list)
         for product_price in products_price_list:
             if float(product_price) <= float(price_from) or float(product_price) >= float(price_to):
                 return False
