@@ -121,7 +121,7 @@ class TestMainPageNegative:
         price_from = price
         price_to = '1000'
 
-        main_page.filter_products_by_price(price_from, price_to)
+        main_page.filter_products_by_price_copy_paste(price_from, price_to)
 
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct('', price_to), \
@@ -135,7 +135,7 @@ class TestMainPageNegative:
         price_from = '0'
         price_to = price
 
-        main_page.filter_products_by_price(price_from, price_to)
+        main_page.filter_products_by_price_copy_paste(price_from, price_to)
 
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct(price_from, ''), \
