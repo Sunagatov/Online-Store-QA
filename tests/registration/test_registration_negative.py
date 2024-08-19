@@ -2,7 +2,7 @@ import pytest
 from allure import description, feature, link, step, title, severity
 from hamcrest import assert_that, has_length, is_not, empty, equal_to
 
-from configs import DB_NAME, HOST_DB, PORT_DB, DB_USER, DB_PASS
+# from configs import DB_NAME, HOST_DB, PORT_DB, DB_USER, DB_PASS
 from framework.asserts.common import assert_status_code, assert_message_in_response
 from framework.asserts.registration_asserts import check_mapping_api_to_db
 from framework.clients.db_client import DBClient
@@ -12,11 +12,11 @@ from framework.steps.registration_steps import RegistrationSteps
 from framework.tools.generators import generate_string, generate_user_data
 
 # Connection configuration
-PostgresDB.dbname = DB_NAME
-PostgresDB.host = HOST_DB
-PostgresDB.port = PORT_DB
-PostgresDB.user = DB_USER
-PostgresDB.password = DB_PASS
+# PostgresDB.dbname = DB_NAME
+# PostgresDB.host = HOST_DB
+# PostgresDB.port = PORT_DB
+# PostgresDB.user = DB_USER
+# PostgresDB.password = DB_PASS
 
 
 @feature("Registration of user")
@@ -85,7 +85,7 @@ class TestRegistration:
         ):
             email_to_check = user["email"]
             result = postgres.select_user_by_email(email=email_to_check)
-            count = result[0]["count"]
+            count = result
             assert_that(
                 count,
                 equal_to(1),

@@ -8,17 +8,24 @@ from psycopg2 import connect
 from pytest import fixture
 
 from configs import (
-    DB_NAME,
-    HOST_DB,
-    PORT_DB,
-    DB_USER,
-    DB_PASS,
     EMAIL_LOCAL_PART,
     EMAIL_DOMAIN,
     EMAIL_DOMAIN2,
     EMAIL_LOCAL_PART2,
     email_address_to_connect2,
 )
+from data.data_for_auth import (
+    ssh_username,
+    ssh_password,
+    local_server_ip,
+    remote_server_ip,
+    db_username,
+    db_password,
+    database_name,
+    port_ssh,
+)
+
+from data.data_for_auth import DB_NAME, HOST_DB, DB_USER, DB_PASS, PORT_DB
 from data.data_for_cart import data_for_adding_product_to_cart
 from framework.asserts.assert_favorite import assert_added_product_in_favorites
 from framework.endpoints.authenticate_api import AuthenticateAPI
@@ -27,7 +34,7 @@ from framework.endpoints.favorite_api import FavoriteAPI
 from framework.endpoints.product_api import ProductAPI
 from framework.endpoints.review_api import ReviewAPI
 from framework.endpoints.users_api import UsersAPI
-from framework.queries.postgres_db import PostgresDB
+from framework.queries.postgres_remote_db import PostgresDB
 from framework.tools.class_email import Email
 from framework.tools.favorite_methods import extract_random_product_ids
 from framework.tools.generators import (
@@ -56,6 +63,26 @@ PostgresDB.password = DB_PASS
 @title("SetUp and TearDown connect to Postgres DataBase for testing")
 @fixture(scope="function")
 def postgres() -> connect:
+    """Connect to Postgres DataBase through ssh"""
+    with step("SetUp. Connecting to Postgres database"):
+        conn = PostgresDB(
+            ssh_username=ssh_username,
+            ssh_password=ssh_password,
+            local_server_ip=local_server_ip,
+            remote_server_ip=remote_server_ip,
+            db_username=db_username,
+            db_password=db_password,
+            database_name=database_name,
+            port_ssh=port_ssh,
+        )
+    yield conn
+    with step("TearDown. Closing connect to Postgres database"):
+        conn.close()
+
+
+@title("SetUp and TearDown connect to local Postgres DataBase for testing")
+@fixture(scope="function")
+def postgres_local() -> connect:
     """Connect to Postgres DataBase"""
     with step("SetUp. Connecting to Postgres database"):
         conn = PostgresDB()
