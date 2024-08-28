@@ -115,7 +115,7 @@ def create_certain_number_of_reviews(postgres, request):
                     product_id=product_id
                 )
 
-        yield product_id
+        yield {"user": user, "token": token, "product_id": product_id}
     finally:
         # Cleanup: delete all users created during the test
         for token in created_users:

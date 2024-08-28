@@ -30,7 +30,8 @@ class TestGetProductReviews:
     )
     def test_get_all_product_reviews(self, create_certain_number_of_reviews):
         with step("Getting all products via API"):
-            product_id = create_certain_number_of_reviews
+            created_review = create_certain_number_of_reviews
+            product_id = created_review["product_id"]
             response_get_all_review = ReviewAPI().get_all_product_reviews(
                 product_id=product_id
             )
@@ -75,7 +76,8 @@ class TestGetProductReviews:
         self, create_certain_number_of_reviews
     ):
         with step("Getting all products via API without parameters"):
-            product_id = create_certain_number_of_reviews
+            created_review = create_certain_number_of_reviews
+            product_id = created_review["product_id"]
             response_get_all_review_with_default_parameters = (
                 ReviewAPI().get_all_product_reviews(product_id=product_id)
             )
@@ -150,7 +152,8 @@ class TestGetProductReviews:
         self, create_certain_number_of_reviews
     ):
         with step("Getting all products via API without parameters"):
-            product_id = create_certain_number_of_reviews
+            created_review = create_certain_number_of_reviews
+            product_id = created_review["product_id"]
             response_get_all_review_with_default_parameters = (
                 ReviewAPI().get_all_product_reviews(product_id=product_id)
             )
@@ -228,7 +231,8 @@ class TestGetProductReviews:
         self, create_certain_number_of_reviews
     ):
         with step("Getting all products via API without parameters"):
-            product_id = create_certain_number_of_reviews
+            created_review = create_certain_number_of_reviews
+            product_id = created_review["product_id"]
             response_get_all_review_with_default_parameters = (
                 ReviewAPI().get_all_product_reviews(product_id=product_id)
             )
@@ -313,7 +317,8 @@ class TestGetProductReviews:
     ):
         with step("Getting all products via API with custom rating parameter"):
             product_rating = 3
-            product_id = create_certain_number_of_reviews
+            created_review = create_certain_number_of_reviews
+            product_id = created_review["product_id"]
             response_get_all_review_with_default_parameters = (
                 ReviewAPI().get_all_product_reviews(product_id=product_id)
             )
