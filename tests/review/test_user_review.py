@@ -102,7 +102,7 @@ class TestGetUserReview:
 
         with step("Get user's review with invalid product id"):
             ReviewAPI().get_user_product_review(
-                token=token, product_id=invalid_product_id, expected_status_code=400
+                token=token, product_id=invalid_product_id, expected_status_code=404
             )
 
     parameter_sets = [1]
