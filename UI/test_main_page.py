@@ -127,6 +127,21 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
+    @title("Check reset button on brand filter")
+    def test_reset_filter_by_brand(self, browser):
+        brand = 'Illy'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_brand(brand)
+        main_page.reset_brand_filter()
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
     @title("Check filter products by seller on main page")
     def test_filter_products_by_seller(self, browser):
         seller = 'FreshCup'
@@ -142,6 +157,21 @@ class TestMainPage:
 
         # uncheck seller checkbox
         main_page.filter_products_by_seller(seller)
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title("Check reset button on seller filter")
+    def test_reset_filter_by_seller(self, browser):
+        seller = 'FreshCup'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_seller(seller)
+        main_page.reset_seller_filter()
         products_list_length_after = main_page.get_products_list_length()
 
         with step('Check that all of products is presented'):

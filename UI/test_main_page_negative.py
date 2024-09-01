@@ -132,6 +132,7 @@ class TestMainPageNegative:
 
     @title("Check copy-paste value (symbols without digits) in 'price to'")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    # https://github.com/Sunagatov/Iced-Latte-Frontend/issues/264
     @pytest.mark.parametrize("price", ('---', '!,!', '!!', 'abc'))
     def test_copy_paste_price_to(self, browser, price):
         main_page = BasePage(browser, link)
@@ -168,3 +169,17 @@ class TestMainPageNegative:
 
         with step('Check that no result message is present'):
             assert main_page.is_no_result_message_present(), 'No result message is not present'
+
+    @title("Check the bigger price from and lower price to")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    # https://github.com/Sunagatov/Iced-Latte-Frontend/issues/264
+    def test_incorrect_price(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+        price_from = '5'
+        price_to = '4'
+
+        main_page.filter_products_by_price(price_from, price_to)
+
+        with step('Check that error message is present'):
+            assert main_page.is_error_message_present(), 'Error message is not present'

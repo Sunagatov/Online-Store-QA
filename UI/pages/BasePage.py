@@ -237,6 +237,9 @@ class BasePage:
             return False
         return True
 
+    def is_error_message_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.ERROR_MESSAGE)
+
     def is_favorites_page_icon_has_not_counter(self):
         return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)
 
@@ -363,6 +366,16 @@ class BasePage:
     def remove_product_from_favorites(self) -> None:
         remove_from_favorites_button = self.browser.find_element(*BasePageLocators.REMOVE_FROM_FAVORITES_BUTTON)
         remove_from_favorites_button.click()
+
+    @step('Click "Reset" button on brand filter')
+    def reset_brand_filter(self) -> None:
+        reset_brand_filter_button = self.browser.find_element(*BasePageLocators.RESET_BRAND_FILTER_BUTTON)
+        reset_brand_filter_button.click()
+
+    @step('Click "Reset" button on seller filter')
+    def reset_seller_filter(self) -> None:
+        reset_seller_filter_button = self.browser.find_element(*BasePageLocators.RESET_SELLER_FILTER_BUTTON)
+        reset_seller_filter_button.click()
 
     # check that login link is present on the page
     def should_be_login_link(self):
