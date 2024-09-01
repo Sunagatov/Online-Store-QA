@@ -467,3 +467,25 @@ def get_amount_of_reviews_with_particular_rating(response, rating):
     all_reviews = response_data.get("reviewsWithRatings", [])
 
     return sum(review["productRating"] == rating for review in all_reviews)
+
+
+def verify_user_review_body(response, value):
+    """Verifies the response body values match the expected value.
+
+    The function first loads the response JSON. It then iterates through the response values and asserts they equal the expected value.
+
+    Args:
+        response: The response object to verify
+        value: The expected value to match against
+
+    Raises:
+        AssertionError: If any response value does not match the expected value
+    """
+
+    try:
+        response_data = response.json()
+    except ValueError as e:
+        raise AssertionError(f"Response is not in valid JSON format: {e}") from e
+
+    for i in response_data.values():
+        assert_that(i, equal_to(value), f"EXPECTED value: {value} but got {i}")
