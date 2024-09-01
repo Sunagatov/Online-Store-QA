@@ -18,6 +18,7 @@ class BasePageLocators:
     HEART_LIKED_ICON = (By.XPATH, '//img[@alt="heart liked"]')
     HEART_UNLIKED_ICON = (By.XPATH, '(//img[@alt="heart unliked"])[2]')
     MINUS_BUTTON = (By.ID, 'min-btn')
+    NO_RESULT_MESSAGE = (By.XPATH, '//*[contains(text(), "No results found for the specified parameters.")]')
     PLUS_BUTTON = (By.ID, 'plus-btn')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')

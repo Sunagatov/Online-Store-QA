@@ -15,7 +15,7 @@ from .configs import link
 class TestMainPageNegative:
     @title("Check filter products by 'price from' (digits with other symbols) on main page")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
-    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4'))
+    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4', '4.4'))
     def test_filter_products_by_price_from_digits(self, browser, price):
         main_page = BasePage(browser, link)
         main_page.open()
@@ -33,7 +33,7 @@ class TestMainPageNegative:
 
     @title("Check filter products by 'price to' (digits with other symbols) on main page")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
-    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4'))
+    @pytest.mark.parametrize("price", ('-4', '4-', 'a4', '4a', '4,4', ' 4', '4 ', '4 4', '4.4'))
     def test_filter_products_by_price_to_digits(self, browser, price):
         main_page = BasePage(browser, link)
         main_page.open()
@@ -144,3 +144,27 @@ class TestMainPageNegative:
         with step('Check that filtering by price is correct'):
             assert main_page.is_filtering_by_price_correct(price_from, ''), \
                 'The filtering is not correct'
+
+    @title("Check the big number for price from")
+    def test_big_price_from(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+        price_from = '1000'
+        price_to = ''
+
+        main_page.filter_products_by_price(price_from, price_to)
+
+        with step('Check that no result message is present'):
+            assert main_page.is_no_result_message_present(), 'No result message is not present'
+
+    @title("Check the zero for price to")
+    def test_zero_price_to(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+        price_from = ''
+        price_to = '0'
+
+        main_page.filter_products_by_price(price_from, price_to)
+
+        with step('Check that no result message is present'):
+            assert main_page.is_no_result_message_present(), 'No result message is not present'

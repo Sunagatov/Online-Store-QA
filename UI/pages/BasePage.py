@@ -310,6 +310,9 @@ class BasePage:
     def is_heart_on_product_transparent(self) -> bool:
         return self.is_element_present(*BasePageLocators.HEART_UNLIKED_ICON)
 
+    def is_no_result_message_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.NO_RESULT_MESSAGE)
+
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
