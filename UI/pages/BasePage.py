@@ -52,6 +52,15 @@ class BasePage:
         plus_button.click()
         sleep(2)  # waiting is mandatory (do not remove)
 
+    @step('Click scroll button')
+    def click_scroll_button(self) -> None:
+        scroll_button = self.browser.find_element(*BasePageLocators.SCROLL_BUTTON)
+
+    @step('Click show more button')
+    def click_show_more_button(self) -> None:
+        show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+        show_more_button.click()
+
     @step('Filter products in catalog by brand')
     def filter_products_by_brand(self, brand: str) -> None:
         base_page_locators = BasePageLocators()

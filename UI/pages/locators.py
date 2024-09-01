@@ -36,13 +36,14 @@ class BasePageLocators:
     PRODUCT_PRICE = (By.XPATH, '(//a[starts-with(@href,"/product")]/following-sibling::div/p)[2]')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
-    RESET_BRAND_FILTER_BUTTON = (By.ID, 'Brand-reset-btn')
-    RESET_SELLER_FILTER_BUTTON = (By.ID, 'Seller-reset-btn')
 
     def remove_filter_badge(self, products_filter: str) -> tuple[str, str]:
         remove_filter_badge_locator = (By.XPATH, f'(//*[@id="remove-filter-{products_filter}"])[2]')
         return remove_filter_badge_locator
 
+    RESET_BRAND_FILTER_BUTTON = (By.ID, 'Brand-reset-btn')
+    RESET_SELLER_FILTER_BUTTON = (By.ID, 'Seller-reset-btn')
+    SCROLL_BUTTON = (By.ID, 'scroll-btn')
     SELLER_LIST = (By.XPATH, '//aside/div/div[4]/div/label')
     SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
     SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')

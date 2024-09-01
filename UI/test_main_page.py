@@ -177,7 +177,7 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
-    @title('Test filter badges on product catalog')
+    @title("Test filter badges on product catalog")
     def test_badges(self, browser):
         brand = 'Dunkin-Donuts'
         seller = 'BrewedBliss'
@@ -203,7 +203,7 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
-    @title('Test "By default" filter badge on product catalog')
+    @title("Test 'By default' filter badge on product catalog")
     def test_by_default_badge(self, browser):
         brand = 'Dunkin-Donuts'
         seller = 'BrewedBliss'
@@ -220,7 +220,7 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
-    @title('Test plus and minus buttons on product card')
+    @title("Test plus and minus buttons on product card")
     def test_plus_minus_buttons(self, browser):
         main_page = BasePage(browser, link)
         main_page.open()
@@ -246,3 +246,11 @@ class TestMainPage:
             assert not main_page.is_cart_counter_present(), 'Cart counter in the header is present'
         with step('Check that add to cart button is present'):
             assert main_page.is_add_to_cart_button_present(), 'Add to cart button is not present'
+
+    @title("Check scroll button")
+    def test_scroll_button(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.click_show_more_button()
+        main_page.click_scroll_button()
