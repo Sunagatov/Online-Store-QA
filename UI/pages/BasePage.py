@@ -1,5 +1,7 @@
+import pyperclip
 import re
 from allure import step
+from selenium.webdriver.common.keys import Keys
 from typing import Literal
 from time import sleep
 
@@ -68,10 +70,16 @@ class BasePage:
     @step('Filter products in catalog by price (copy-paste price)')
     def filter_products_by_price_copy_paste(self, price_from: str, price_to: str) -> None:
         price_from_field = self.browser.find_element(*BasePageLocators.PRICE_FROM_FIELD)
-        self.browser.execute_script("arguments[0].value = arguments[1];", price_from_field, price_from)
+        # self.browser.execute_script("arguments[0].value = arguments[1];", price_from_field, price_from)
+        pyperclip.copy(price_from)
+        price_from_field.click()
+        price_from_field.send_keys(Keys.CONTROL, 'v')
 
         price_to_field = self.browser.find_element(*BasePageLocators.PRICE_TO_FIELD)
-        self.browser.execute_script("arguments[0].value = arguments[1];", price_to_field, price_to)
+        # self.browser.execute_script("arguments[0].value = arguments[1];", price_to_field, price_to)
+        pyperclip.copy(price_to)
+        price_to_field.click()
+        price_to_field.send_keys(Keys.CONTROL, 'v')
 
     @step('Filter products in catalog by rating')
     def filter_products_by_rating(self, rating: Literal['4', '3', '2', '1', 'any']) -> None:

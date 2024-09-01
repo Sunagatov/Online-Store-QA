@@ -97,6 +97,7 @@ class TestMainPageNegative:
 
     @title("Check copy-paste value (digits with other symbols) in 'price to'")
     @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    # https://github.com/Sunagatov/Iced-Latte-Frontend/issues/264
     @pytest.mark.parametrize("price", ('1 1', '1    1', 'ad4re'))
     def test_copy_paste_price_to_digits(self, browser, price):
         main_page = BasePage(browser, link)
@@ -114,6 +115,8 @@ class TestMainPageNegative:
                 'The filtering is not correct'
 
     @title("Check copy-paste value (symbols without digits) in 'price from'")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
+    # https://github.com/Sunagatov/Iced-Latte-Frontend/issues/264
     @pytest.mark.parametrize("price", ('---', '!,!', '!!', 'abc'))
     def test_copy_paste_price_from(self, browser, price):
         main_page = BasePage(browser, link)
@@ -128,6 +131,7 @@ class TestMainPageNegative:
                 'The filtering is not correct'
 
     @title("Check copy-paste value (symbols without digits) in 'price to'")
+    @pytest.mark.xfail(reason='Bug is not fixed', run=True)
     @pytest.mark.parametrize("price", ('---', '!,!', '!!', 'abc'))
     def test_copy_paste_price_to(self, browser, price):
         main_page = BasePage(browser, link)
