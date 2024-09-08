@@ -253,4 +253,8 @@ class TestMainPage:
         main_page.open()
 
         main_page.click_show_more_button()
+        main_page.scroll_down()
         main_page.click_scroll_button()
+
+        with step('Check the banner is displayed on the page (after scroll up)'):
+            assert main_page.is_banner_displayed(), 'Banner is not displayed'

@@ -55,6 +55,8 @@ class BasePage:
     @step('Click scroll button')
     def click_scroll_button(self) -> None:
         scroll_button = self.browser.find_element(*BasePageLocators.SCROLL_BUTTON)
+        scroll_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
 
     @step('Click show more button')
     def click_show_more_button(self) -> None:
@@ -194,6 +196,9 @@ class BasePage:
         base_page_locators = BasePageLocators()
         return self.is_element_present(*base_page_locators.remove_filter_badge(product_filter))
 
+    def is_banner_displayed(self) -> bool:
+        return self.is_element_displayed(*BasePageLocators.BANNER)
+
     def is_cart_counter_present(self) -> bool:
         return self.is_element_present(*HeaderLocators.CART_COUNTER)
 
@@ -236,7 +241,24 @@ class BasePage:
             element.click()
         except (ElementClickInterceptedException, ElementNotInteractableException):
             return False
-        return True    
+        return True
+
+    # check that element is displayed on page
+    def is_element_displayed(self, how, what) -> bool:
+        element = self.browser.find_element(how, what)
+        # Получите размеры и позицию элемента
+        element_rect = element.rect
+        window_height = self.browser.execute_script("return window.innerHeight;")
+        window_scroll = self.browser.execute_script("return window.scrollY;")
+
+        # Проверяем, что элемент находится в видимой области окна
+        is_visible = ((element_rect['y'] + element_rect['height'] > window_scroll)
+                      and (element_rect['y'] < window_scroll + window_height))
+
+        if is_visible:
+            return True
+        else:
+            return False
 
     # check that the element is present on the page
     def is_element_present(self, how, what) -> bool:
@@ -385,6 +407,23 @@ class BasePage:
     def reset_seller_filter(self) -> None:
         reset_seller_filter_button = self.browser.find_element(*BasePageLocators.RESET_SELLER_FILTER_BUTTON)
         reset_seller_filter_button.click()
+
+    @step('Scroll down')
+    def scroll_down(self) -> None:
+        # self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        # self.browser.execute_script("window.scrollBy(0, 2800);")
+        last_height = self.browser.execute_script("return document.body.scrollHeight")
+
+        while True:
+            self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            sleep(2)
+
+            new_height = self.browser.execute_script("return document.body.scrollHeight")
+
+            if new_height == last_height:
+                break
+
+            last_height = new_height
 
     # check that login link is present on the page
     def should_be_login_link(self):
