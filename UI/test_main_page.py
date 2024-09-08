@@ -258,3 +258,22 @@ class TestMainPage:
 
         with step('Check the banner is displayed on the page (after scroll up)'):
             assert main_page.is_banner_displayed(), 'Banner is not displayed'
+
+    @title("Check that 'sort by' dropdown and filter badges is displayed after scroll down")
+    def test_dropdown_and_badges_is_displayed_after_scrolling(self, browser):
+        brand = 'Dunkin-Donuts'
+        seller = 'BrewedBliss'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.filter_products_by_brand(brand)
+        main_page.filter_products_by_seller(seller)
+
+        main_page.scroll_down()
+
+        with step('Check that "sort by" dropdown is displayed'):
+            assert main_page.is_sort_dropdown_displayed(), '"Sort by" dropdown is not displayed'
+        with step('Check that filter badges is displayed'):
+            assert main_page.is_badge_displayed(brand) and main_page.is_badge_displayed(seller),\
+                'Filter badges are not displayed'

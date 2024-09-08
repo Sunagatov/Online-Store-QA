@@ -196,6 +196,10 @@ class BasePage:
         base_page_locators = BasePageLocators()
         return self.is_element_present(*base_page_locators.remove_filter_badge(product_filter))
 
+    def is_badge_displayed(self, product_filter: str) -> bool:
+        base_page_locators = BasePageLocators()
+        return self.is_element_displayed(*base_page_locators.remove_filter_badge(product_filter))
+
     def is_banner_displayed(self) -> bool:
         return self.is_element_displayed(*BasePageLocators.BANNER)
 
@@ -346,6 +350,9 @@ class BasePage:
 
     def is_no_result_message_present(self) -> bool:
         return self.is_element_present(*BasePageLocators.NO_RESULT_MESSAGE)
+
+    def is_sort_dropdown_displayed(self) -> bool:
+        return self.is_element_displayed(*BasePageLocators.SORT_DROPDOWN)
 
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
