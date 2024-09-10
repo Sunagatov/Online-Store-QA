@@ -2,7 +2,7 @@ from allure import step, title, severity, story, severity_level
 import pytest
 # from time import sleep
 
-from .pages.base_page import BasePage
+from .pages.BasePage import BasePage
 from .configs import link
 
 
@@ -127,6 +127,21 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
+    @title("Check reset button on brand filter")
+    def test_reset_filter_by_brand(self, browser):
+        brand = 'Illy'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_brand(brand)
+        main_page.reset_brand_filter()
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
     @title("Check filter products by seller on main page")
     def test_filter_products_by_seller(self, browser):
         seller = 'FreshCup'
@@ -147,7 +162,22 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
-    @title('Test filter badges on product catalog')
+    @title("Check reset button on seller filter")
+    def test_reset_filter_by_seller(self, browser):
+        seller = 'FreshCup'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        products_list_length_before = main_page.get_products_list_length()
+        main_page.filter_products_by_seller(seller)
+        main_page.reset_seller_filter()
+        products_list_length_after = main_page.get_products_list_length()
+
+        with step('Check that all of products is presented'):
+            assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title("Test filter badges on product catalog")
     def test_badges(self, browser):
         brand = 'Dunkin-Donuts'
         seller = 'BrewedBliss'
@@ -173,7 +203,7 @@ class TestMainPage:
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
 
-    @title('Test "By default" filter badge on product catalog')
+    @title("Test 'By default' filter badge on product catalog")
     def test_by_default_badge(self, browser):
         brand = 'Dunkin-Donuts'
         seller = 'BrewedBliss'
@@ -189,3 +219,61 @@ class TestMainPage:
 
         with step('Check that all of products is presented'):
             assert products_list_length_before == products_list_length_after, 'All of products is not presented'
+
+    @title("Test plus and minus buttons on product card")
+    def test_plus_minus_buttons(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.add_product_to_cart()
+        with step('Check that cart counter in the header has increased'):
+            assert main_page.is_change_cart_counter('1'), 'Cart counter is not change'
+
+        main_page.click_plus_button()
+        with step('Check that cart counter in the header has increased'):
+            assert main_page.is_change_cart_counter('2'), 'Cart counter is not change'
+        with step('Check that counter on the product card has increased'):
+            assert main_page.is_change_product_counter('2'), 'Product counter is not change'
+
+        main_page.click_minus_button()
+        with step('Check that cart counter in the header has decreased'):
+            assert main_page.is_change_cart_counter('1'), 'Cart counter is not change'
+        with step('Check that counter on the product card has decreased'):
+            assert main_page.is_change_product_counter('1'), 'Product counter is not change'
+
+        main_page.click_minus_button()
+        with step('Check that cart counter in the header is not present'):
+            assert not main_page.is_cart_counter_present(), 'Cart counter in the header is present'
+        with step('Check that add to cart button is present'):
+            assert main_page.is_add_to_cart_button_present(), 'Add to cart button is not present'
+
+    @title("Check scroll button")
+    def test_scroll_button(self, browser):
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.click_show_more_button()
+        main_page.scroll_down()
+        main_page.click_scroll_button()
+
+        with step('Check the banner is displayed on the page (after scroll up)'):
+            assert main_page.is_banner_displayed(), 'Banner is not displayed'
+
+    @title("Check that 'sort by' dropdown and filter badges is displayed after scroll down")
+    def test_dropdown_and_badges_is_displayed_after_scrolling(self, browser):
+        brand = 'Dunkin-Donuts'
+        seller = 'BrewedBliss'
+
+        main_page = BasePage(browser, link)
+        main_page.open()
+
+        main_page.filter_products_by_brand(brand)
+        main_page.filter_products_by_seller(seller)
+
+        main_page.scroll_down()
+
+        with step('Check that "sort by" dropdown is displayed'):
+            assert main_page.is_sort_dropdown_displayed(), '"Sort by" dropdown is not displayed'
+        with step('Check that filter badges is displayed'):
+            assert main_page.is_badge_displayed(brand) and main_page.is_badge_displayed(seller),\
+                'Filter badges are not displayed'

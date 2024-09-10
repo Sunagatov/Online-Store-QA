@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 
 
 class BasePageLocators:
-    ADD_TO_CART_BUTTON = (By.XPATH, '//li[2]/div/div[2]/div/button')
-    ADD_TO_CART_BUTTON_2 = (By.XPATH, '//li[3]/div/div[2]/div/button')
+    ADD_TO_CART_BUTTON = (By.XPATH, '(//img[@alt="add to cart"]/parent::button)[2]')
+    ADD_TO_CART_BUTTON_2 = (By.XPATH, '(//img[@alt="add to cart"]/parent::button)[3]')
     ADD_TO_FAVORITES_BUTTON = (By.XPATH, '(//button/img[@alt="heart unliked"])[2]')
+    BANNER = (By.CSS_SELECTOR, 'img[alt="Hero"]')
     HEADING_ELEMENT = (By.XPATH, '//h1[contains(text(), "All Coffee")]')
     REMOVE_FROM_FAVORITES_BUTTON = (By.XPATH, '//button/img[@alt="heart liked"]')
 
@@ -15,8 +16,12 @@ class BasePageLocators:
 
     BRAND_LIST = (By.XPATH, '//aside/div/div[3]/div/label')
     BY_DEFAULT_BUTTON = (By.XPATH, '(//*[@id="default-filter-btn"])[2]')
+    ERROR_MESSAGE = (By.XPATH, '//*[contains(text(), "Something went wrong!")]')
     HEART_LIKED_ICON = (By.XPATH, '//img[@alt="heart liked"]')
     HEART_UNLIKED_ICON = (By.XPATH, '(//img[@alt="heart unliked"])[2]')
+    MINUS_BUTTON = (By.ID, 'min-btn')
+    NO_RESULT_MESSAGE = (By.XPATH, '//*[contains(text(), "No results found for the specified parameters.")]')
+    PLUS_BUTTON = (By.ID, 'plus-btn')
     PRICE_FROM_FIELD = (By.ID, 'from-price-input')
     PRICE_TO_FIELD = (By.ID, 'to-price-input')
     # PRODUCT_LINK = (By.CSS_SELECTOR, 'ul li:nth-child(2) [href]')
@@ -27,16 +32,19 @@ class BasePageLocators:
     PRODUCT_PRICE_LIST = (By.XPATH, '//li/div/p')
     PRODUCTS_NO_RATING_LIST = (By.XPATH, '//*[contains(text(), "No rating")]')
     PRODUCTS_RATING_LIST = (By.XPATH, '//li/a/div[2]/div/div/span')
+    PRODUCT_COUNTER = (By.XPATH, '//button[@id="min-btn"]/following-sibling::span')
     PRODUCT_NAME = (By.XPATH, '//li[2]/a/div[2]/div[2]/h2')
-    PRODUCT_PRICE = (By.XPATH, '//li[2]/div/div[2]/p')
+    PRODUCT_PRICE = (By.XPATH, '(//a[starts-with(@href,"/product")]/following-sibling::div/p)[2]')
     PRODUCT_RATING = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[1]')
     PRODUCT_REVIEWS = (By.XPATH, '//li[2]/div/a/div[2]/div/span/span[2]')
-    PRODUCT_WEIGHT = (By.XPATH, '//li[2]/div/a/div[2]/div/span[2]')
 
     def remove_filter_badge(self, products_filter: str) -> tuple[str, str]:
         remove_filter_badge_locator = (By.XPATH, f'(//*[@id="remove-filter-{products_filter}"])[2]')
         return remove_filter_badge_locator
 
+    RESET_BRAND_FILTER_BUTTON = (By.ID, 'Brand-reset-btn')
+    RESET_SELLER_FILTER_BUTTON = (By.ID, 'Seller-reset-btn')
+    SCROLL_BUTTON = (By.ID, 'scroll-btn')
     SELLER_LIST = (By.XPATH, '//aside/div/div[4]/div/label')
     SHOW_MORE_LESS_BRAND_BUTTON = (By.ID, 'Brand-filter-btn')
     SHOW_MORE_LESS_SELLER_BUTTON = (By.ID, 'Seller-filter-btn')
@@ -58,7 +66,7 @@ class BasePageLocators:
 
 
 class CartPageLocators:
-    AMOUNT = (By.XPATH, '/html/body/main/div/div[1]/div[1]/div[2]/div/div[1]/span')
+    AMOUNT = (By.XPATH, '//button[@id="min-btn"]/following-sibling::span')
     REMOVE_BUTTON = (By.ID, 'remove-all-btn')
     CONTINUE_SHOPPING_BUTTON = (By.ID, 'continue-btn')
     EMPTY_CART_MESSAGE = (By.XPATH, "//*[contains(text(), 'Your cart is empty')]")
@@ -66,10 +74,9 @@ class CartPageLocators:
     MINUS_2_BUTTON = (By.XPATH, '(//button[@id="min-btn"])[2]')
     PLUS_BUTTON = (By.XPATH, '(//button[@id="plus-btn"])[1]')
     PLUS_2_BUTTON = (By.XPATH, '(//button[@id="plus-btn"])[2]')
-    PRODUCT_NAME = (By.XPATH, '//div/div[1]/div/div[2]/p[1]')
-    PRODUCT_COST = (By.XPATH, '//div/div[1]/div[1]/div[2]/p[3]')
-    PRODUCT_WEIGHT = (By.XPATH, "//p[@class='font-medium text-placeholder']")
-    PRODUCT_2_COST = (By.XPATH, '//div/div[1]/div[2]/div[2]/p[3]')
+    PRODUCT_NAME = (By.CSS_SELECTOR, '.text-XL')
+    PRODUCT_COST = (By.XPATH, '(//div/div/div[2]/p)[1]')
+    PRODUCT_2_COST = (By.XPATH, '(//div/div/div[2]/p)[2]')
     SUBTOTAL = (By.XPATH, '/html/body/main/div/div[2]/p[2]')
 
 

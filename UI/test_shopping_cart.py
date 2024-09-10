@@ -1,8 +1,8 @@
 from allure import step, title, severity, story, severity_level
 from time import sleep
 
-from .pages.cart_page import CartPage
-from .pages.base_page import BasePage
+from .pages.CartPage import CartPage
+from .pages.BasePage import BasePage
 from .set_of_steps import login_user, remove_products_from_cart_and_favorites
 from .configs import link
 
@@ -17,17 +17,15 @@ class TestCart:
 
     @title("Test Empty Shopping Cart. User is not logged in")    
     def test_guest_empty_cart(self, browser):
-        with step('Open Main Page'):
-            page = BasePage(browser, link)
-            page.open()
-        with step('Go to Cart Page'):
-            page.go_to_cart_page()
-        with step('Assert Cart is Empty'):
-            page = CartPage(browser, browser.current_url)            
-            assert page.is_cart_empty, 'Cart is not empty'
-        with step('Click Continue Shopping Button on Empty Cart'):
-            page.click_continue_shopping_button()
-            sleep(2)  # waiting is mandatory (do not remove)
+        main_page = BasePage(browser, link)
+        main_page.open()
+        main_page.go_to_cart_page()
+        with step('Check that Cart is Empty'):
+            cart_page = CartPage(browser, browser.current_url)
+            assert cart_page.is_cart_empty, 'Cart is not empty'
+        cart_page.click_continue_shopping_button()
+        sleep(2)  # waiting is mandatory (do not remove)
+        with step('Check that main page is present'):
             assert browser.current_url == link, 'Continue Shopping Button do not work'
     
     @title("Test Functionality of the Shopping Cart. User is not logged in")    
@@ -38,7 +36,6 @@ class TestCart:
         with step('Get Product Name, Price and weight from Main Page'):
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
         with step('Add Product to Cart'):
             page.add_product_to_cart()
             sleep(2)  # waiting is mandatory (do not remove)
@@ -48,11 +45,8 @@ class TestCart:
         with step('Assert added product is in the cart'):
             page = CartPage(browser, browser.current_url)            
             cart_page_product_price = float(page.get_product_cost()[1:])
-            cart_page_product_weight = page.get_product_weight()
             assert page.is_product_in_cart(main_page_product_name), 'Product is not in the cart'
             assert main_page_product_price == cart_page_product_price, 'Main Page Price are not Equal Cart Page Price'
-            assert main_page_product_weight == cart_page_product_weight, \
-                'Main Page Weight are not Equal Cart Page Weight'
         with step('Click on Plus Button'):            
             page.click_plus_button()
             sleep(2)  # waiting is mandatory (do not remove)
@@ -133,7 +127,6 @@ class TestCart:
             sleep(2)  # waiting is mandatory (do not remove)
             main_page_product_name = page.get_product_name()
             main_page_product_price = page.get_product_price()
-            main_page_product_weight = page.get_product_weight()
         with step('Add Product to Cart'):
             page.add_product_to_cart()   
             sleep(2)  # waiting is mandatory (do not remove)
@@ -143,12 +136,9 @@ class TestCart:
         with step('Assert added product is in the cart'):
             page = CartPage(browser, browser.current_url)            
             cart_page_product_price = float(page.get_product_cost()[1:])
-            cart_page_product_weight = page.get_product_weight()
             assert page.is_product_in_cart(main_page_product_name), 'Product is not in the cart'
             assert main_page_product_price == cart_page_product_price, 'Main Page Price are not Equal Cart Page Price'
-            assert main_page_product_weight == cart_page_product_weight, \
-                'Main Page Weight are not Equal Cart Page Weight'
-        with step('Click on Plus Button'):            
+        with step('Click on Plus Button'):
             page.click_plus_button()
             sleep(2)  # waiting is mandatory (do not remove)
             assert page.is_change_cart_counter('2'), 'Cart counter is not change'

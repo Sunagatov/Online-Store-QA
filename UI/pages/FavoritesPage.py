@@ -2,7 +2,7 @@ from allure import step
 from time import sleep
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from .base_page import BasePage
+from .BasePage import BasePage
 from .locators import FavoritesPageLocators, BasePageLocators
 from ..configs import login_page_link
 

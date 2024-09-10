@@ -1,6 +1,6 @@
-from .pages.base_page import BasePage
-from .pages.login_page import LoginPage
-from .pages.registration_page import RegistrationPage
+from .pages.BasePage import BasePage
+from .pages.LoginPage import LoginPage
+from .pages.RegistrationPage import RegistrationPage
 from .configs import link
 
 from allure import step, title, severity, story, severity_level
@@ -11,7 +11,7 @@ from allure import step, title, severity, story, severity_level
 # @allure.description("")
 # @allure.tag("")
 @severity(severity_level.CRITICAL)
-def test_dropdawn_not_present(browser):
+def test_dropdown_not_present(browser):
     with step('Go to Login Page'):
         page = BasePage(browser, link)
         page.open()    

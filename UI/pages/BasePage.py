@@ -1,7 +1,9 @@
+import pyperclip
 import re
 from allure import step
+from selenium.webdriver.common.keys import Keys
 from typing import Literal
-# from time import sleep
+from time import sleep
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException, \
@@ -19,7 +21,8 @@ class BasePage:
         self.browser.implicitly_wait(timeout)  # turn on implicitly wait  
         self.browser.maximize_window()
     
-    def add_product_to_cart(self):
+    @step('Add product to cart')
+    def add_product_to_cart(self) -> None:
         button = self.browser.find_element(*BasePageLocators.ADD_TO_CART_BUTTON)
         button.click()
     
@@ -37,6 +40,29 @@ class BasePage:
         by_default_button = self.browser.find_element(*BasePageLocators.BY_DEFAULT_BUTTON)
         by_default_button.click()
 
+    @step('Click minus button')
+    def click_minus_button(self) -> None:
+        minus_button = self.browser.find_element(*BasePageLocators.MINUS_BUTTON)
+        minus_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
+    
+    @step('Click plus button')
+    def click_plus_button(self) -> None:
+        plus_button = self.browser.find_element(*BasePageLocators.PLUS_BUTTON)
+        plus_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
+
+    @step('Click scroll button')
+    def click_scroll_button(self) -> None:
+        scroll_button = self.browser.find_element(*BasePageLocators.SCROLL_BUTTON)
+        scroll_button.click()
+        sleep(2)  # waiting is mandatory (do not remove)
+
+    @step('Click show more button')
+    def click_show_more_button(self) -> None:
+        show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
+        show_more_button.click()
+
     @step('Filter products in catalog by brand')
     def filter_products_by_brand(self, brand: str) -> None:
         base_page_locators = BasePageLocators()
@@ -51,6 +77,20 @@ class BasePage:
 
         price_to_field = self.browser.find_element(*BasePageLocators.PRICE_TO_FIELD)
         price_to_field.send_keys(price_to)
+
+    @step('Filter products in catalog by price (copy-paste price)')
+    def filter_products_by_price_copy_paste(self, price_from: str, price_to: str) -> None:
+        price_from_field = self.browser.find_element(*BasePageLocators.PRICE_FROM_FIELD)
+        # self.browser.execute_script("arguments[0].value = arguments[1];", price_from_field, price_from)
+        pyperclip.copy(price_from)
+        price_from_field.click()
+        price_from_field.send_keys(Keys.CONTROL, 'v')
+
+        price_to_field = self.browser.find_element(*BasePageLocators.PRICE_TO_FIELD)
+        # self.browser.execute_script("arguments[0].value = arguments[1];", price_to_field, price_to)
+        pyperclip.copy(price_to)
+        price_to_field.click()
+        price_to_field.send_keys(Keys.CONTROL, 'v')
 
     @step('Filter products in catalog by rating')
     def filter_products_by_rating(self, rating: Literal['4', '3', '2', '1', 'any']) -> None:
@@ -117,18 +157,13 @@ class BasePage:
         product_reviews = pattern.findall(product_reviews_element)
         return product_reviews[0]
 
-    def get_product_weight(self):
-        product_weight_element = self.browser.find_element(*BasePageLocators.PRODUCT_WEIGHT).text
-        pattern = re.compile(r'\b\d+\b')
-        product_weight = pattern.findall(product_weight_element)
-        return product_weight[0]
-
     @step('Get seller list length')
     def get_seller_list_length(self) -> int:
         seller_list = self.browser.find_elements(*BasePageLocators.SELLER_LIST)
         return len(seller_list)
 
-    def go_to_cart_page(self):
+    @step('Go to Cart Page')
+    def go_to_cart_page(self) -> None:
         link = self.browser.find_element(*HeaderLocators.CART_LINK)
         link.click()
     
@@ -154,13 +189,26 @@ class BasePage:
         link = self.browser.find_element(*HeaderLocators.PROFILE_LINK)
         link.click()
 
+    def is_add_to_cart_button_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.ADD_TO_CART_BUTTON)
+
     def is_badge_present(self, product_filter: str) -> bool:
         base_page_locators = BasePageLocators()
         return self.is_element_present(*base_page_locators.remove_filter_badge(product_filter))
 
+    def is_badge_displayed(self, product_filter: str) -> bool:
+        base_page_locators = BasePageLocators()
+        return self.is_element_displayed(*base_page_locators.remove_filter_badge(product_filter))
+
+    def is_banner_displayed(self) -> bool:
+        return self.is_element_displayed(*BasePageLocators.BANNER)
+
+    def is_cart_counter_present(self) -> bool:
+        return self.is_element_present(*HeaderLocators.CART_COUNTER)
+
     # check that amount on cart icon changed after adding product to cart 
     # and click "Plus" or "Minus"
-    def is_change_cart_counter(self, amount):
+    def is_change_cart_counter(self, amount: str) -> bool:
         cart_counter = self.browser.find_element(*HeaderLocators.CART_COUNTER)
         if cart_counter.text == amount:
             return True
@@ -171,6 +219,13 @@ class BasePage:
     def is_change_favorites_counter(self, amount: str) -> bool:
         favorites_counter = self.browser.find_element(*HeaderLocators.FAVORITES_COUNTER)        
         if favorites_counter.text == amount:
+            return True
+        else: 
+            return False
+
+    def is_change_product_counter(self, amount: str) -> bool:
+        product_counter = self.browser.find_element(*BasePageLocators.PRODUCT_COUNTER)
+        if product_counter.text == amount:
             return True
         else: 
             return False
@@ -190,7 +245,24 @@ class BasePage:
             element.click()
         except (ElementClickInterceptedException, ElementNotInteractableException):
             return False
-        return True    
+        return True
+
+    # check that element is displayed on page
+    def is_element_displayed(self, how, what) -> bool:
+        element = self.browser.find_element(how, what)
+        # Получите размеры и позицию элемента
+        element_rect = element.rect
+        window_height = self.browser.execute_script("return window.innerHeight;")
+        window_scroll = self.browser.execute_script("return window.scrollY;")
+
+        # Проверяем, что элемент находится в видимой области окна
+        is_visible = ((element_rect['y'] + element_rect['height'] > window_scroll)
+                      and (element_rect['y'] < window_scroll + window_height))
+
+        if is_visible:
+            return True
+        else:
+            return False
 
     # check that the element is present on the page
     def is_element_present(self, how, what) -> bool:
@@ -199,6 +271,9 @@ class BasePage:
         except NoSuchElementException:
             return False
         return True
+
+    def is_error_message_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.ERROR_MESSAGE)
 
     def is_favorites_page_icon_has_not_counter(self):
         return not self.is_element_present(*HeaderLocators.FAVORITES_COUNTER)
@@ -220,9 +295,14 @@ class BasePage:
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
             show_more_button.click()
 
+        if price_from == '':
+            price_from = '0'
+        if price_to == '':
+            price_to = '1000'
+
         # create filtered products price list
         products_price_list = self.get_products_price_list()
-        print('\n', products_price_list)
+        print(f'\n{products_price_list}')
         for product_price in products_price_list:
             if float(product_price) <= float(price_from) or float(product_price) >= float(price_to):
                 return False
@@ -268,6 +348,12 @@ class BasePage:
     def is_heart_on_product_transparent(self) -> bool:
         return self.is_element_present(*BasePageLocators.HEART_UNLIKED_ICON)
 
+    def is_no_result_message_present(self) -> bool:
+        return self.is_element_present(*BasePageLocators.NO_RESULT_MESSAGE)
+
+    def is_sort_dropdown_displayed(self) -> bool:
+        return self.is_element_displayed(*BasePageLocators.SORT_DROPDOWN)
+
     def is_sorting_correct(self, criterion: Literal['price', 'rating'], direction: Literal['high', 'low']) -> bool:
         while self.is_element_present(*BasePageLocators.SHOW_MORE_BUTTON):
             show_more_button = self.browser.find_element(*BasePageLocators.SHOW_MORE_BUTTON)
@@ -304,7 +390,7 @@ class BasePage:
         return True
 
     @step('Open main page')
-    def open(self):
+    def open(self) -> None:
         self.browser.get(self.url)        
 
     @step('Click cross on the badge to remove filter')
@@ -318,6 +404,33 @@ class BasePage:
     def remove_product_from_favorites(self) -> None:
         remove_from_favorites_button = self.browser.find_element(*BasePageLocators.REMOVE_FROM_FAVORITES_BUTTON)
         remove_from_favorites_button.click()
+
+    @step('Click "Reset" button on brand filter')
+    def reset_brand_filter(self) -> None:
+        reset_brand_filter_button = self.browser.find_element(*BasePageLocators.RESET_BRAND_FILTER_BUTTON)
+        reset_brand_filter_button.click()
+
+    @step('Click "Reset" button on seller filter')
+    def reset_seller_filter(self) -> None:
+        reset_seller_filter_button = self.browser.find_element(*BasePageLocators.RESET_SELLER_FILTER_BUTTON)
+        reset_seller_filter_button.click()
+
+    @step('Scroll down')
+    def scroll_down(self) -> None:
+        # self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        # self.browser.execute_script("window.scrollBy(0, 2800);")
+        last_height = self.browser.execute_script("return document.body.scrollHeight")
+
+        while True:
+            self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            sleep(2)
+
+            new_height = self.browser.execute_script("return document.body.scrollHeight")
+
+            if new_height == last_height:
+                break
+
+            last_height = new_height
 
     # check that login link is present on the page
     def should_be_login_link(self):

@@ -2,9 +2,9 @@ from allure import step, title, severity, story, severity_level
 # import pytest
 from time import sleep
 
-from .pages.base_page import BasePage
-from .pages.favorites_page import FavoritesPage
-from .pages.login_page import LoginPage
+from .pages.BasePage import BasePage
+from .pages.FavoritesPage import FavoritesPage
+from .pages.LoginPage import LoginPage
 from .configs import link, login_page_link
 from .set_of_steps import login_user, remove_products_from_cart_and_favorites
 

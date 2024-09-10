@@ -2,12 +2,12 @@ from allure import step
 from time import sleep
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from .pages.base_page import BasePage
-from .pages.cart_page import CartPage
-from .pages.favorites_page import FavoritesPage
-from .pages.login_page import LoginPage
-from .pages.profile_page import ProfilePage
-from .pages.product_page import ProductPage
+from .pages.BasePage import BasePage
+from .pages.CartPage import CartPage
+from .pages.FavoritesPage import FavoritesPage
+from .pages.LoginPage import LoginPage
+from .pages.ProductPage import ProductPage
+from .pages.ProfilePage import ProfilePage
 
 from .configs import email, password
 
@@ -48,9 +48,8 @@ def go_to_edit_profile_page(browser: WebDriver, link: str) -> None:
 
 @step('Remove products from cart and favorites')
 def remove_products_from_cart_and_favorites(browser: WebDriver, link: str) -> None:
-    with step('Go to cart page'):
-        main_page = BasePage(browser, link)
-        main_page.go_to_cart_page()
+    main_page = BasePage(browser, link)
+    main_page.go_to_cart_page()
     with step('Remove all products from the cart'):
         cart_page = CartPage(browser, browser.current_url)
         cart_page.remove_products()
